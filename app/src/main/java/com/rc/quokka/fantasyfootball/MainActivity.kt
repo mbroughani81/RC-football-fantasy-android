@@ -1,15 +1,17 @@
 package com.rc.quokka.fantasyfootball
 
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.core.content.res.ResourcesCompat
 import com.rc.quokka.fantasyfootball.ui.theme.FantasyFootballTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,27 +19,31 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FantasyFootballTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
+                Column {
+                    Header()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
-@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    FantasyFootballTheme {
-        Greeting("Android")
+fun Header() {
+    Row(modifier = Modifier.height(150.dp)) {
+        Box {
+            Image (
+                painterResource(id = R.drawable.backgroud_rectangle),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+            Image (
+                painterResource(id = R.drawable.fourplayer_img),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.height(70.dp)
+            )
+        }
     }
 }
