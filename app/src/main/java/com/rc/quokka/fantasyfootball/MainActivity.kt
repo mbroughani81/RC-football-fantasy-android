@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -40,7 +41,14 @@ class MainActivity : ComponentActivity() {
                     Header()
                     NavBar()
                     WeekInfo()
-                    SoccerField()
+                    Scaffold(
+                        topBar = {
+                            TopBar()
+                        }
+                    ) {
+                        SoccerField()
+                    }
+
                 }
             }
         }
@@ -96,6 +104,7 @@ fun Header() {
     }
 }
 
+
 @Composable
 fun NavBar() {
     val cardSize = remember {
@@ -140,7 +149,7 @@ fun NavBar() {
         DropdownMenu(
             expanded = expanded.value,
             onDismissRequest = { expanded.value = false },
-            modifier = Modifier.width(with(LocalDensity.current) {cardSize.value.width.toDp()})
+            modifier = Modifier.width(with(LocalDensity.current) { cardSize.value.width.toDp() })
         ) {
             items.forEach {
                 DropdownMenuItem(onClick = { Log.d(TAG, it) }) {
@@ -161,27 +170,136 @@ fun NavBar() {
             }
         }
     }
+}
 
+@Composable
+fun TopBar() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Card {
+            Box {
+                Image(
+                    painter = painterResource(id = R.drawable.rahnema_college_logo),
+                    contentDescription = "premier league icon",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .width(100.dp)
+                )
+            }
+        }
+        Card(
+            backgroundColor = Color(0xfff7f7f7)
+        ) {
+            Box(modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp)) {
+                Row {
+                    TextButton(
+                        onClick = {},
+                    ) {
+                        Text(
+                            "مشاهده لیست",
+                            fontFamily = VazirFont,
+                            fontSize = 16.sp,
+                            color = Color(0xff3D195B),
+                            modifier = Modifier.padding(horizontal = 10.dp)
+                        )
+                    }
+                    TextButton(onClick = {}) {
+                        Text(
+                            "شماتیک ترکیب",
+                            fontFamily = VazirFont,
+                            fontSize = 16.sp,
+                            color = Color(0xff3D195B),
+                            modifier = Modifier
+                                .padding(horizontal = 10.dp)
+                        )
+                    }
+                }
+            }
+        }
 
-//    DropdownMenu(
-//        expanded = expanded.value,
-//        onDismissRequest = { expanded.value = false },
-//        modifier = Modifier.background(Color.Red).width(100.dp)
-//    ) {
-//        items.forEach {
-//            DropdownMenuItem(onClick = { Log.d(TAG, it) }, modifier = Modifier.background(Color.Magenta)) {
-//                Box(modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color.Green)) {
-//                    Text(
-//                        text = it,
-//                        fontFamily = VazirFont,
-//                        fontSize = 14.sp,
-//                        color = Color(0xff3D195B),
-//                        modifier = Modifier.align(Alignment.Center)
-//                    )
-//                }
-//            }
-//        }
-//    }
+        Spacer(modifier = Modifier.height(35.dp))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(30.dp),
+            modifier = Modifier
+                .height(70.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 30.dp)
+                    .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+                    .background(brush = Brush.horizontalGradient(colors = listOf(Color(0xff04f7da), Color(0xff02fda2))))
+                    .padding(5.dp)
+                    .fillMaxHeight()
+            )
+            {
+                Text(
+                    "۱۵/۱۲",
+                    fontFamily = VazirFont,
+                    fontSize = 16.sp,
+                    color = Color(0xff3D195B),
+                    modifier = Modifier
+                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Image(
+                        painter = painterResource(id = R.drawable.head),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .width(50.dp)
+                    )
+                    Text(
+                        "بازیکن باقی مانده",
+                        fontFamily = VazirFont,
+                        fontSize = 12.sp,
+                        color = Color(0xff3D195B),
+                        modifier = Modifier
+                            .wrapContentWidth(unbounded = true)
+                    )
+                }
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 30.dp)
+                    .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+                    .background(brush = Brush.horizontalGradient(colors = listOf(Color(0xff04f7da), Color(0xff02fda2))))
+                    .padding(5.dp)
+                    .fillMaxHeight()
+            ) {
+                Text(
+                    "۷۳",
+                    fontFamily = VazirFont,
+                    fontSize = 16.sp,
+                    color = Color(0xff3D195B),
+                    modifier = Modifier
+                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Image(
+                        painter = painterResource(id = R.drawable.wallet),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .width(50.dp)
+                    )
+                    Text(
+                        "پول باقی مانده",
+                        fontFamily = VazirFont,
+                        fontSize = 12.sp,
+                        color = Color(0xff3D195B),
+                        modifier = Modifier
+                            .wrapContentWidth(unbounded = true)
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -216,7 +334,9 @@ fun WeekInfo() {
 
 @Composable
 fun SoccerField() {
-    Box(modifier = Modifier
+    Box(
+        contentAlignment = Alignment.TopCenter,
+        modifier = Modifier
         .padding(top = 8.dp, start = 8.dp, end = 8.dp)) {
 
         val soccerFieldSize = remember {
@@ -306,5 +426,4 @@ fun SoccerField() {
 fun Shirt(modifier: Modifier) {
     Image(painter = painterResource(id = R.drawable.valencia_college_diactive), contentDescription = "shirt",
         modifier = Modifier.padding(top = 20.dp, bottom = 20.dp))
-
 }
