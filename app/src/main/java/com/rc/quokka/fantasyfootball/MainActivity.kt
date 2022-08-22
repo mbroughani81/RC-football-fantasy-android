@@ -9,30 +9,26 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.materialIcon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.HorizontalAlignmentLine
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.compose.ui.unit.toSize
 import com.rc.quokka.fantasyfootball.ui.theme.FantasyFootballTheme
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
-import org.intellij.lang.annotations.JdkConstants
 
 const val TAG = "MainActivity"
 
@@ -44,12 +40,13 @@ class MainActivity : ComponentActivity() {
                 Column {
                     Header()
                     NavBar()
+                    WeekInfo()
                     Scaffold(
                         topBar = {
                             TopBar()
                         }
                     ) {
-
+                        SoccerField()
                     }
 
                 }
@@ -107,9 +104,14 @@ fun Header() {
     }
 }
 
+
 @Composable
 fun NavBar() {
-    var expanded = remember { mutableStateOf(false) }
+    val cardSize = remember {
+        mutableStateOf(Size.Zero)
+    }
+
+    val expanded = remember { mutableStateOf(false) }
     val items = listOf<String>("حنیف", "محمد", "سانیار")
 
     Card(
@@ -117,7 +119,11 @@ fun NavBar() {
             .fillMaxWidth()
             .padding(top = 10.dp, start = 8.dp, end = 8.dp)
             .height(40.dp)
+            .onGloballyPositioned { coordinates ->
+                cardSize.value = coordinates.size.toSize()
+            }
     ) {
+
         Box() {
             Text(
                 text = "تیم من",
@@ -131,7 +137,7 @@ fun NavBar() {
 
             TextButton(
                 onClick = { expanded.value = !expanded.value },
-                modifier = Modifier.align(Alignment.BottomEnd)
+                modifier = Modifier.align(Alignment.CenterEnd)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.menu),
@@ -143,13 +149,15 @@ fun NavBar() {
         DropdownMenu(
             expanded = expanded.value,
             onDismissRequest = { expanded.value = false },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.width(with(LocalDensity.current) { cardSize.value.width.toDp() })
         ) {
             items.forEach {
                 DropdownMenuItem(onClick = { Log.d(TAG, it) }) {
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                    ) {
                         Text(
                             text = it,
                             fontFamily = VazirFont,
@@ -162,7 +170,6 @@ fun NavBar() {
             }
         }
     }
-
 }
 
 @Composable
@@ -293,4 +300,130 @@ fun TopBar() {
             }
         }
     }
+}
+
+@Composable
+fun WeekInfo() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, end = 8.dp, top = 10.dp)
+            .height(40.dp)
+    ) {
+        Box(modifier = Modifier.background(color = Color(0xff3D195B))) {
+            Text(
+                text = "شنبه 30 مرداد 1400 - ساعت 17",
+                fontFamily = VazirFont,
+                fontSize = 14.sp,
+                color = Color(0xffFFFFFF),
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 24.dp)
+            )
+            Text(text = "هفته سوم",
+                fontFamily = VazirFont,
+                fontSize = 14.sp,
+                color = Color(0xff00FF87),
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 24.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun SoccerField() {
+    Box(
+        contentAlignment = Alignment.TopCenter,
+        modifier = Modifier
+        .padding(top = 8.dp, start = 8.dp, end = 8.dp)) {
+
+        val soccerFieldSize = remember {
+            mutableStateOf(Size.Zero)
+        }
+        Image(painter = painterResource(id = R.drawable.green_field),
+            contentDescription = "soccer field base",
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.onGloballyPositioned { layoutCoordinates ->
+                soccerFieldSize.value = layoutCoordinates.size.toSize()
+            })
+        
+        Image(painter = painterResource(id = R.drawable.soccer_field_lines),
+            contentDescription = "soccer field lines",
+            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
+            contentScale = ContentScale.Fit)
+        
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .height(with(LocalDensity.current) { soccerFieldSize.value.height.toDp() })
+            .padding(start = 8.dp, end = 8.dp)) {
+            Spacer(modifier = Modifier.weight(1f))
+            Image(painter = painterResource(id = R.drawable.soccer_field_white_part), contentDescription = "", alpha = 0.2f,)
+
+            Spacer(modifier = Modifier.weight(1f))
+            Image(painter = painterResource(id = R.drawable.soccer_field_white_part), contentDescription = "", alpha = 0.2f)
+
+            Spacer(modifier = Modifier.weight(1f))
+            Image(painter = painterResource(id = R.drawable.soccer_field_white_part), contentDescription = "", alpha = 0.2f)
+            Spacer(modifier = Modifier.weight(0.5f))
+        }
+        
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .height(with(LocalDensity.current) { soccerFieldSize.value.height.toDp() })
+            .padding(start = 8.dp, end = 8.dp)) {
+
+            val modifier = Modifier.weight(1f)
+
+            Row(modifier) {
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f))
+                Shirt(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(2f))
+            }
+            Row(modifier) {
+                Spacer(modifier = Modifier.weight(1f))
+                Shirt(Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(1f))
+            }
+            Row(modifier) {
+                Spacer(modifier = Modifier.weight(1f))
+                Shirt(Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(1f))
+            }
+            Row(modifier) {
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(2f))
+                Shirt(Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(2f))
+            }
+        }
+    }
+}
+
+@Composable
+fun Shirt(modifier: Modifier) {
+    Image(painter = painterResource(id = R.drawable.valencia_college_diactive), contentDescription = "shirt",
+        modifier = Modifier.padding(top = 20.dp, bottom = 20.dp))
 }
