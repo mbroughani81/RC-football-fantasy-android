@@ -42,6 +42,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val isOnSoccerFieldView = remember { mutableStateOf(true) }
             FantasyFootballTheme {
                 Column {
                     Header()
@@ -49,11 +50,17 @@ class MainActivity : ComponentActivity() {
                     WeekInfo()
                     Scaffold(
                         topBar = {
-                            TopBar()
+                            TopBar(
+                                onClickListButtonHandler = { isOnSoccerFieldView.value = true},
+                                onClickSchematicButtonHandle = { isOnSoccerFieldView.value = false}
+                            )
                         }
                     ) {
-//                        SoccerField()
-                        PlayersList()
+                        if (isOnSoccerFieldView.value) {
+                            SoccerField()
+                        } else {
+                            PlayersList()
+                        }
                     }
 
                 }
@@ -180,7 +187,7 @@ fun NavBar() {
 }
 
 @Composable
-fun TopBar() {
+fun TopBar(onClickListButtonHandler: () -> Unit, onClickSchematicButtonHandle: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
@@ -202,7 +209,7 @@ fun TopBar() {
             Box(modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp)) {
                 Row {
                     TextButton(
-                        onClick = {},
+                        onClick = onClickListButtonHandler,
                     ) {
                         Text(
                             "مشاهده لیست",
@@ -212,7 +219,7 @@ fun TopBar() {
                             modifier = Modifier.padding(horizontal = 10.dp)
                         )
                     }
-                    TextButton(onClick = {}) {
+                    TextButton(onClick = onClickSchematicButtonHandle) {
                         Text(
                             "شماتیک ترکیب",
                             fontFamily = VazirFont,
