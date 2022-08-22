@@ -42,6 +42,7 @@ class MainActivity : ComponentActivity() {
                 Column {
                     Header()
                     NavBar()
+                    WeekInfo()
                 }
             }
         }
@@ -122,7 +123,7 @@ fun NavBar() {
 
             TextButton(
                 onClick = { expanded.value = !expanded.value },
-                modifier = Modifier.align(Alignment.BottomEnd)
+                modifier = Modifier.align(Alignment.CenterEnd)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.menu),
@@ -131,24 +132,79 @@ fun NavBar() {
                 )
             }
         }
-    }
-    DropdownMenu(
-        expanded = expanded.value,
-        onDismissRequest = { expanded.value = false },
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        items.forEach {
-            DropdownMenuItem(onClick = { Log.d(TAG, it) }) {
-                Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-                    Text(
-                        text = it,
-                        fontFamily = VazirFont,
-                        fontSize = 14.sp,
-                        color = Color(0xff3D195B),
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+        DropdownMenu(
+            expanded = expanded.value,
+            onDismissRequest = { expanded.value = false },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items.forEach {
+                DropdownMenuItem(onClick = { Log.d(TAG, it) }) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                    ) {
+                        Text(
+                            text = it,
+                            fontFamily = VazirFont,
+                            fontSize = 14.sp,
+                            color = Color(0xff3D195B),
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
                 }
             }
+        }
+    }
+
+
+//    DropdownMenu(
+//        expanded = expanded.value,
+//        onDismissRequest = { expanded.value = false },
+//        modifier = Modifier.background(Color.Red).width(100.dp)
+//    ) {
+//        items.forEach {
+//            DropdownMenuItem(onClick = { Log.d(TAG, it) }, modifier = Modifier.background(Color.Magenta)) {
+//                Box(modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color.Green)) {
+//                    Text(
+//                        text = it,
+//                        fontFamily = VazirFont,
+//                        fontSize = 14.sp,
+//                        color = Color(0xff3D195B),
+//                        modifier = Modifier.align(Alignment.Center)
+//                    )
+//                }
+//            }
+//        }
+//    }
+}
+
+@Composable
+fun WeekInfo() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, end = 8.dp, top = 10.dp)
+            .height(40.dp)
+    ) {
+        Box(modifier = Modifier.background(color = Color(0xff3D195B))) {
+            Text(
+                text = "شنبه 30 مرداد 1400 - ساعت 17",
+                fontFamily = VazirFont,
+                fontSize = 14.sp,
+                color = Color(0xffFFFFFF),
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 24.dp)
+            )
+            Text(text = "هفته سوم",
+                fontFamily = VazirFont,
+                fontSize = 14.sp,
+                color = Color(0xff00FF87),
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 24.dp)
+            )
         }
     }
 }
