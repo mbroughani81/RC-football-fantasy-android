@@ -93,17 +93,13 @@ fun Header() {
                     )
                 }
             }
-
-//                Column() {
-//
-//                }
         }
     }
 }
 
 @Composable
 fun NavBar() {
-    var expanded = remember { mutableStateOf(true) }
+    var expanded = remember { mutableStateOf(false) }
     val items = listOf<String>("حنیف", "محمد", "سانیار")
 
     Card(
@@ -136,34 +132,14 @@ fun NavBar() {
             }
         }
     }
-//    DropdownMenu(
-//        expanded = expanded.value,
-//        onDismissRequest = { expanded.value = false },
-//        modifier = Modifier.fillMaxWidth()
-//        ) {
-//        items.forEach {
-//            DropdownMenuItem(onClick = { Log.d(TAG, it) }) {
-//                Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-//                    Text(
-//                        text = it,
-//                        fontFamily = VazirFont,
-//                        fontSize = 14.sp,
-//                        color = Color(0xff3D195B),
-//                        modifier = Modifier.align(Alignment.Center)
-//                    )
-//                }
-//            }
-//        }
-//    }
-
     DropdownMenu(
         expanded = expanded.value,
         onDismissRequest = { expanded.value = false },
-        modifier = Modifier.fillMaxWidth().background(Color.Red)
+        modifier = Modifier.fillMaxWidth()
     ) {
         items.forEach {
-            DropdownMenuItem(onClick = { Log.d(TAG, it) }, modifier = Modifier.background(Color.Magenta)) {
-                Box(modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color.Green)) {
+            DropdownMenuItem(onClick = { Log.d(TAG, it) }) {
+                Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
                     Text(
                         text = it,
                         fontFamily = VazirFont,
