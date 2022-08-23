@@ -51,8 +51,8 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         topBar = {
                             TopBar(
-                                onClickListButtonHandler = { isOnSoccerFieldView.value = true},
-                                onClickSchematicButtonHandle = { isOnSoccerFieldView.value = false}
+                                onClickListButtonHandler = { isOnSoccerFieldView.value = false },
+                                onClickSchematicButtonHandle = { isOnSoccerFieldView.value = true }
                             )
                         }
                     ) {
