@@ -1,5 +1,6 @@
 package com.rc.quokka.fantasyfootball.ui.team_creation.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,10 +9,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -74,48 +77,28 @@ fun TeamSchematicScreen() {
             .height(with(LocalDensity.current) { soccerFieldSize.value.height.toDp() })
             .padding(start = 8.dp, end = 8.dp, top = 8.dp)) {
 
-            val modifier = Modifier.weight(1f)
-            Row(modifier) {
-                Spacer(modifier = Modifier.weight(3f))
+            Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.SpaceEvenly) {
                 Shirt(modifier = Modifier.weight(1f))
-                Spacer(modifier = Modifier.weight(1f))
                 Shirt(modifier = Modifier.weight(1f))
-                Spacer(modifier = Modifier.weight(3f))
             }
-            Row(modifier) {
-                Spacer(modifier = Modifier.weight(2f))
-                Shirt(Modifier.weight(2f))
-                Spacer(modifier = Modifier.weight(2f))
-                Shirt(Modifier.weight(2f))
-                Spacer(modifier = Modifier.weight(2f))
-                Shirt(Modifier.weight(2f))
-                Spacer(modifier = Modifier.weight(2f))
-                Shirt(Modifier.weight(2f))
-                Spacer(modifier = Modifier.weight(2f))
-                Shirt(Modifier.weight(2f))
-                Spacer(modifier = Modifier.weight(2f))
+            Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.SpaceEvenly) {
+                Shirt(Modifier.weight(1f))
+                Shirt(Modifier.weight(1f))
+                Shirt(Modifier.weight(1f))
+                Shirt(Modifier.weight(1f))
+                Shirt(Modifier.weight(1f))
             }
-            Row(modifier) {
-                Spacer(modifier = Modifier.weight(2f))
-                Shirt(Modifier)
-                Spacer(modifier = Modifier.weight(2f))
-                Shirt(Modifier.weight(2f))
-                Spacer(modifier = Modifier.weight(2f))
-                Shirt(Modifier.weight(2f))
-                Spacer(modifier = Modifier.weight(2f))
-                Shirt(Modifier.weight(2f))
-                Spacer(modifier = Modifier.weight(2f))
-                Shirt(Modifier.weight(2f))
-                Spacer(modifier = Modifier.weight(2f))
+            Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement =  Arrangement.SpaceEvenly) {
+                Shirt(Modifier.weight(1f))
+                Shirt(Modifier.weight(1f))
+                Shirt(Modifier.weight(1f))
+                Shirt(Modifier.weight(1f))
+                Shirt(Modifier.weight(1f))
             }
-            Row(modifier) {
-                Spacer(modifier = Modifier.weight(2f))
+            Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.SpaceEvenly) {
                 Shirt(Modifier.weight(1f))
-                Spacer(modifier = Modifier.weight(2f))
                 Shirt(Modifier.weight(1f))
-                Spacer(modifier = Modifier.weight(2f))
                 Shirt(Modifier.weight(1f))
-                Spacer(modifier = Modifier.weight(2f))
             }
         }
     }
@@ -123,8 +106,10 @@ fun TeamSchematicScreen() {
 
 @Composable
 fun Shirt(modifier: Modifier) {
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    val shirtTapCount = remember {
+        mutableStateOf(false)
+    }
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(36.dp)) {
         Image(painter = painterResource(id = R.drawable.valencia_college_diactive), contentDescription = "shirt",
             modifier = Modifier
                 .width(32.dp)
@@ -132,9 +117,11 @@ fun Shirt(modifier: Modifier) {
                 .clickable(indication = null, interactionSource = remember {
                     MutableInteractionSource()
                 }) {
+                    shirtTapCount.value = !shirtTapCount.value
                 }
         )
-        PlayerInfo(Modifier)
+            if (shirtTapCount.value)
+            PlayerInfo(Modifier)
     }
 }
 
@@ -153,9 +140,9 @@ fun PlayerInfo(modifier: Modifier) {
                 )
             }
             Box(modifier = Modifier
-                .background(color = Color(0xffCCFFE4))
                 .weight(1f)
-                .width(36.dp), contentAlignment = Alignment.Center) {
+                .width(36.dp)
+                .background(color = Color(0xffCCFFE4)), contentAlignment = Alignment.Center) {
                 Text(text = "5.5", color = Color(0xff38003C), fontSize = 6.sp)
             }
         }
