@@ -1,6 +1,5 @@
 package com.rc.quokka.fantasyfootball
 
-import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -18,10 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -31,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.rc.quokka.fantasyfootball.ui.theme.FantasyFootballTheme
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
-import org.intellij.lang.annotations.JdkConstants
 
 const val TAG = "MainActivity"
 
@@ -346,19 +342,23 @@ fun Shirt(modifier: Modifier) {
                     Log.d(TAG, "MainActivity")
                 }
         )
-        PlayerCard(modifier = Modifier.padding(top = 10.dp))
+        PlayerInfo(modifier = Modifier.padding(top = 10.dp))
     }
 }
 
 @Composable
-fun PlayerCard(modifier: Modifier) {
+fun PlayerInfo(modifier: Modifier) {
     Card() {
         Column(Modifier.height(12.dp)) {
-            Box(modifier = Modifier.background(color = Color(0xff37013B))) {
-                Text(text = "Hanif", color = Color(0xffFFFFFF), fontSize = 7.sp)
+            Box(modifier = Modifier.background(color = Color(0xff37013B)).weight(1f), contentAlignment = Alignment.Center) {
+                Text(text = "Hanif", color = Color(0xffFFFFFF),
+                    fontSize = 7.sp,
+                    fontFamily = VazirFont,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
-            Box(modifier = Modifier.background(color = Color(0xffCCFFE4))) {
-                Text(text = "5.5", color = Color(0xff38003C))
+            Box(modifier = Modifier.background(color = Color(0xff000000)).weight(1f)) {
+                Text(text = "Sani", color = Color(0xffFFFFFF))
             }
         }
     }
