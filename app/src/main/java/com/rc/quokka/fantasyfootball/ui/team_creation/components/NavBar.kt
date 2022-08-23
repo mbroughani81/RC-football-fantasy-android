@@ -1,6 +1,8 @@
 package com.rc.quokka.fantasyfootball.ui.team_creation.components
 
 import android.util.Log
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -13,11 +15,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+
 
 @Composable
 fun NavBar() {
@@ -26,7 +31,7 @@ fun NavBar() {
     }
 
     val expanded = remember { mutableStateOf(false) }
-    val itemss = listOf<String>("حنیف", "محمد", "سانیار")
+    val items = listOf<String>("حنیف", "محمد", "سانیار")
 
     Card(
         modifier = Modifier
@@ -49,24 +54,22 @@ fun NavBar() {
                     .padding(horizontal = 8.dp)
             )
 
-            TextButton(
-                onClick = { expanded.value = !expanded.value },
-                modifier = Modifier.align(Alignment.CenterEnd)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.menu),
-                    contentDescription = "dropdown menu",
-                    modifier = Modifier.height(40.dp)
-                )
-            }
+            Icon(painter = painterResource(id = R.drawable.menu), contentDescription = "menu icon",
+                modifier = Modifier
+                    .height(35.dp)
+                    .padding(end = 8.dp)
+                    .align(Alignment.CenterEnd)
+                    .clickable(indication = null, interactionSource = remember {
+                        MutableInteractionSource()
+                    }) { expanded.value = !expanded.value })
         }
         DropdownMenu(
             expanded = expanded.value,
             onDismissRequest = { expanded.value = false },
             modifier = Modifier.width(with(LocalDensity.current) { cardSize.value.width.toDp() })
         ) {
-            itemss.forEach {
-                DropdownMenuItem(onClick = {  }) {
+            items.forEach {
+                DropdownMenuItem(onClick = {}) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()

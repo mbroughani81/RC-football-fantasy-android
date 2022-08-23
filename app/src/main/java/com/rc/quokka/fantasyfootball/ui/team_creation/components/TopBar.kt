@@ -22,143 +22,99 @@ import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 
 
 @Composable
-fun TopBar(onClickListButtonHandler: () -> Unit, onClickSchematicButtonHandle: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+fun TopBar() {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(30.dp),
+        modifier = Modifier
+            .height(70.dp)
     ) {
-        Card {
-            Box {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 30.dp)
+                .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            Color(0xff04f7da),
+                            Color(0xff02fda2)
+                        )
+                    )
+                )
+                .padding(5.dp)
+                .fillMaxHeight()
+        )
+        {
+            Text(
+                "۱۵/۱۲",
+                fontFamily = VazirFont,
+                fontSize = 18.sp,
+                color = Color(0xff3D195B),
+                modifier = Modifier.padding(start = 8.dp)
+            )
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
-                    painter = painterResource(id = R.drawable.rahnema_college_logo),
-                    contentDescription = "premier league icon",
+                    painter = painterResource(id = R.drawable.head),
+                    contentDescription = null,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .width(100.dp)
+                        .width(50.dp)
+                )
+                Text(
+                    "بازیکن باقی مانده",
+                    fontFamily = VazirFont,
+                    fontSize = 12.sp,
+                    color = Color(0xff3D195B),
+                    modifier = Modifier
+                        .wrapContentWidth(unbounded = true)
                 )
             }
         }
-        Card(
-            backgroundColor = Color(0xfff7f7f7)
-        ) {
-            Box(modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp)) {
-                Row {
-                    TextButton(
-                        onClick = onClickListButtonHandler,
-                    ) {
-                        Text(
-                            "مشاهده لیست",
-                            fontFamily = VazirFont,
-                            fontSize = 16.sp,
-                            color = Color(0xff3D195B),
-                            modifier = Modifier.padding(horizontal = 10.dp)
-                        )
-                    }
-                    TextButton(onClick = onClickSchematicButtonHandle) {
-                        Text(
-                            "شماتیک ترکیب",
-                            fontFamily = VazirFont,
-                            fontSize = 16.sp,
-                            color = Color(0xff3D195B),
-                            modifier = Modifier
-                                .padding(horizontal = 10.dp)
-                        )
-                    }
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(35.dp))
         Row(
-            horizontalArrangement = Arrangement.spacedBy(30.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .height(70.dp),
+                .weight(1f)
+                .padding(end = 30.dp)
+                .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            Color(0xff04f7da),
+                            Color(0xff02fda2)
+                        )
+                    )
+                )
+                .padding(5.dp)
+                .fillMaxHeight()
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 30.dp)
-                    .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
-                    .background(
-                        brush = Brush.horizontalGradient(
-                            colors = listOf(
-                                Color(0xff04f7da),
-                                Color(0xff02fda2)
-                            )
-                        )
-                    )
-                    .padding(5.dp)
-                    .fillMaxHeight()
+            Text(
+                "۷۳",
+                fontFamily = VazirFont,
+                fontSize = 18.sp,
+                color = Color(0xff3D195B),
+                modifier = Modifier.padding(start = 8.dp)
             )
-            {
-                Text(
-                    "۱۵/۱۲",
-                    fontFamily = VazirFont,
-                    fontSize = 20.sp,
-                    color = Color(0xff3D195B),
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Image(
+                    painter = painterResource(id = R.drawable.wallet),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .width(50.dp)
                 )
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(
-                        painter = painterResource(id = R.drawable.head),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .width(50.dp)
-                    )
-                    Text(
-                        "بازیکن باقی مانده",
-                        fontFamily = VazirFont,
-                        fontSize = 12.sp,
-                        color = Color(0xff3D195B),
-                        modifier = Modifier
-                            .wrapContentWidth(unbounded = true)
-                    )
-                }
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 30.dp)
-                    .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
-                    .background(
-                        brush = Brush.horizontalGradient(
-                            colors = listOf(
-                                Color(0xff04f7da),
-                                Color(0xff02fda2)
-                            )
-                        )
-                    )
-                    .padding(5.dp)
-                    .fillMaxHeight()
-            ) {
                 Text(
-                    "۷۳",
+                    "پول باقی مانده",
                     fontFamily = VazirFont,
-                    fontSize = 20.sp,
+                    fontSize = 12.sp,
                     color = Color(0xff3D195B),
+                    modifier = Modifier
+                        .wrapContentWidth(unbounded = true)
                 )
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(
-                        painter = painterResource(id = R.drawable.wallet),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .width(50.dp)
-                    )
-                    Text(
-                        "پول باقی مانده",
-                        fontFamily = VazirFont,
-                        fontSize = 12.sp,
-                        color = Color(0xff3D195B),
-                        modifier = Modifier
-                            .wrapContentWidth(unbounded = true)
-                    )
-                }
             }
         }
     }
+
 }
