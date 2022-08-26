@@ -24,17 +24,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rc.quokka.fantasyfootball.R
+import com.rc.quokka.fantasyfootball.model.Player
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 import org.intellij.lang.annotations.JdkConstants
 
 @Composable
-fun TeamSchematicScreen() {
+fun TeamSchematicScreen(
+    teamSchematicViewModel: TeamSchematicViewModel = viewModel()
+) {
     Box(
         contentAlignment = Alignment.TopCenter,
         modifier = Modifier
             .padding(start = 8.dp, end = 8.dp)
-            .fillMaxWidth()) {
+            .fillMaxWidth()
+    ) {
 
         val soccerFieldSize = remember {
             mutableStateOf(Size.Zero)
@@ -48,15 +53,19 @@ fun TeamSchematicScreen() {
                     soccerFieldSize.value = layoutCoordinates.size.toSize()
                 })
 
-        Image(painter = painterResource(id = R.drawable.soccer_field_lines),
+        Image(
+            painter = painterResource(id = R.drawable.soccer_field_lines),
             contentDescription = "soccer field lines",
             modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
-            contentScale = ContentScale.Fit)
+            contentScale = ContentScale.Fit
+        )
 
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .height(with(LocalDensity.current) { soccerFieldSize.value.height.toDp() })
-            .padding(start = 8.dp, end = 8.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(with(LocalDensity.current) { soccerFieldSize.value.height.toDp() })
+                .padding(start = 8.dp, end = 8.dp)
+        ) {
             Spacer(modifier = Modifier.weight(1f))
             Image(
                 painter = painterResource(id = R.drawable.soccer_field_white_part),
@@ -65,85 +74,100 @@ fun TeamSchematicScreen() {
             )
 
             Spacer(modifier = Modifier.weight(1f))
-            Image(painter = painterResource(id = R.drawable.soccer_field_white_part), contentDescription = "", alpha = 0.2f)
+            Image(
+                painter = painterResource(id = R.drawable.soccer_field_white_part),
+                contentDescription = "",
+                alpha = 0.2f
+            )
 
             Spacer(modifier = Modifier.weight(1f))
-            Image(painter = painterResource(id = R.drawable.soccer_field_white_part), contentDescription = "", alpha = 0.2f)
+            Image(
+                painter = painterResource(id = R.drawable.soccer_field_white_part),
+                contentDescription = "",
+                alpha = 0.2f
+            )
             Spacer(modifier = Modifier.weight(0.5f))
         }
 
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .height(with(LocalDensity.current) { soccerFieldSize.value.height.toDp() })
-            .padding(start = 8.dp, end = 8.dp, top = 8.dp)) {
-
-            Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.SpaceEvenly) {
-                Shirt(modifier = Modifier.weight(1f))
-                Shirt(modifier = Modifier.weight(1f))
-            }
-            Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.SpaceEvenly) {
-                Shirt(Modifier.weight(1f))
-                Shirt(Modifier.weight(1f))
-                Shirt(Modifier.weight(1f))
-                Shirt(Modifier.weight(1f))
-                Shirt(Modifier.weight(1f))
-            }
-            Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement =  Arrangement.SpaceEvenly) {
-                Shirt(Modifier.weight(1f))
-                Shirt(Modifier.weight(1f))
-                Shirt(Modifier.weight(1f))
-                Shirt(Modifier.weight(1f))
-                Shirt(Modifier.weight(1f))
-            }
-            Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.SpaceEvenly) {
-                Shirt(Modifier.weight(1f))
-                Shirt(Modifier.weight(1f))
-                Shirt(Modifier.weight(1f))
-            }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(with(LocalDensity.current) { soccerFieldSize.value.height.toDp() })
+                .padding(start = 8.dp, end = 8.dp, top = 8.dp)
+        ) {
+            PlayerRow(
+                playersList = teamSchematicViewModel.GKPlayers,
+                modifier = Modifier.weight(1f)
+            )
+            PlayerRow(
+                playersList = teamSchematicViewModel.DEFPlayers,
+                modifier = Modifier.weight(1f)
+            )
+            PlayerRow(
+                playersList = teamSchematicViewModel.MIDPlayers,
+                modifier = Modifier.weight(1f)
+            )
+            PlayerRow(
+                playersList = teamSchematicViewModel.ATTPlayers,
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }
 
 @Composable
-fun Shirt(modifier: Modifier) {
-    val shirtTapCount = remember {
-        mutableStateOf(false)
+fun PlayerRow(playersList: List<Player?>, modifier: Modifier = Modifier) {
+    Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
+        playersList.forEach { player ->
+            Shirt(player = player, modifier = Modifier.weight(1f))
+        }
     }
+}
+
+@Composable
+fun Shirt(player: Player?, modifier: Modifier) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(36.dp)) {
-        Image(painter = painterResource(id = R.drawable.valencia_college_diactive), contentDescription = "shirt",
+        Image(painter = painterResource(id = R.drawable.valencia_college_diactive),
+            contentDescription = "shirt",
             modifier = Modifier
                 .width(32.dp)
                 .padding(top = 8.dp, bottom = 4.dp)
                 .clickable(indication = null, interactionSource = remember {
                     MutableInteractionSource()
                 }) {
-                    shirtTapCount.value = !shirtTapCount.value
+
                 }
         )
-            if (shirtTapCount.value)
-            PlayerInfo(Modifier)
+        if (player != null) {
+            PlayerInfo(player = player)
+        }
     }
 }
 
 @Composable
-fun PlayerInfo(modifier: Modifier) {
+fun PlayerInfo(player: Player, modifier: Modifier = Modifier) {
     Card(Modifier.width(36.dp)) {
         Column(Modifier.height(16.dp)) {
-            Box(modifier = Modifier
-                .background(color = Color(0xff37013B))
-                .weight(1f)
-                .width(36.dp), contentAlignment = Alignment.Center) {
-                Text(text = "Hanif", color = Color(0xffFFFFFF),
+            Box(
+                modifier = Modifier
+                    .background(color = Color(0xff37013B))
+                    .weight(1f)
+                    .width(36.dp), contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = player.name, color = Color(0xffFFFFFF),
                     fontSize = 7.sp,
                     fontFamily = VazirFont,
                     modifier = Modifier.fillMaxHeight()
                 )
             }
-            Box(modifier = Modifier
-                .weight(1f)
-                .width(36.dp)
-                .background(color = Color(0xffCCFFE4)), contentAlignment = Alignment.Center) {
-                Text(text = "5.5", color = Color(0xff38003C), fontSize = 6.sp)
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .width(36.dp)
+                    .background(color = Color(0xffCCFFE4)), contentAlignment = Alignment.Center
+            ) {
+                Text(text = player.score, color = Color(0xff38003C), fontSize = 6.sp)
             }
         }
     }
