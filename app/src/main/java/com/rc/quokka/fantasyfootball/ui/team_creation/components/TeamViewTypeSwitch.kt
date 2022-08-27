@@ -21,10 +21,14 @@ import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 
 @Composable
-fun TeamViewTypeSwitch(onClickListButtonHandler: () -> Unit, onClickSchematicButtonHandle: () -> Unit) {
+fun TeamViewTypeSwitch(
+    onClickListButtonHandler: () -> Unit,
+    onClickSchematicButtonHandle: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 8.dp)
+        modifier = modifier.fillMaxWidth().padding(top = 8.dp, bottom = 8.dp)
     ) {
         Card {
             Box {
@@ -33,7 +37,8 @@ fun TeamViewTypeSwitch(onClickListButtonHandler: () -> Unit, onClickSchematicBut
                     contentDescription = "premier league icon",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .width(100.dp)
+                        .height(60.dp)
+                        .width(80.dp)
                 )
             }
         }
@@ -41,7 +46,7 @@ fun TeamViewTypeSwitch(onClickListButtonHandler: () -> Unit, onClickSchematicBut
         Card(
             backgroundColor = Color(0xfff7f7f7)
         ) {
-            Box(modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp)) {
+            Box(modifier = Modifier.padding(horizontal = 7.dp)) {
                 Row {
                     TextButton(
                         onClick = onClickListButtonHandler,
@@ -49,7 +54,7 @@ fun TeamViewTypeSwitch(onClickListButtonHandler: () -> Unit, onClickSchematicBut
                         Text(
                             "مشاهده لیست",
                             fontFamily = VazirFont,
-                            fontSize = 16.sp,
+                            fontSize = 15.sp,
                             color = Color(0xff3D195B),
                             modifier = Modifier.padding(horizontal = 10.dp)
                         )
@@ -58,7 +63,7 @@ fun TeamViewTypeSwitch(onClickListButtonHandler: () -> Unit, onClickSchematicBut
                         Text(
                             "شماتیک ترکیب",
                             fontFamily = VazirFont,
-                            fontSize = 16.sp,
+                            fontSize = 15.sp,
                             color = Color(0xff3D195B),
                             modifier = Modifier
                                 .padding(horizontal = 10.dp)

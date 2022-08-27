@@ -18,8 +18,8 @@ import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 
 
 @Composable
-fun Header() {
-    Row(modifier = Modifier.height(130.dp)) {
+fun Header(modifier: Modifier = Modifier) {
+    Row(modifier = modifier) {
         Box(modifier = Modifier.clip(RoundedCornerShape(8.dp))) {
             Image(
                 painterResource(id = R.drawable.backgroud_rectangle),

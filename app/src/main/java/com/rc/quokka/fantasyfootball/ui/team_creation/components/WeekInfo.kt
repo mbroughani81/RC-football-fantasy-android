@@ -16,12 +16,11 @@ import androidx.compose.ui.unit.sp
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 
 @Composable
-fun WeekInfo() {
+fun WeekInfo(modifier: Modifier = Modifier) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(start = 8.dp, end = 8.dp, top = 10.dp)
-            .height(40.dp)
     ) {
         Box(modifier = Modifier.background(color = Color(0xff3D195B))) {
             Text(

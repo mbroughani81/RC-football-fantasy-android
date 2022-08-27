@@ -25,7 +25,7 @@ import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 
 
 @Composable
-fun NavBar() {
+fun NavBar(modifier: Modifier = Modifier) {
     val cardSize = remember {
         mutableStateOf(Size.Zero)
     }
@@ -34,10 +34,9 @@ fun NavBar() {
     val items = listOf<String>("حنیف", "محمد", "سانیار")
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 10.dp, start = 8.dp, end = 8.dp)
-            .height(40.dp)
             .onGloballyPositioned { coordinates ->
                 cardSize.value = coordinates.size.toSize()
             }

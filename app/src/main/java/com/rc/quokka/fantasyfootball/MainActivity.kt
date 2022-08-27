@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.zIndex
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.*
 import com.rc.quokka.fantasyfootball.ui.team_creation.screens.TeamListScreen
 import com.rc.quokka.fantasyfootball.ui.team_creation.screens.TeamSchematicScreen
@@ -40,23 +41,25 @@ class MainActivity : ComponentActivity() {
         setContent {
             val isOnSoccerFieldView = remember { mutableStateOf(true) }
             FantasyFootballTheme {
-                Column {
-                    Header()
-                    NavBar()
-                    WeekInfo()
+                Column(horizontalAlignment = Alignment.End) {
+                    Header(modifier = Modifier.weight(3f))
+                    NavBar(modifier = Modifier.weight(1f))
+                    WeekInfo(modifier = Modifier.weight(1f))
                     TeamViewTypeSwitch(
                         onClickListButtonHandler = {  isOnSoccerFieldView.value = false },
                         onClickSchematicButtonHandle =  { isOnSoccerFieldView.value = true },
+                        modifier = Modifier.weight(3f)
                     )
                     Scaffold(
-                        topBar = {
-                            TopBar()
-                        }
+                        modifier = Modifier.weight(8f)
                     ) {
-                        if (isOnSoccerFieldView.value) {
-                            TeamSchematicScreen()
-                        } else {
-                            TeamListScreen()
+                        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                            TopBar(modifier = Modifier.height(75.dp).zIndex(1f))
+                            if (isOnSoccerFieldView.value) {
+                                TeamSchematicScreen(modifier = Modifier.height(300.dp).zIndex(2f))
+                            } else {
+                                TeamListScreen(modifier = Modifier.height(300.dp))
+                            }
                         }
                     }
                 }

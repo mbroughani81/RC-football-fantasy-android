@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +16,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -24,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.model.Player
@@ -32,63 +36,30 @@ import org.intellij.lang.annotations.JdkConstants
 
 @Composable
 fun TeamSchematicScreen(
-    teamSchematicViewModel: TeamSchematicViewModel = viewModel()
+    teamSchematicViewModel: TeamSchematicViewModel = viewModel(),
+    modifier: Modifier = Modifier
 ) {
     Box(
-        contentAlignment = Alignment.TopCenter,
-        modifier = Modifier
-            .padding(start = 8.dp, end = 8.dp)
-            .fillMaxWidth()
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .fillMaxWidth(0.9f)
+            .offset(y = -10.dp)
     ) {
 
         val soccerFieldSize = remember {
             mutableStateOf(Size.Zero)
         }
-        Image(painter = painterResource(id = R.drawable.green_field),
+        Image(painter = painterResource(id = R.drawable.soccer_field),
             contentDescription = "soccer field base",
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.FillBounds,
             modifier = Modifier
-                .fillMaxWidth()
                 .onGloballyPositioned { layoutCoordinates ->
                     soccerFieldSize.value = layoutCoordinates.size.toSize()
-                })
-
-        Image(
-            painter = painterResource(id = R.drawable.soccer_field_lines),
-            contentDescription = "soccer field lines",
-            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
-            contentScale = ContentScale.Fit
-        )
-
-        Column(
-            modifier = Modifier
+                }
+                .fillMaxHeight()
                 .fillMaxWidth()
-                .height(with(LocalDensity.current) { soccerFieldSize.value.height.toDp() })
-                .padding(start = 8.dp, end = 8.dp)
-        ) {
-            Spacer(modifier = Modifier.weight(1f))
-            Image(
-                painter = painterResource(id = R.drawable.soccer_field_white_part),
-                contentDescription = "",
-                alpha = 0.2f,
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-            Image(
-                painter = painterResource(id = R.drawable.soccer_field_white_part),
-                contentDescription = "",
-                alpha = 0.2f
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-            Image(
-                painter = painterResource(id = R.drawable.soccer_field_white_part),
-                contentDescription = "",
-                alpha = 0.2f
-            )
-            Spacer(modifier = Modifier.weight(0.5f))
-        }
-
+                .clip(RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp))
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()

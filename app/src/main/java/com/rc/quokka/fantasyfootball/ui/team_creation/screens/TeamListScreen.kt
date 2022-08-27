@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.sp
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 
 @Composable
-fun TeamListScreen() {
+fun TeamListScreen(modifier: Modifier = Modifier) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-        Table()
+        Table(modifier = modifier)
     }
 }
 
@@ -82,7 +82,7 @@ fun RowScope.PlayerDataCell(
 }
 
 @Composable
-fun Table() {
+fun Table(modifier: Modifier = Modifier) {
     val gkData = listOf(
         listOf("Henderson", "9", "5.9"),
         listOf("Allison", "8.5", "5.5")
@@ -102,7 +102,7 @@ fun Table() {
     val column2Weight = .2f
     val column3Weight = .2f
     LazyColumn(
-        Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp)) {
         item {
