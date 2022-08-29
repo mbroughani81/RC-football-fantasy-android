@@ -31,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.zIndex
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.*
+import com.rc.quokka.fantasyfootball.ui.team_creation.screens.DeletePlayerDialog
 import com.rc.quokka.fantasyfootball.ui.team_creation.screens.TeamListScreen
 import com.rc.quokka.fantasyfootball.ui.team_creation.screens.TeamSchematicScreen
 import com.rc.quokka.fantasyfootball.ui.theme.FantasyFootballTheme
@@ -40,13 +41,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val isOnSoccerFieldView = remember { mutableStateOf(true) }
+            val isOnDeleteDialog = remember  { mutableStateOf(false) }
             FantasyFootballTheme {
+                if (isOnDeleteDialog.value) {
+                    DeletePlayerDialog(onDismissHandler = { isOnDeleteDialog.value = false })
+                }
+
                 Column(horizontalAlignment = Alignment.End) {
                     Header(modifier = Modifier.weight(3f))
                     NavBar(modifier = Modifier.weight(1f))
                     WeekInfo(modifier = Modifier.weight(1f))
                     TeamViewTypeSwitch(
-                        onClickListButtonHandler = {  isOnSoccerFieldView.value = false },
+                        onClickListButtonHandler = {  isOnSoccerFieldView.value = false; },
                         onClickSchematicButtonHandle =  { isOnSoccerFieldView.value = true },
                         modifier = Modifier.weight(3f)
                     )
@@ -56,7 +62,7 @@ class MainActivity : ComponentActivity() {
                         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                             TopBar(modifier = Modifier.height(75.dp).zIndex(1f))
                             if (isOnSoccerFieldView.value) {
-                                TeamSchematicScreen(modifier = Modifier.height(300.dp).zIndex(2f))
+                                TeamSchematicScreen(onPlayerClickHandler = { isOnDeleteDialog.value = true }, modifier = Modifier.height(300.dp).zIndex(2f))
                             } else {
                                 TeamListScreen(modifier = Modifier.height(300.dp))
                             }

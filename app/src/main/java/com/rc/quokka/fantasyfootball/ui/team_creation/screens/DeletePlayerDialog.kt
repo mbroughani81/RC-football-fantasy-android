@@ -1,0 +1,142 @@
+package com.rc.quokka.fantasyfootball.ui.team_creation.screens
+
+import android.icu.text.CaseMap
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import com.rc.quokka.fantasyfootball.R
+import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+
+@Composable
+fun DeletePlayerDialog(onDismissHandler: () -> Unit) {
+    CustomDialog(onDismiss = onDismissHandler)
+}
+
+@Composable
+fun TitleText(text: String, modifier: Modifier = Modifier) {
+    Box(modifier = Modifier.background(color = Color(0xff3D195B))) {
+        Text(
+            text = text,
+            textAlign = TextAlign.Center,
+            fontFamily = VazirFont,
+            modifier = modifier
+                .padding(5.dp)
+                .fillMaxWidth(),
+            color = Color(0xff00FF87),
+        )
+    }
+}
+
+@Composable
+fun PlayerShirtImage(modifier: Modifier = Modifier) {
+    Image(
+        painter = painterResource(id = R.drawable.delete_player_kit_img),
+        contentDescription = "",
+        modifier = modifier.padding(10.dp)
+    )
+}
+
+@Composable
+fun ConfirmText(text: String, modifier: Modifier = Modifier) {
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        val message1 = "آیا از حذف "
+        val message2 = " مطمئن هستید؟"
+        Text(
+            message1 + text + message2,
+            fontFamily = VazirFont,
+            fontSize = 14.sp,
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun ButtonRow(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
+    Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Button(
+            onClick = onDismiss,
+            contentPadding = PaddingValues(3.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
+        ) {
+            Text(
+                "لغو",
+                fontFamily = VazirFont,
+                fontSize = 12.sp,
+                color = Color(0xff3D195B)
+            )
+        }
+        Button(
+            onClick = onDismiss,
+            contentPadding = PaddingValues(3.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffED1B5D))
+        ) {
+            Text(
+                "حذف",
+                fontFamily = VazirFont,
+                fontSize = 12.sp,
+                color = Color.White
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun DeletePlayerDialogPreview() {
+    DeletePlayerDialog({})
+}
+
+@Composable
+fun CustomDialog(onDismiss: () -> Unit) {
+    Dialog(
+        onDismissRequest = { /*TODO*/ },
+        content = {
+            Card() {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxHeight(0.6f)
+                        .fillMaxWidth()
+                ) {
+                    TitleText("حذف بازیکن", modifier = Modifier.weight(10f))
+                    PlayerShirtImage(
+                        modifier = Modifier
+                            .weight(35f)
+                    )
+                    ConfirmText(
+                        "Anderson", modifier = Modifier
+                            .weight(7f)
+                    )
+                    ButtonRow(
+                        onDismiss = onDismiss,
+                        modifier = Modifier
+                            .weight(8f)
+                    )
+                    Spacer(modifier = Modifier.weight(4f))
+                }
+            }
+
+        },
+    )
+}
