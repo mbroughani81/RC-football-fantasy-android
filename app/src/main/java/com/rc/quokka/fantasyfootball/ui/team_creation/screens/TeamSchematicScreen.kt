@@ -1,9 +1,7 @@
 package com.rc.quokka.fantasyfootball.ui.team_creation.screens
 
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,8 +34,9 @@ import org.intellij.lang.annotations.JdkConstants
 
 @Composable
 fun TeamSchematicScreen(
+    onPlayerClickHandler: () -> Unit,
+    modifier: Modifier = Modifier,
     teamSchematicViewModel: TeamSchematicViewModel = viewModel(),
-    modifier: Modifier = Modifier
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -68,46 +67,60 @@ fun TeamSchematicScreen(
         ) {
             PlayerRow(
                 playersList = teamSchematicViewModel.GKPlayers,
+                onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
                 playersList = teamSchematicViewModel.DEFPlayers,
+                onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
                 playersList = teamSchematicViewModel.MIDPlayers,
+                onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
                 playersList = teamSchematicViewModel.ATTPlayers,
-                modifier = Modifier.weight(1f)
+                onPlayerClick = onPlayerClickHandler,
+                modifier = Modifier.weight(1f),
             )
         }
     }
 }
 
 @Composable
-fun PlayerRow(playersList: List<Player?>, modifier: Modifier = Modifier) {
+fun PlayerRow(
+    playersList: List<Player?>,
+    onPlayerClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
         playersList.forEach { player ->
-            Shirt(player = player, modifier = Modifier.weight(1f))
+            Shirt(player = player, onPlayerClick = onPlayerClick, modifier = Modifier.weight(1f))
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Shirt(player: Player?, modifier: Modifier) {
+fun Shirt(player: Player?, onPlayerClick: () -> Unit, modifier: Modifier) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(36.dp)) {
-        Image(painter = painterResource(id = R.drawable.valencia_college_diactive),
+        Image(
+            painter = painterResource(id = R.drawable.valencia_college_diactive),
             contentDescription = "shirt",
             modifier = Modifier
                 .width(32.dp)
                 .padding(top = 8.dp, bottom = 4.dp)
-                .clickable(indication = null, interactionSource = remember {
-                    MutableInteractionSource()
-                }) {
+                .combinedClickable(
+                    indication = null,
+                    interactionSource = remember {
+                        MutableInteractionSource()
+                    },
+                    onClick = {},
+                    onLongClick = onPlayerClick
+                )
 
-                }
         )
         if (player != null) {
             PlayerInfo(player = player)
