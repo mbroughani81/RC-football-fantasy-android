@@ -26,7 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.rc.quokka.fantasyfootball.R
+import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight400Size12VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight400Size14VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight400Size15VazirFont
 
 @Composable
 fun DeletePlayerDialog(onDismissHandler: () -> Unit) {
@@ -36,10 +40,9 @@ fun DeletePlayerDialog(onDismissHandler: () -> Unit) {
 @Composable
 fun TitleText(text: String, modifier: Modifier = Modifier) {
     Box(modifier = Modifier.background(color = Color(0xff3D195B))) {
-        Text(
+        CommonText(
             text = text,
-            textAlign = TextAlign.Center,
-            fontFamily = VazirFont,
+            style = weight400Size15VazirFont.copy(textAlign = TextAlign.Center),
             modifier = modifier
                 .padding(5.dp)
                 .fillMaxWidth(),
@@ -62,10 +65,9 @@ fun ConfirmText(text: String, modifier: Modifier = Modifier) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         val message1 = "آیا از حذف "
         val message2 = " مطمئن هستید؟"
-        Text(
+        CommonText(
             message1 + text + message2,
-            fontFamily = VazirFont,
-            fontSize = 14.sp,
+            style = weight400Size14VazirFont,
             modifier = modifier
         )
     }
@@ -79,10 +81,9 @@ fun ButtonRow(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
             contentPadding = PaddingValues(3.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
         ) {
-            Text(
+            CommonText(
                 "لغو",
-                fontFamily = VazirFont,
-                fontSize = 12.sp,
+                style = weight400Size12VazirFont,
                 color = Color(0xff3D195B)
             )
         }
@@ -91,10 +92,9 @@ fun ButtonRow(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
             contentPadding = PaddingValues(3.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffED1B5D))
         ) {
-            Text(
+            CommonText(
                 "حذف",
-                fontFamily = VazirFont,
-                fontSize = 12.sp,
+                style = weight400Size12VazirFont,
                 color = Color.White
             )
         }

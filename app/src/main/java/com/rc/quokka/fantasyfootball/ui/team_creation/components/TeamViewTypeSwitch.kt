@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight400Size14VazirFont
 
 @Composable
 fun TeamViewTypeSwitch(
@@ -51,19 +52,17 @@ fun TeamViewTypeSwitch(
                     TextButton(
                         onClick = onClickListButtonHandler,
                     ) {
-                        Text(
+                        CommonText(
                             "مشاهده لیست",
-                            fontFamily = VazirFont,
-                            fontSize = 15.sp,
+                            style = weight400Size14VazirFont,
                             color = Color(0xff3D195B),
                             modifier = Modifier.padding(horizontal = 10.dp)
                         )
                     }
                     TextButton(onClick = onClickSchematicButtonHandle) {
-                        Text(
+                        CommonText(
                             "شماتیک ترکیب",
-                            fontFamily = VazirFont,
-                            fontSize = 15.sp,
+                            style = weight400Size14VazirFont,
                             color = Color(0xff3D195B),
                             modifier = Modifier
                                 .padding(horizontal = 10.dp)

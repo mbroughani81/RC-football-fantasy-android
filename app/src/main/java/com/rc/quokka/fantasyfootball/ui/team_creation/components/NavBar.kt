@@ -22,6 +22,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight800Size14VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight900Size14VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight900Size17VazirFont
 
 
 @Composable
@@ -43,10 +46,9 @@ fun NavBar(modifier: Modifier = Modifier) {
     ) {
 
         Box() {
-            Text(
+            CommonText(
                 text = "تیم من",
-                fontFamily = VazirFont,
-                fontSize = 17.sp,
+                style = weight900Size17VazirFont,
                 color = Color(0xff18DEEA),
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -74,10 +76,9 @@ fun NavBar(modifier: Modifier = Modifier) {
                             .fillMaxWidth()
                             .fillMaxHeight()
                     ) {
-                        Text(
+                        CommonText(
                             text = it,
-                            fontFamily = VazirFont,
-                            fontSize = 14.sp,
+                            style = weight900Size14VazirFont,
                             color = Color(0xff3D195B),
                             modifier = Modifier.align(Alignment.Center)
                         )

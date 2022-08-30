@@ -29,7 +29,10 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.model.Player
+import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight700Size6VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight700Size7VazirFont
 import org.intellij.lang.annotations.JdkConstants
 
 @Composable
@@ -138,10 +141,10 @@ fun PlayerInfo(player: Player, modifier: Modifier = Modifier) {
                     .weight(1f)
                     .width(36.dp), contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = player.name, color = Color(0xffFFFFFF),
-                    fontSize = 7.sp,
-                    fontFamily = VazirFont,
+                CommonText(
+                    text = player.name,
+                    style = weight700Size7VazirFont,
+                    color = Color(0xffFFFFFF),
                     modifier = Modifier.fillMaxHeight()
                 )
             }
@@ -151,7 +154,11 @@ fun PlayerInfo(player: Player, modifier: Modifier = Modifier) {
                     .width(36.dp)
                     .background(color = Color(0xffCCFFE4)), contentAlignment = Alignment.Center
             ) {
-                Text(text = player.score, color = Color(0xff38003C), fontSize = 6.sp)
+                CommonText(
+                    text = player.score,
+                    style = weight700Size6VazirFont,
+                    color = Color(0xff38003C)
+                )
             }
         }
     }
