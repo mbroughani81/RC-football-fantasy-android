@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rc.quokka.fantasyfootball.R
-import com.rc.quokka.fantasyfootball.model.Player
+import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size6VazirFont
@@ -156,7 +156,7 @@ fun PlayerInfo(player: Player, modifier: Modifier = Modifier) {
                     .background(color = Color(0xffCCFFE4)), contentAlignment = Alignment.Center
             ) {
                 CommonText(
-                    text = player.score,
+                    text = player.rating.toString(),
                     style = weight700Size6VazirFont,
                     color = Color(0xff38003C)
                 )
