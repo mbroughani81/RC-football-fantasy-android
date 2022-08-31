@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -118,6 +119,7 @@ fun Shirt(modifier: Modifier) {
                     MutableInteractionSource()
                 }) {
                     shirtTapCount.value = !shirtTapCount.value
+
                 }
         )
             if (shirtTapCount.value)
