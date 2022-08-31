@@ -22,10 +22,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight800Size14VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight900Size14VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight900Size17VazirFont
 
 
 @Composable
-fun NavBar() {
+fun NavBar(modifier: Modifier = Modifier) {
     val cardSize = remember {
         mutableStateOf(Size.Zero)
     }
@@ -34,20 +37,18 @@ fun NavBar() {
     val items = listOf<String>("حنیف", "محمد", "سانیار")
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 10.dp, start = 8.dp, end = 8.dp)
-            .height(40.dp)
             .onGloballyPositioned { coordinates ->
                 cardSize.value = coordinates.size.toSize()
             }
     ) {
 
         Box() {
-            Text(
+            CommonText(
                 text = "تیم من",
-                fontFamily = VazirFont,
-                fontSize = 17.sp,
+                style = weight900Size17VazirFont,
                 color = Color(0xff18DEEA),
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -75,10 +76,9 @@ fun NavBar() {
                             .fillMaxWidth()
                             .fillMaxHeight()
                     ) {
-                        Text(
+                        CommonText(
                             text = it,
-                            fontFamily = VazirFont,
-                            fontSize = 14.sp,
+                            style = weight900Size14VazirFont,
                             color = Color(0xff3D195B),
                             modifier = Modifier.align(Alignment.Center)
                         )

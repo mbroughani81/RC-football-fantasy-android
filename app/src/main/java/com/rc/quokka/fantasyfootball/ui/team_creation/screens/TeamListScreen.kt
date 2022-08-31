@@ -17,12 +17,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight400Size13VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight400Size14VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight400Size15VazirFont
 
 @Composable
-fun TeamListScreen() {
+fun TeamListScreen(modifier: Modifier = Modifier) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-        Table()
+        Table(modifier = modifier)
     }
 }
 
@@ -31,13 +35,10 @@ fun RowScope.ColumnTypeCell(
     text: String,
     weight: Float
 ) {
-    Text(
+    CommonText(
         text = text,
-        style = TextStyle(
-            textAlign = TextAlign.Center),
+        style = weight400Size13VazirFont.copy(textAlign = TextAlign.Center),
         color = Color.Gray,
-        fontFamily = VazirFont,
-        fontSize = 13.sp,
         modifier = Modifier
             .weight(weight)
             .padding(8.dp)
@@ -48,11 +49,10 @@ fun RowScope.ColumnTypeCell(
 fun RowScope.PlayerTypeCell(
     text: String,
 ) {
-    Text(
+    CommonText(
         text = text,
         color = Color(0xff00FF87),
-        fontFamily = VazirFont,
-        fontSize = 15.sp,
+        style = weight400Size15VazirFont.copy(textAlign = TextAlign.Center),
         modifier = Modifier
             .width(120.dp)
             .clip(RoundedCornerShape(8.dp))
@@ -69,12 +69,10 @@ fun RowScope.PlayerDataCell(
     isCentered: Boolean = false
 ) {
     val textAlign = if (isCentered) TextAlign.Center else TextAlign.Start
-    Text(
+    CommonText(
         text = text,
-        style = TextStyle(textAlign = textAlign),
+        style = weight400Size13VazirFont.copy(textAlign = textAlign),
         color = Color(0xff3d195b),
-        fontFamily = VazirFont,
-        fontSize = 13.sp,
         modifier = Modifier
             .weight(weight)
             .padding(4.dp)
@@ -82,7 +80,7 @@ fun RowScope.PlayerDataCell(
 }
 
 @Composable
-fun Table() {
+fun Table(modifier: Modifier = Modifier) {
     val gkData = listOf(
         listOf("Henderson", "9", "5.9"),
         listOf("Allison", "8.5", "5.5")
@@ -102,9 +100,10 @@ fun Table() {
     val column2Weight = .2f
     val column3Weight = .2f
     LazyColumn(
-        Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)) {
+            .padding(16.dp)
+    ) {
         item {
             Row {
                 ColumnTypeCell(text = "", weight = column1Weight)

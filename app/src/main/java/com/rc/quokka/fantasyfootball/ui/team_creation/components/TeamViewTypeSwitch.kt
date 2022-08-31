@@ -19,12 +19,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight400Size14VazirFont
 
 @Composable
-fun TeamViewTypeSwitch(onClickListButtonHandler: () -> Unit, onClickSchematicButtonHandle: () -> Unit) {
+fun TeamViewTypeSwitch(
+    onClickListButtonHandler: () -> Unit,
+    onClickSchematicButtonHandle: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 8.dp)
+        modifier = modifier.fillMaxWidth().padding(top = 8.dp, bottom = 8.dp)
     ) {
         Card {
             Box {
@@ -33,7 +38,8 @@ fun TeamViewTypeSwitch(onClickListButtonHandler: () -> Unit, onClickSchematicBut
                     contentDescription = "premier league icon",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .width(100.dp)
+                        .height(60.dp)
+                        .width(80.dp)
                 )
             }
         }
@@ -41,24 +47,22 @@ fun TeamViewTypeSwitch(onClickListButtonHandler: () -> Unit, onClickSchematicBut
         Card(
             backgroundColor = Color(0xfff7f7f7)
         ) {
-            Box(modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp)) {
+            Box(modifier = Modifier.padding(horizontal = 7.dp)) {
                 Row {
                     TextButton(
                         onClick = onClickListButtonHandler,
                     ) {
-                        Text(
+                        CommonText(
                             "مشاهده لیست",
-                            fontFamily = VazirFont,
-                            fontSize = 16.sp,
+                            style = weight400Size14VazirFont,
                             color = Color(0xff3D195B),
                             modifier = Modifier.padding(horizontal = 10.dp)
                         )
                     }
                     TextButton(onClick = onClickSchematicButtonHandle) {
-                        Text(
+                        CommonText(
                             "شماتیک ترکیب",
-                            fontFamily = VazirFont,
-                            fontSize = 16.sp,
+                            style = weight400Size14VazirFont,
                             color = Color(0xff3D195B),
                             modifier = Modifier
                                 .padding(horizontal = 10.dp)

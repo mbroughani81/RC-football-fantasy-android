@@ -17,23 +17,26 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight900Size18VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight900Size9VazirFont
 
 
 @Composable
-fun TopBar() {
+fun TopBar(modifier: Modifier = Modifier) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(30.dp),
-        modifier = Modifier
-            .height(70.dp)
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier
+            .fillMaxWidth(0.9f)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .weight(1f)
-                .padding(start = 30.dp)
+                .weight(0.4f)
                 .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
                 .background(
                     brush = Brush.horizontalGradient(
@@ -41,16 +44,16 @@ fun TopBar() {
                             Color(0xff04f7da),
                             Color(0xff02fda2)
                         )
-                    )
+                    ),
                 )
+                .padding(bottom = 10.dp)
                 .padding(5.dp)
                 .fillMaxHeight()
         )
         {
-            Text(
+            CommonText(
                 "۱۵/۱۲",
-                fontFamily = VazirFont,
-                fontSize = 18.sp,
+                style = weight900Size18VazirFont,
                 color = Color(0xff3D195B),
                 modifier = Modifier.padding(start = 8.dp)
             )
@@ -62,22 +65,22 @@ fun TopBar() {
                     modifier = Modifier
                         .width(50.dp)
                 )
-                Text(
-                    "بازیکن باقی مانده",
-                    fontFamily = VazirFont,
-                    fontSize = 12.sp,
+                CommonText(
+                    text = "بازیکن باقی مانده",
+                    style = weight900Size9VazirFont,
                     color = Color(0xff3D195B),
                     modifier = Modifier
                         .wrapContentWidth(unbounded = true)
                 )
             }
         }
+        Spacer(modifier = Modifier.weight(0.1f))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .weight(1f)
-                .padding(end = 30.dp)
+                .weight(0.4f)
+                .fillMaxWidth(0.4f)
                 .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
                 .background(
                     brush = Brush.horizontalGradient(
@@ -87,13 +90,13 @@ fun TopBar() {
                         )
                     )
                 )
+                .padding(bottom = 10.dp)
                 .padding(5.dp)
                 .fillMaxHeight()
-        ) {
-            Text(
+        ) { 
+            CommonText(
                 "۷۳",
-                fontFamily = VazirFont,
-                fontSize = 18.sp,
+                style = weight900Size18VazirFont,
                 color = Color(0xff3D195B),
                 modifier = Modifier.padding(start = 8.dp)
             )
@@ -105,10 +108,9 @@ fun TopBar() {
                     modifier = Modifier
                         .width(50.dp)
                 )
-                Text(
-                    "پول باقی مانده",
-                    fontFamily = VazirFont,
-                    fontSize = 12.sp,
+                CommonText(
+                    text = "پول باقی مانده",
+                    style = weight900Size9VazirFont,
                     color = Color(0xff3D195B),
                     modifier = Modifier
                         .wrapContentWidth(unbounded = true)

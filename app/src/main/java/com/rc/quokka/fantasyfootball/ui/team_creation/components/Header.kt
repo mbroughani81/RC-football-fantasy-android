@@ -11,15 +11,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight900Size20VazirFont
 
 
 @Composable
-fun Header(modifier: Modifier) {
-    Row(modifier = modifier.height(130.dp)) {
+fun Header(modifier: Modifier = Modifier) {
+    Row(modifier = modifier) {
         Box(modifier = Modifier.clip(RoundedCornerShape(8.dp))) {
             Image(
                 painterResource(id = R.drawable.backgroud_rectangle),
@@ -53,10 +55,9 @@ fun Header(modifier: Modifier) {
                             .width(50.dp)
                             .padding(top = 25.dp)
                     )
-                    Text(
+                    CommonText(
                         text = "فوتبال فانتزی",
-                        fontFamily = VazirFont,
-                        fontSize = 20.sp,
+                        style = weight900Size20VazirFont,
                         color = Color(0xff37013B)
                     )
                 }
