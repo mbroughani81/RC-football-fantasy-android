@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     scaffoldState = scaffoldState,
                     drawerContent = {
-                        NavigationDrawerView()
+                        NavigationDrawerView(scaffoldState.drawerState)
                     },
                     drawerGesturesEnabled = scaffoldState.drawerState.isOpen
                 ) {
