@@ -8,10 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,11 +17,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalLayoutDirection
 import com.rc.quokka.fantasyfootball.R
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.rc.quokka.fantasyfootball.ui.team_creation.screens.NavigationDrawerViewModel
+import com.rc.quokka.fantasyfootball.ui.team_creation.screens.Table
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 
 //@Composable
@@ -40,11 +42,16 @@ import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 //}
 
 @Composable
-fun NavigationDrawerView() {
+fun NavigationDrawerView(navigationDrawerViewModel: NavigationDrawerViewModel = viewModel()) {
+    val uiState = navigationDrawerViewModel.uiState.collectAsState()
+
     Column(modifier = Modifier.fillMaxWidth()) {
         NavigationBarTopView()
         NavigationSearchBar()
         FilterTags()
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            Table(playersList = uiState.value.playersList , modifier = Modifier.width(500.dp))
+        }
 //        LazyColumn(content = {})
     }
 }
