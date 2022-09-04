@@ -26,7 +26,7 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight700Size20VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size7VazirFont
 
 @Composable
-fun SignupScreen(onSignInButtonClicked: () -> Unit) {
+fun SignupScreen(onSignupButtonClicked: () -> Unit) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Box(
             contentAlignment = Alignment.TopCenter,
@@ -70,7 +70,7 @@ fun SignupScreen(onSignInButtonClicked: () -> Unit) {
                     item {
                         Button(
                             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-                            onClick = onSignInButtonClicked,
+                            onClick = onSignupButtonClicked,
                             contentPadding = PaddingValues(),
                             modifier = Modifier
                                 .fillMaxWidth()
