@@ -7,11 +7,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.rc.quokka.fantasyfootball.ui.authentication.ConfirmCodeScreen
+import com.rc.quokka.fantasyfootball.ui.authentication.screens.SigninScreen
 import com.rc.quokka.fantasyfootball.ui.authentication.screens.SignupScreen
 import com.rc.quokka.fantasyfootball.ui.team_creation.TeamCreationScreen
 
 enum class FantasyFootballScreen() {
-    Login,
+    Signin,
     Signup,
     ConfirmCode,
     TeamCreation
@@ -26,14 +27,14 @@ fun FantasyFootballApp() {
         startDestination = FantasyFootballScreen.Signup.name,
         modifier = Modifier
     ) {
-        composable(route = FantasyFootballScreen.Login.name) {
-
+        composable(route = FantasyFootballScreen.Signin.name) {
+            SigninScreen(onSigninButtonClicked = { navController.navigate(FantasyFootballScreen.TeamCreation.name) })
         }
         composable(route = FantasyFootballScreen.Signup.name) {
-            SignupScreen(onSignInButtonClicked = { navController.navigate(FantasyFootballScreen.ConfirmCode.name) })
+            SignupScreen(onSignupButtonClicked = { navController.navigate(FantasyFootballScreen.ConfirmCode.name) })
         }
         composable(route = FantasyFootballScreen.ConfirmCode.name) {
-            ConfirmCodeScreen(onConfirmButtonClick = { navController.navigate(FantasyFootballScreen.TeamCreation.name) })
+            ConfirmCodeScreen(onConfirmButtonClick = { navController.navigate(FantasyFootballScreen.Signin.name) })
         }
         composable(route = FantasyFootballScreen.TeamCreation.name) {
             TeamCreationScreen()
