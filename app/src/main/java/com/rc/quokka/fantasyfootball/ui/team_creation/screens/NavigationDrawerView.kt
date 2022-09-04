@@ -2,6 +2,7 @@ package com.rc.quokka.fantasyfootball.ui.team_creation.components
 
 import android.graphics.drawable.RippleDrawable
 import android.media.Image
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,9 +43,8 @@ import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 //}
 
 @Composable
-fun NavigationDrawerView(navigationDrawerViewModel: NavigationDrawerViewModel = viewModel()) {
+fun NavigationDrawerView(drawState: DrawerState, navigationDrawerViewModel: NavigationDrawerViewModel = viewModel()) {
     val uiState = navigationDrawerViewModel.uiState.collectAsState()
-
     Column(modifier = Modifier.fillMaxWidth()) {
         NavigationBarTopView()
         NavigationSearchBar()
@@ -53,6 +53,9 @@ fun NavigationDrawerView(navigationDrawerViewModel: NavigationDrawerViewModel = 
             Table(playersList = uiState.value.playersList , modifier = Modifier.width(500.dp))
         }
 //        LazyColumn(content = {})
+    }
+    if (drawState.isOpen) {
+        navigationDrawerViewModel.updateTable()
     }
 }
 

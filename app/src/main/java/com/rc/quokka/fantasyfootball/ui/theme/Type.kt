@@ -33,9 +33,11 @@ caption = TextStyle(
 //)
 
 val VazirFont = FontFamily(
-    Font(R.font.vazirmatn_thin, FontWeight.ExtraLight),
+    Font(R.font.vazirmatn_thin, FontWeight.Thin),
+    Font(R.font.vazirmatn_extralight, FontWeight.ExtraLight),
     Font(R.font.vazirmatn_light, FontWeight.Light),
-    Font(R.font.vazirmatn_medium, FontWeight.Normal),
+    Font(R.font.vazirmatn_regular, FontWeight.Normal),
+    Font(R.font.vazirmatn_medium, FontWeight.Medium),
     Font(R.font.vazirmatn_semibold, FontWeight.SemiBold),
     Font(R.font.vazirmatn_bold, FontWeight.Bold),
     Font(R.font.vazirmatn_extrabold, FontWeight.ExtraBold),
@@ -59,6 +61,9 @@ val weight900Size14VazirFont =
 val weight900Size9VazirFont =
     TextStyle(fontFamily = VazirFont, fontWeight = FontWeight.W900, fontSize = 9.sp)
 
+val weight700Size20VazirFont =
+    TextStyle(fontFamily = VazirFont, fontWeight = FontWeight.W700, fontSize = 20.sp)
+
 val weight700Size7VazirFont =
     TextStyle(fontFamily = VazirFont, fontWeight = FontWeight.W700, fontSize = 7.sp)
 
@@ -67,6 +72,12 @@ val weight700Size6VazirFont =
 
 val weight800Size14VazirFont =
     TextStyle(fontFamily = VazirFont, fontWeight = FontWeight.W800, fontSize = 14.sp)
+
+val weight400Size24VazirFont =
+    TextStyle(fontFamily = VazirFont, fontWeight = FontWeight.W400, fontSize = 24.sp)
+
+val weight400Size16VazirFont =
+    TextStyle(fontFamily = VazirFont, fontWeight = FontWeight.W400, fontSize = 16.sp)
 
 val weight400Size15VazirFont =
     TextStyle(fontFamily = VazirFont, fontWeight = FontWeight.W400, fontSize = 15.sp)

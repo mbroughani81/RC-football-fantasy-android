@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class NavigationDrawerViewModel(playersRepository: PlayersRepository = FakePlayersRepositories()) :
+class NavigationDrawerViewModel(val playersRepository: PlayersRepository = FakePlayersRepositories()) :
     ViewModel() {
         private val _uiState = MutableStateFlow(NavigationDrawerUiState(PlayersList(emptyList(), emptyList(), emptyList(), emptyList())))
         val uiState = _uiState.asStateFlow()
 
-    init {
+    fun updateTable() {
         viewModelScope.launch {
             val newState = NavigationDrawerUiState(playersList = playersRepository.getPlayers())
             _uiState.value = newState
