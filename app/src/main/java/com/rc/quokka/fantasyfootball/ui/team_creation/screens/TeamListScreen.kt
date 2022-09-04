@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.rc.quokka.fantasyfootball.domain.model.PlayersList
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size13VazirFont
@@ -26,7 +27,7 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size15VazirFont
 @Composable
 fun TeamListScreen(modifier: Modifier = Modifier) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-        Table(modifier = modifier)
+        Table(playersList = PlayersList(emptyList(),emptyList(),emptyList(),emptyList()),modifier = modifier)
     }
 }
 
@@ -80,22 +81,11 @@ fun RowScope.PlayerDataCell(
 }
 
 @Composable
-fun Table(modifier: Modifier = Modifier) {
-    val gkData = listOf(
-        listOf("Henderson", "9", "5.9"),
-        listOf("Allison", "8.5", "5.5")
-    )
-    val defData = listOf(
-        listOf("Henderson", "9", "5.9"),
-        listOf("Allison", "8.5", "5.5"),
-        listOf("Henderson2", "9", "5.9"),
-    )
-    val midData = listOf(
-        listOf("Allison", "8.5", "5.5")
-    )
-    val attData = listOf(
-        listOf("Henderson", "9", "5.9"),
-    )
+fun Table(playersList: PlayersList,modifier: Modifier = Modifier) {
+    val gkData = playersList.GKPlayers
+    val defData = playersList.DEFPlayers
+    val midData = playersList.MIDPlayers
+    val attData = playersList.ATTPlayers
     val column1Weight = .6f
     val column2Weight = .2f
     val column3Weight = .2f
@@ -117,11 +107,13 @@ fun Table(modifier: Modifier = Modifier) {
             }
         }
         items(gkData) {
-            val (name, performance, price) = it
+            val name = it.name
+            val performance = it.rating
+            val price = it.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(text = performance, weight = column2Weight, isCentered = true)
-                PlayerDataCell(text = price, weight = column3Weight, isCentered = true)
+                PlayerDataCell(text = performance.toString(), weight = column2Weight, isCentered = true)
+                PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
             }
         }
         item {
@@ -130,11 +122,13 @@ fun Table(modifier: Modifier = Modifier) {
             }
         }
         items(defData) {
-            val (name, performance, price) = it
+            val name = it.name
+            val performance = it.rating
+            val price = it.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(text = performance, weight = column2Weight, isCentered = true)
-                PlayerDataCell(text = price, weight = column3Weight, isCentered = true)
+                PlayerDataCell(text = performance.toString(), weight = column2Weight, isCentered = true)
+                PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
             }
         }
         item {
@@ -143,11 +137,13 @@ fun Table(modifier: Modifier = Modifier) {
             }
         }
         items(midData) {
-            val (name, performance, price) = it
+            val name = it.name
+            val performance = it.rating
+            val price = it.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(text = performance, weight = column2Weight, isCentered = true)
-                PlayerDataCell(text = price, weight = column3Weight, isCentered = true)
+                PlayerDataCell(text = performance.toString(), weight = column2Weight, isCentered = true)
+                PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
             }
         }
         item {
@@ -156,11 +152,13 @@ fun Table(modifier: Modifier = Modifier) {
             }
         }
         items(attData) {
-            val (name, performance, price) = it
+            val name = it.name
+            val performance = it.rating
+            val price = it.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(text = performance, weight = column2Weight, isCentered = true)
-                PlayerDataCell(text = price, weight = column3Weight, isCentered = true)
+                PlayerDataCell(text = performance.toString(), weight = column2Weight, isCentered = true)
+                PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
             }
         }
     }

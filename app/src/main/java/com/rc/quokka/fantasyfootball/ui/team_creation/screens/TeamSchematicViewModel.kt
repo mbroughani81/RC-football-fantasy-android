@@ -1,7 +1,7 @@
 package com.rc.quokka.fantasyfootball.ui.team_creation.screens
 
 import androidx.lifecycle.ViewModel
-import com.rc.quokka.fantasyfootball.model.Player
+import com.rc.quokka.fantasyfootball.domain.model.Player
 
 class TeamSchematicViewModel : ViewModel() {
     private val _allPlayersList = getPlayersList()
@@ -32,10 +32,10 @@ data class PlayersList(
 
 private fun getPlayersList(): PlayersList = PlayersList(
     listOf(
-        Player("gk1", "5"),
-        Player("gk2", "3")
+        Player("gk1", "5", 0, 0f),
+        Player("gk2", "3", 0, 0f)
     ), listOf(
-        Player("def1", "5"),
+        Player("def1", "5", 0, 0f),
         null,
         null,
         null,
@@ -45,12 +45,12 @@ private fun getPlayersList(): PlayersList = PlayersList(
         null,
         null,
         null,
-        Player("mid1", "3"),
-        Player("mid2", "3")
+        Player("mid1", "3", 0, 0f),
+        Player("mid2", "3", 0, 0f)
     ),
     listOf(
         null,
         null,
-        Player("att1", "3"),
+        Player("att1", "3", 0, 0f),
     )
 )
