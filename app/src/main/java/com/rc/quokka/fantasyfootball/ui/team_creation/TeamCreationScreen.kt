@@ -23,7 +23,7 @@ import com.rc.quokka.fantasyfootball.ui.theme.FantasyFootballTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun TeamCreationMainPage() {
+fun TeamCreationScreen() {
     val isOnSoccerFieldView = remember { mutableStateOf(true) }
     val isOnDeleteDialog = remember { mutableStateOf(false) }
 
