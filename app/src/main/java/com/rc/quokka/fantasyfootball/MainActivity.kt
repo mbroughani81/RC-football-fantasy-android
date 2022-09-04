@@ -1,5 +1,6 @@
 package com.rc.quokka.fantasyfootball
 
+import android.content.Intent
 import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.zIndex
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.*
 import com.rc.quokka.fantasyfootball.ui.team_creation.screens.DeletePlayerDialog
@@ -40,6 +42,11 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (true  /* TODO(check if user is signed in or not) */) {
+            val intent = Intent(this, AuthActivity::class.java)
+            this.startActivity(intent)
+        }
         setContent {
             val isOnSoccerFieldView = remember { mutableStateOf(true) }
             val isOnDeleteDialog = remember { mutableStateOf(false) }
