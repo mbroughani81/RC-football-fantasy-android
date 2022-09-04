@@ -26,9 +26,10 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight700Size20VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size7VazirFont
 
 @Composable
-fun SignupScreen() {
+fun SignupScreen(onSignInButtonClicked: () -> Unit) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Box(
+            contentAlignment = Alignment.TopCenter,
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
@@ -37,9 +38,9 @@ fun SignupScreen() {
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(0.9f)
             ) {
-                HeaderRow()
+                HeaderRow("ثبت نام")
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(15.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -69,10 +70,10 @@ fun SignupScreen() {
                     item {
                         Button(
                             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-                            onClick = {},
+                            onClick = onSignInButtonClicked,
                             contentPadding = PaddingValues(),
                             modifier = Modifier
-                                .fillMaxWidth(0.9f)
+                                .fillMaxWidth()
                                 .height(50.dp),
                         ) {
                             Box(
@@ -105,5 +106,5 @@ fun SignupScreen() {
 @Preview
 @Composable
 fun SignupScreenPreview() {
-    SignupScreen()
+    SignupScreen({})
 }

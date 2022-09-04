@@ -16,20 +16,27 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size15VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size16VazirFont
 
 @Composable
-fun FormInputField(text: String = "") {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+fun FormInputField(
+    text: String = "",
+    modifier: Modifier = Modifier,
+    textModifier: Modifier = Modifier
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
         CommonText(
             text = text,
             style = weight400Size16VazirFont.copy(textAlign = TextAlign.Center),
             color = Color(0xffEDD8FF),
-            modifier = Modifier
+            modifier = textModifier
                 .fillMaxWidth()
                 .padding(bottom = 15.dp)
         )
         TextField(
             value = "",
             onValueChange = {},
-            modifier = Modifier.fillMaxWidth(0.9f),
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

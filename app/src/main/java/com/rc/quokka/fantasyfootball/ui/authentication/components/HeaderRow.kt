@@ -19,7 +19,7 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size15VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size24VazirFont
 
 @Composable
-fun HeaderRow(text: String = "") {
+fun HeaderRow(text: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -31,7 +31,7 @@ fun HeaderRow(text: String = "") {
             modifier = Modifier.weight(0.2f)
         )
         CommonText(
-            text = "ثبت نام",
+            text = text,
             style = weight400Size24VazirFont.copy(textAlign = TextAlign.Center),
             color = Color.White,
             modifier = Modifier.weight(0.5f)
