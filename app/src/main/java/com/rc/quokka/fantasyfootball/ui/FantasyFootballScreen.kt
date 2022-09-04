@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.rc.quokka.fantasyfootball.ui.authentication.ConfirmCodeScreen
 import com.rc.quokka.fantasyfootball.ui.authentication.screens.SignupScreen
 import com.rc.quokka.fantasyfootball.ui.team_creation.TeamCreationScreen
 
@@ -29,12 +30,12 @@ fun FantasyFootballApp() {
 
         }
         composable(route = FantasyFootballScreen.Signup.name) {
-            SignupScreen()
+            SignupScreen(onSignInButtonClicked = { navController.navigate(FantasyFootballScreen.ConfirmCode.name) })
         }
         composable(route = FantasyFootballScreen.ConfirmCode.name) {
-
+            ConfirmCodeScreen(onConfirmButtonClick = { navController.navigate(FantasyFootballScreen.TeamCreation.name) })
         }
-        composable(route = FantasyFootballScreen.ConfirmCode.name) {
+        composable(route = FantasyFootballScreen.TeamCreation.name) {
             TeamCreationScreen()
         }
     }
