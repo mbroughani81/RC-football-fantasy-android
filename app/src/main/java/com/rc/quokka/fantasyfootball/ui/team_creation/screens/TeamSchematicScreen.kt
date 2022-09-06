@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.toSize
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.domain.model.Player
+import com.rc.quokka.fantasyfootball.domain.model.PlayerRole
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size6VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size7VazirFont
@@ -63,25 +64,25 @@ fun TeamSchematicScreen(
                 .padding(start = 8.dp, end = 8.dp, top = 8.dp)
         ) {
             PlayerRow(
-                playersList = teamSchematicViewModel.getGoalKeepers(players = teamSchematicViewModel.allPlayersList),
+                playersList = uiState.value.usersPlayersList.filter { it.role == PlayerRole.GoalKeeper },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = teamSchematicViewModel.getDefenders(teamSchematicViewModel.allPlayersList),
+                playersList = uiState.value.usersPlayersList.filter { it.role == PlayerRole.Defender },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = teamSchematicViewModel.getMidfielders(teamSchematicViewModel.allPlayersList),
+                playersList = uiState.value.usersPlayersList.filter { it.role == PlayerRole.Midfielder },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = teamSchematicViewModel.getAttackers(players = teamSchematicViewModel.allPlayersList),
+                playersList = uiState.value.usersPlayersList.filter { it.role == PlayerRole.Attacker },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f),

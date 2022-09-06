@@ -87,10 +87,14 @@ fun Table(
     modifier: Modifier = Modifier,
     viewModel: TeamSchematicViewModel = viewModel()
 ) {
-    val gkData = viewModel.getGoalKeepers(playersList)
-    val defData = viewModel.getDefenders(playersList)
-    val midData = viewModel.getMidfielders(playersList)
-    val attData = viewModel.getAttackers(playersList)
+//    val gkData = viewModel.getGoalKeepers(playersList)
+//    val defData = viewModel.getDefenders(playersList)
+//    val midData = viewModel.getMidfielders(playersList)
+//    val attData = viewModel.getAttackers(playersList)
+    val gkData = emptyList<Player>()
+    val defData = emptyList<Player>()
+    val midData = emptyList<Player>()
+    val attData = emptyList<Player>()
     val column1Weight = .6f
     val column2Weight = .2f
     val column3Weight = .2f
