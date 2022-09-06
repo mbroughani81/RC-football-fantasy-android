@@ -1,71 +1,114 @@
 package com.rc.quokka.fantasyfootball.data.repositories
 
-import com.rc.quokka.fantasyfootball.domain.model.Player
-import com.rc.quokka.fantasyfootball.domain.model.PlayerRole
+import android.util.Log
+import com.rc.quokka.fantasyfootball.domain.model.*
 import com.rc.quokka.fantasyfootball.domain.repositories.PlayersRepository
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 
 class FakePlayersRepositories : PlayersRepository {
+
+    var userPlayers = MutableStateFlow(listOf<Player>())
+
+    init {
+        userPlayers.value = fakeUsersPlayersList
+    }
+
     override suspend fun getPlayers(): List<Player> {
-//        TODO("Not yet implemented")
-        delay(5000)
-        return allPlayers
+        delay(3000)
+        Log.d("FakePlayersRepositories", "HERE")
+        return fakeAllPlayers
     }
 
-    override suspend fun deletePlayer(player: Player, playersList: List<Player>) {
+    override suspend fun deletePlayer(player: Player) {
 //        TODO("Not yet implemented")
-        delay(5000)
+        delay(3000)
+        val newPlayersList: List<Player> = userPlayers.value.map { it ->
+            var res: Player = it
+            if (it.id == player.id) {
+                if (player.role == PlayerRole.GoalKeeper) {
+                    res = NoGKPlayer
+                }
+                if (player.role == PlayerRole.Defender) {
+                    res = NoDEFPlayer
+                }
+                if (player.role == PlayerRole.Midfielder) {
+                    res = NoMIDPlayer
+                }
+                if (player.role == PlayerRole.Attacker) {
+                    res = NoATTPlayer
+                }
+            }
+            res
+        }
+
+        userPlayers.value = newPlayersList
     }
 
-    override suspend fun addPlayer(player: Player, playersList: List<Player>) {
-//        TODO("Not yet implemented")
+    override suspend fun addPlayer(newPlayer: Player, pos: Int) {
+        delay(3000)
+
+        var curPos = 0
+        val newPlayersList = userPlayers.value.map {
+            if (it.role == newPlayer.role) {
+                curPos++
+                if (curPos == pos) {
+                    newPlayer
+                } else {
+                    it
+                }
+            } else {
+                it
+            }
+        }
+
+        userPlayers.value = newPlayersList
     }
 
-    override suspend fun getUsersPlayers(): List<Player> {
-        delay(5000)
-        return usersPlayersList
-    }
+    override fun observerUserPlayers(): Flow<List<Player>> = userPlayers
 }
 
-private val allPlayers: List<Player> =
+private val fakeAllPlayers: List<Player> =
     listOf(
-        Player("gk1", PlayerRole.GoalKeeper, 0, 0f),
-        Player("gk2", PlayerRole.GoalKeeper, 0, 0f),
-        Player("gk3", PlayerRole.GoalKeeper, 0, 0f),
-        Player("gk4", PlayerRole.GoalKeeper, 0, 0f),
-        Player("gk5", PlayerRole.GoalKeeper, 0, 0f),
-        Player("gk6", PlayerRole.GoalKeeper, 0, 0f),
-        Player("def1", PlayerRole.Defender, 0, 0f),
-        Player("def2", PlayerRole.Defender, 0, 0f),
-        Player("def3", PlayerRole.Defender, 0, 0f),
-        Player("def4", PlayerRole.Defender, 0, 0f),
-        Player("def5", PlayerRole.Defender, 0, 0f),
-        Player("def6",PlayerRole.Defender, 0, 0f),
-        Player("def7", PlayerRole.Defender, 0, 0f),
-        Player("mid1", PlayerRole.Midfielder, 0, 0f),
-        Player("mid2", PlayerRole.Midfielder, 0, 0f),
-        Player("mid3", PlayerRole.Midfielder, 0, 0f),
-        Player("mid4", PlayerRole.Midfielder, 0, 0f),
-        Player("mid5", PlayerRole.Midfielder, 0, 0f),
-        Player("mid6", PlayerRole.Midfielder, 0, 0f),
-        Player("mid7", PlayerRole.Midfielder, 0, 0f),
-        Player("att1", PlayerRole.Attacker, 0, 0f),
-        Player("att2", PlayerRole.Attacker, 0, 0f),
-        Player("att3", PlayerRole.Attacker, 0, 0f),
-        Player("att4", PlayerRole.Attacker, 0, 0f),
-        Player("att5", PlayerRole.Attacker, 0, 0f),
-        Player("att6", PlayerRole.Attacker, 0, 0f),
-        Player("att7", PlayerRole.Attacker, 0, 0f),
-        Player("att8", PlayerRole.Attacker, 0, 0f),
-        Player("att9", PlayerRole.Attacker, 0, 0f),
+        Player("gk1", "gk1", PlayerRole.GoalKeeper, 0, 0f),
+        Player("gk2", "gk2", PlayerRole.GoalKeeper, 0, 0f),
+        Player("gk3", "gk3", PlayerRole.GoalKeeper, 0, 0f),
+        Player("gk4", "gk4", PlayerRole.GoalKeeper, 0, 0f),
+        Player("gk5", "gk5", PlayerRole.GoalKeeper, 0, 0f),
+        Player("gk6", "gk6", PlayerRole.GoalKeeper, 0, 0f),
+        Player("def1", "def1", PlayerRole.Defender, 0, 0f),
+        Player("def2", "def2", PlayerRole.Defender, 0, 0f),
+        Player("def3", "def3", PlayerRole.Defender, 0, 0f),
+        Player("def4", "def4", PlayerRole.Defender, 0, 0f),
+        Player("def5", "def5", PlayerRole.Defender, 0, 0f),
+        Player("mid1", "mid1", PlayerRole.Midfielder, 0, 0f),
+        Player("mid2", "mid2", PlayerRole.Midfielder, 0, 0f),
+        Player("mid3", "mid3", PlayerRole.Midfielder, 0, 0f),
+        Player("mid4", "mid4", PlayerRole.Midfielder, 0, 0f),
+        Player("mid5", "mid5", PlayerRole.Midfielder, 0, 0f),
+        Player("att1", "att1", PlayerRole.Attacker, 0, 0f),
+        Player("att2", "att2", PlayerRole.Attacker, 0, 0f),
+        Player("att3", "att3", PlayerRole.Attacker, 0, 0f),
+        Player("att4", "att4", PlayerRole.Attacker, 0, 0f),
     )
 
-private val usersPlayersList = listOf(
-    Player("gk1", PlayerRole.GoalKeeper, 0, 0f),
-    Player("gk2",PlayerRole.GoalKeeper, 0, 8f),
-    Player("def1", PlayerRole.Defender, 0, 0f),
-    Player("def2", PlayerRole.Defender, 6, 13f),
-    Player("mid1", PlayerRole.Midfielder, 0, 0f),
-    Player("mid2", PlayerRole.Midfielder, 0, 0f),
-    Player("hanif", PlayerRole.Attacker, 4, 5.5f),
-    Player("att1", PlayerRole.Attacker, 0, 0f) )
+private val fakeUsersPlayersList = mutableListOf(
+    Player("gk1", "gk1", PlayerRole.GoalKeeper, 0, 0f),
+    NoGKPlayer,
+    Player("def1", "def1", PlayerRole.Defender, 0, 0f),
+    NoDEFPlayer,
+    NoDEFPlayer,
+    Player("def4", "def4", PlayerRole.Defender, 0, 0f),
+    Player("def5", "def5", PlayerRole.Defender, 0, 0f),
+    Player("mid1", "mid1", PlayerRole.Midfielder, 0, 0f),
+    Player("mid2", "mid2", PlayerRole.Midfielder, 0, 0f),
+    Player("mid3", "mid3", PlayerRole.Midfielder, 0, 0f),
+    NoMIDPlayer,
+    NoMIDPlayer,
+    Player("att1", "att1", PlayerRole.Attacker, 0, 0f),
+    Player("att2", "att2", PlayerRole.Attacker, 0, 0f),
+    Player("att3", "att3", PlayerRole.Attacker, 0, 0f)
+)

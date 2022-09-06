@@ -44,6 +44,7 @@ import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 
 @Composable
 fun NavigationDrawerView(
+    onRandomButtonClickHandler: () -> Unit,
     drawState: DrawerState,
     navigationDrawerViewModel: NavigationDrawerViewModel = viewModel()
 ) {
@@ -57,10 +58,15 @@ fun NavigationDrawerView(
     ) {
         NavigationBarTopView()
         NavigationSearchBar()
+        Button(onClick = onRandomButtonClickHandler) {
+            Text(text = "یک بازیکن تصادفی انتخاب کن")
+        }
         FilterTags()
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            Log.d("", "opopo" + uiState.value.playersList.toString())
             Table(playersList = uiState.value.playersList, modifier = Modifier.width(500.dp))
         }
+
 //        LazyColumn(content = {})
     }
     if (drawState.isOpen) {
