@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.rc.quokka.fantasyfootball.R
+import com.rc.quokka.fantasyfootball.domain.model.NoGKPlayer
+import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size12VazirFont
@@ -33,8 +35,8 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size14VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size15VazirFont
 
 @Composable
-fun DeletePlayerDialog(onDismissHandler: () -> Unit) {
-    CustomDialog(onDismiss = onDismissHandler)
+fun DeletePlayerDialog(player: Player, onDeleteClickHandler: () -> Unit, onDismissHandler: () -> Unit) {
+    CustomDialog(player = player, onDeleteClick = onDeleteClickHandler, onDismiss = onDismissHandler)
 }
 
 @Composable
@@ -74,7 +76,7 @@ fun ConfirmText(text: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ButtonRow(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
+fun ButtonRow(onDismiss: () -> Unit, onDelete: () -> Unit,  modifier: Modifier = Modifier) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         Button(
             onClick = onDismiss,
@@ -88,7 +90,7 @@ fun ButtonRow(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
             )
         }
         Button(
-            onClick = onDismiss,
+            onClick = { onDelete(); onDismiss();},
             contentPadding = PaddingValues(3.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffED1B5D))
         ) {
@@ -104,11 +106,11 @@ fun ButtonRow(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun DeletePlayerDialogPreview() {
-    DeletePlayerDialog({})
+    DeletePlayerDialog(NoGKPlayer, {}, {})
 }
 
 @Composable
-fun CustomDialog(onDismiss: () -> Unit) {
+fun CustomDialog(player: Player, onDeleteClick: () -> Unit, onDismiss: () -> Unit) {
     Dialog(
         onDismissRequest = { /*TODO*/ },
         content = {
@@ -125,11 +127,13 @@ fun CustomDialog(onDismiss: () -> Unit) {
                             .weight(35f)
                     )
                     ConfirmText(
-                        "Anderson", modifier = Modifier
+                        player.name,
+                        modifier = Modifier
                             .weight(7f)
                     )
                     ButtonRow(
                         onDismiss = onDismiss,
+                        onDelete = onDeleteClick,
                         modifier = Modifier
                             .weight(8f)
                     )

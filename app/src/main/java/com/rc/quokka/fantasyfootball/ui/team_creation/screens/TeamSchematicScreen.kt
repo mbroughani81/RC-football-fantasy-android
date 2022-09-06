@@ -24,18 +24,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.domain.model.PlayerRole
+import com.rc.quokka.fantasyfootball.ui.team_creation.TeamCreationUiState
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size6VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size7VazirFont
 
 @Composable
 fun TeamSchematicScreen(
+    userPlayersList: List<Player>,
     onPlayerClickHandler: () -> Unit,
-    onPlayerLongClickHandler: () -> Unit,
+    onPlayerLongClickHandler: (player: Player) -> Unit,
     modifier: Modifier = Modifier,
-    teamSchematicViewModel: TeamSchematicViewModel = viewModel()
 ) {
-    val uiState = teamSchematicViewModel.uiState.collectAsState()
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -64,25 +64,25 @@ fun TeamSchematicScreen(
                 .padding(start = 8.dp, end = 8.dp, top = 8.dp)
         ) {
             PlayerRow(
-                playersList = uiState.value.usersPlayersList.filter { it.role == PlayerRole.GoalKeeper },
+                playersList = userPlayersList.filter { it.role == PlayerRole.GoalKeeper },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = uiState.value.usersPlayersList.filter { it.role == PlayerRole.Defender },
+                playersList = userPlayersList.filter { it.role == PlayerRole.Defender },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = uiState.value.usersPlayersList.filter { it.role == PlayerRole.Midfielder },
+                playersList = userPlayersList.filter { it.role == PlayerRole.Midfielder },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = uiState.value.usersPlayersList.filter { it.role == PlayerRole.Attacker },
+                playersList = userPlayersList.filter { it.role == PlayerRole.Attacker },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f),
@@ -93,10 +93,9 @@ fun TeamSchematicScreen(
 
 @Composable
 fun PlayerRow(
-
-    playersList: List<Player?>,
+    playersList: List<Player>,
     onPlayerClick: () -> Unit,
-    onPlayerLongClick: () -> Unit,
+    onPlayerLongClick: (player: Player) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
@@ -114,9 +113,9 @@ fun PlayerRow(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Shirt(
-    player: Player?,
+    player: Player,
     onPlayerClick: () -> Unit,
-    onPlayerLongClick: () -> Unit,
+    onPlayerLongClick: (player: Player) -> Unit,
     modifier: Modifier
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(36.dp)) {
@@ -132,7 +131,9 @@ fun Shirt(
                         MutableInteractionSource()
                     },
                     onClick = onPlayerClick,
-                    onLongClick = onPlayerLongClick
+                    onLongClick = {
+                        onPlayerLongClick(player)
+                    }
                 )
 
         )

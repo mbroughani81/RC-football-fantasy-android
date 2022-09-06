@@ -6,10 +6,15 @@ import com.rc.quokka.fantasyfootball.domain.repositories.PlayersRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filter
 
 class FakePlayersRepositories : PlayersRepository {
 
     var userPlayers = MutableStateFlow(listOf<Player>())
+
+    init {
+        userPlayers.value = fakeUsersPlayersList
+    }
 
     override suspend fun getPlayers(): List<Player> {
 //        TODO("Not yet implemented")
@@ -17,14 +22,32 @@ class FakePlayersRepositories : PlayersRepository {
         return fakeAllPlayers
     }
 
-    override suspend fun deletePlayer(player: Player, playersList: List<Player>) {
+    override suspend fun deletePlayer(player: Player) {
 //        TODO("Not yet implemented")
         delay(3000)
-        val newPlayersList = playersList.filter { player.id != it.id }
+        val newPlayersList : List<Player> = userPlayers.value.map { it ->
+            var res: Player = it
+            if (it.id == player.id) {
+                if (player.role == PlayerRole.GoalKeeper) {
+                    res = NoGKPlayer
+                }
+                if (player.role == PlayerRole.Defender) {
+                    res = NoDEFPlayer
+                }
+                if (player.role == PlayerRole.Midfielder) {
+                    res = NoMIDPlayer
+                }
+                if (player.role == PlayerRole.Attacker) {
+                    res = NoATTPlayer
+                }
+            }
+            res
+        }
+
         userPlayers.value = newPlayersList
     }
 
-    override suspend fun addPlayer(player: Player, playersList: List<Player>) {
+    override suspend fun addPlayer(player: Player) {
 //        TODO("Not yet implemented")
     }
 

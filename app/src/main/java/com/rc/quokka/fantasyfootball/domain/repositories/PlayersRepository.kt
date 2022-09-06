@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 interface PlayersRepository {
     suspend fun getPlayers(): List<Player>
     
-    suspend fun deletePlayer(player: Player, playersList: List<Player>)
+    suspend fun deletePlayer(player: Player)
 
-    suspend fun addPlayer(player: Player, playersList: List<Player>)
+    suspend fun addPlayer(player: Player)
 
     fun observerUserPlayers(): Flow<List<Player>>
 }
