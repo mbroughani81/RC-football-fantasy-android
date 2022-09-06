@@ -65,29 +65,29 @@ fun TeamSchematicScreen(
                 .padding(start = 8.dp, end = 8.dp, top = 8.dp)
         ) {
             PlayerRow(
-                playersList = userPostsList
-                    .filter { it.player.role == PlayerRole.GoalKeeper }.map { it.player },
+                postsList = userPostsList
+                    .filter { it.player.role == PlayerRole.GoalKeeper },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = userPostsList
-                    .filter { it.player.role == PlayerRole.Defender }.map { it.player },
+                postsList = userPostsList
+                    .filter { it.player.role == PlayerRole.Defender },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = userPostsList
-                    .filter { it.player.role == PlayerRole.Midfielder }.map { it.player },
+                postsList = userPostsList
+                    .filter { it.player.role == PlayerRole.Midfielder },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = userPostsList
-                    .filter { it.player.role == PlayerRole.Attacker }.map { it.player },
+                postsList = userPostsList
+                    .filter { it.player.role == PlayerRole.Attacker },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f),
@@ -98,17 +98,17 @@ fun TeamSchematicScreen(
 
 @Composable
 fun PlayerRow(
-    playersList: List<Player>,
+    postsList: List<Post>,
     onPlayerClick: (post: Post) -> Unit,
     onPlayerLongClick: (post: Post) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
-        playersList.forEachIndexed { index, player ->
+        postsList.forEach { post ->
             Shirt(
-                player = player,
-                onPlayerClick = { onPlayerClick(Post(index + 1, player)) },
-                onPlayerLongClick = { onPlayerLongClick(Post(index + 1, player)) },
+                post = post,
+                onPlayerClick = onPlayerClick,
+                onPlayerLongClick = onPlayerLongClick,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -118,9 +118,9 @@ fun PlayerRow(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Shirt(
-    player: Player,
-    onPlayerClick: () -> Unit,
-    onPlayerLongClick: () -> Unit,
+    post: Post,
+    onPlayerClick: (post: Post) -> Unit,
+    onPlayerLongClick: (post: Post) -> Unit,
     modifier: Modifier
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(36.dp)) {
@@ -135,14 +135,11 @@ fun Shirt(
                     interactionSource = remember {
                         MutableInteractionSource()
                     },
-                    onClick = onPlayerClick,
-                    onLongClick = onPlayerLongClick
+                    onClick = { onPlayerClick(post) },
+                    onLongClick = { onPlayerLongClick(post) }
                 )
-
         )
-        if (player != null) {
-            PlayerInfo(player = player)
-        }
+        PlayerInfo(player = post.player)
     }
 }
 
