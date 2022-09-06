@@ -43,14 +43,23 @@ import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 //}
 
 @Composable
-fun NavigationDrawerView(drawState: DrawerState, navigationDrawerViewModel: NavigationDrawerViewModel = viewModel()) {
+fun NavigationDrawerView(
+    drawState: DrawerState,
+    navigationDrawerViewModel: NavigationDrawerViewModel = viewModel()
+) {
     val uiState = navigationDrawerViewModel.uiState.collectAsState()
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 32.dp)
+            .background(Color.White)
+            .clip(RectangleShape)
+    ) {
         NavigationBarTopView()
         NavigationSearchBar()
         FilterTags()
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-            Table(playersList = uiState.value.playersList , modifier = Modifier.width(500.dp))
+            Table(playersList = uiState.value.playersList, modifier = Modifier.width(500.dp))
         }
 //        LazyColumn(content = {})
     }
@@ -84,12 +93,12 @@ fun NavigationSearchBar() {
                 backgroundColor = Color.White
             ),
                 onValueChange = {
-                searchText.value = it
+                    searchText.value = it
                 })
             Image(
                 painter = painterResource(id = R.drawable.search),
                 contentDescription = "search icon",
-                modifier = Modifier.padding(end =16.dp),
+                modifier = Modifier.padding(end = 16.dp),
             )
         }
         Row(

@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.*
@@ -33,51 +33,51 @@ fun TeamCreationScreen() {
         }
         val coroutineScope = rememberCoroutineScope()
         val scaffoldState = rememberScaffoldState()
-        Scaffold(
-            scaffoldState = scaffoldState,
-            drawerContent = {
-                NavigationDrawerView(scaffoldState.drawerState)
-            },
-            drawerGesturesEnabled = scaffoldState.drawerState.isOpen
-        ) {
-            Column() {
-                Header(
-                    modifier = Modifier
-                        .weight(3f)
-                        .clickable(indication = null, interactionSource = remember {
-                            MutableInteractionSource()
-                        }) {
-                            coroutineScope.launch { scaffoldState.drawerState.open() }
-                        })
-                NavBar(modifier = Modifier.weight(1f))
-                WeekInfo(modifier = Modifier.weight(1f))
-                TeamViewTypeSwitch(
-                    onClickListButtonHandler = { isOnSoccerFieldView.value = false },
-                    onClickSchematicButtonHandle = { isOnSoccerFieldView.value = true },
-                    modifier = Modifier.weight(3f)
-                )
-                Scaffold(
-                    modifier = Modifier.weight(8f)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        TopBar(
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            Scaffold(
+                scaffoldState = scaffoldState,
+                drawerBackgroundColor = Color.Transparent,
+                drawerContent = { NavigationDrawerView(scaffoldState.drawerState) },
+                drawerGesturesEnabled = scaffoldState.drawerState.isOpen
+            ) {
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                    Column() {
+                        Header(
                             modifier = Modifier
-                                .height(75.dp)
-                                .zIndex(1f)
+                                .weight(3f)
                         )
-                        if (isOnSoccerFieldView.value) {
-                            TeamSchematicScreen(
-                                onPlayerClickHandler = {
-                                    isOnDeleteDialog.value = true
-                                }, modifier = Modifier
-                                    .height(300.dp)
-                                    .zIndex(2f)
-                            )
-                        } else {
-                            TeamListScreen(modifier = Modifier.height(300.dp))
+                        NavBar(modifier = Modifier.weight(1f))
+                        WeekInfo(modifier = Modifier.weight(1f))
+                        TeamViewTypeSwitch(
+                            onClickListButtonHandler = { isOnSoccerFieldView.value = false },
+                            onClickSchematicButtonHandle = { isOnSoccerFieldView.value = true },
+                            modifier = Modifier.weight(3f)
+                        )
+                        Scaffold(
+                            modifier = Modifier.weight(8f)
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                TopBar(
+                                    modifier = Modifier
+                                        .height(75.dp)
+                                        .zIndex(1f)
+                                )
+                                if (isOnSoccerFieldView.value) {
+                                    TeamSchematicScreen(
+                                        onPlayerLongClickHandler = {
+                                            isOnDeleteDialog.value = true
+                                        }, modifier = Modifier
+                                            .height(300.dp)
+                                            .zIndex(2f),
+                                        onPlayerClickHandler = { coroutineScope.launch { scaffoldState.drawerState.open() } }
+                                    )
+                                } else {
+                                    TeamListScreen()
+                                }
+                            }
                         }
                     }
                 }

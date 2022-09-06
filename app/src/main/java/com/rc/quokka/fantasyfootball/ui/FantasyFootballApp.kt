@@ -3,6 +3,7 @@ package com.rc.quokka.fantasyfootball.ui
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -24,7 +25,7 @@ fun FantasyFootballApp() {
 
     NavHost(
         navController = navController,
-        startDestination = FantasyFootballScreen.Signup.name,
+        startDestination = FantasyFootballScreen.TeamCreation.name,
         modifier = Modifier
     ) {
         composable(route = FantasyFootballScreen.Signin.name) {

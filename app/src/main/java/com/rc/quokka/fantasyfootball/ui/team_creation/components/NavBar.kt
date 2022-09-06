@@ -34,7 +34,7 @@ fun NavBar(modifier: Modifier = Modifier) {
     }
 
     val expanded = remember { mutableStateOf(false) }
-    val items = listOf<String>("حنیف", "محمد", "سانیار")
+    val items = listOf<String>("نقل و انتقالات", "آخرین رویداد ها", "پروفایل")
 
     Card(
         modifier = modifier
