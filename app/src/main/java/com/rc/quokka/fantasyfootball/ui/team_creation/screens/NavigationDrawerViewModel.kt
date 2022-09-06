@@ -1,5 +1,6 @@
 package com.rc.quokka.fantasyfootball.ui.team_creation.screens
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rc.quokka.fantasyfootball.data.repositories.FakePlayersRepositories
@@ -18,6 +19,8 @@ class NavigationDrawerViewModel(private val playersRepository: PlayersRepository
         viewModelScope.launch {
             val newState = NavigationDrawerUiState(playersList = playersRepository.getPlayers())
             _uiState.value = newState
+            Log.d("NavigationDrawegg", uiState.value.playersList.toString())
+
         }
     }
 }

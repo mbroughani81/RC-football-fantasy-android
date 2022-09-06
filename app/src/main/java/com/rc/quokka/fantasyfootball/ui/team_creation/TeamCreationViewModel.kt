@@ -32,6 +32,19 @@ class TeamCreationViewModel(private val playersRepository: PlayersRepository = F
             playersRepository.deletePlayer(player)
         }
     }
+
+    fun addPlayer(player: Player, pos: Int) {
+        viewModelScope.launch {
+            playersRepository.addPlayer(player, pos)
+        }
+    }
+
+    fun randomAddPlayer(player: Player, pos: Int) {
+        viewModelScope.launch {
+            val newPlayer = playersRepository.getPlayers().filter { it.role == player.role }.random()
+            addPlayer(newPlayer, pos)
+        }
+    }
 }
 
 data class TeamCreationUiState(val usersPlayersList: List<Player>)

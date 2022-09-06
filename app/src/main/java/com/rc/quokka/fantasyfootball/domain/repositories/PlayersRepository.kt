@@ -8,7 +8,7 @@ interface PlayersRepository {
     
     suspend fun deletePlayer(player: Player)
 
-    suspend fun addPlayer(player: Player)
+    suspend fun addPlayer(player: Player, pos: Int)
 
     fun observerUserPlayers(): Flow<List<Player>>
 }

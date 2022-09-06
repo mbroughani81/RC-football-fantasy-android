@@ -1,6 +1,13 @@
 package com.rc.quokka.fantasyfootball.domain.model
 
-data class Player(val id: String, val name: String, val role: PlayerRole, val rating: Int, val price: Float)
+data class Player(
+    val id: String,
+    val name: String,
+    val role: PlayerRole,
+    val rating: Int,
+    val price: Float
+)
+
 
 val NoGKPlayer = Player("-1", "-1", PlayerRole.GoalKeeper, -1, 0f)
 val NoDEFPlayer = Player("-1", "-1", PlayerRole.Defender, -1, 0f)

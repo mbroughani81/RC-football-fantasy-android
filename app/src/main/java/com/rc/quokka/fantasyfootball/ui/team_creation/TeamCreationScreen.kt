@@ -26,6 +26,8 @@ import kotlinx.coroutines.launch
 fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel()) {
     val isOnSoccerFieldView = remember { mutableStateOf(true) }
     val deleteDialogCurrentPlayer = remember { mutableStateOf<Player?>(null) }
+    val drawerCurrentPlayer = remember { mutableStateOf<Player?>(null) }
+    val currentPlayerPos = remember { mutableStateOf<Int?>(null) }
     val uiState = teamCreationViewModel.uiState.collectAsState()
 
     FantasyFootballTheme {
@@ -49,7 +51,17 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
             Scaffold(
                 scaffoldState = scaffoldState,
                 drawerBackgroundColor = Color.Transparent,
-                drawerContent = { NavigationDrawerView(scaffoldState.drawerState) },
+                drawerContent = {
+                    NavigationDrawerView(
+                        onRandomButtonClickHandler = {
+                            teamCreationViewModel.randomAddPlayer(
+                                drawerCurrentPlayer.value!!,
+                                currentPlayerPos.value!!
+                            )
+                        },
+                        scaffoldState.drawerState
+                    )
+                },
                 drawerGesturesEnabled = scaffoldState.drawerState.isOpen
             ) {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
@@ -85,7 +97,11 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                                         }, modifier = Modifier
                                             .height(300.dp)
                                             .zIndex(2f),
-                                        onPlayerClickHandler = { coroutineScope.launch { scaffoldState.drawerState.open() } }
+                                        onPlayerClickHandler = { player, pos ->
+                                            drawerCurrentPlayer.value = player
+                                            currentPlayerPos.value = pos
+                                            coroutineScope.launch { scaffoldState.drawerState.open() }
+                                        }
                                     )
                                 } else {
                                     TeamListScreen()

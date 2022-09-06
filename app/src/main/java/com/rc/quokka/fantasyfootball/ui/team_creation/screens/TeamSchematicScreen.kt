@@ -32,7 +32,7 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight700Size7VazirFont
 @Composable
 fun TeamSchematicScreen(
     userPlayersList: List<Player>,
-    onPlayerClickHandler: () -> Unit,
+    onPlayerClickHandler: (player: Player, pos: Int) -> Unit,
     onPlayerLongClickHandler: (player: Player) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -94,17 +94,17 @@ fun TeamSchematicScreen(
 @Composable
 fun PlayerRow(
     playersList: List<Player>,
-    onPlayerClick: () -> Unit,
+    onPlayerClick: (player: Player, pos: Int) -> Unit,
     onPlayerLongClick: (player: Player) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
-        playersList.forEach { player ->
+        playersList.forEachIndexed { index, player ->
             Shirt(
                 player = player,
                 onPlayerLongClick = onPlayerLongClick,
                 modifier = Modifier.weight(1f),
-                onPlayerClick = onPlayerClick
+                onPlayerClick = { onPlayerClick(player, index + 1) }
             )
         }
     }

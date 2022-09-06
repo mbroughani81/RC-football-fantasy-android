@@ -24,6 +24,7 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size13VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size14VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size15VazirFont
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.rc.quokka.fantasyfootball.domain.model.PlayerRole
 import com.rc.quokka.fantasyfootball.ui.team_creation.TeamCreationViewModel
 
 @Composable
@@ -87,14 +88,10 @@ fun Table(
     playersList: List<Player>,
     modifier: Modifier = Modifier,
 ) {
-//    val gkData = viewModel.getGoalKeepers(playersList)
-//    val defData = viewModel.getDefenders(playersList)
-//    val midData = viewModel.getMidfielders(playersList)
-//    val attData = viewModel.getAttackers(playersList)
-    val gkData = emptyList<Player>()
-    val defData = emptyList<Player>()
-    val midData = emptyList<Player>()
-    val attData = emptyList<Player>()
+    val gkData = playersList.filter { it.role == PlayerRole.GoalKeeper }
+    val defData = playersList.filter { it.role == PlayerRole.Defender }
+    val midData = playersList.filter { it.role == PlayerRole.Midfielder }
+    val attData = playersList.filter { it.role == PlayerRole.Attacker }
     val column1Weight = .6f
     val column2Weight = .2f
     val column3Weight = .2f

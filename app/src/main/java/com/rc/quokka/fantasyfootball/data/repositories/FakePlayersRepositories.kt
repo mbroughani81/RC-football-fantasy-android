@@ -7,6 +7,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 
 class FakePlayersRepositories : PlayersRepository {
 
@@ -17,15 +18,15 @@ class FakePlayersRepositories : PlayersRepository {
     }
 
     override suspend fun getPlayers(): List<Player> {
-//        TODO("Not yet implemented")
         delay(3000)
+        Log.d("FakePlayersRepositories", "HERE")
         return fakeAllPlayers
     }
 
     override suspend fun deletePlayer(player: Player) {
 //        TODO("Not yet implemented")
         delay(3000)
-        val newPlayersList : List<Player> = userPlayers.value.map { it ->
+        val newPlayersList: List<Player> = userPlayers.value.map { it ->
             var res: Player = it
             if (it.id == player.id) {
                 if (player.role == PlayerRole.GoalKeeper) {
@@ -47,8 +48,24 @@ class FakePlayersRepositories : PlayersRepository {
         userPlayers.value = newPlayersList
     }
 
-    override suspend fun addPlayer(player: Player) {
-//        TODO("Not yet implemented")
+    override suspend fun addPlayer(newPlayer: Player, pos: Int) {
+        delay(3000)
+
+        var curPos = 0
+        val newPlayersList = userPlayers.value.map {
+            if (it.role == newPlayer.role) {
+                curPos++
+                if (curPos == pos) {
+                    newPlayer
+                } else {
+                    it
+                }
+            } else {
+                it
+            }
+        }
+
+        userPlayers.value = newPlayersList
     }
 
     override fun observerUserPlayers(): Flow<List<Player>> = userPlayers
