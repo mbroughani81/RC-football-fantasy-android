@@ -17,17 +17,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.rc.quokka.fantasyfootball.domain.model.PlayersList
+import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size13VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size14VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size15VazirFont
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun TeamListScreen(modifier: Modifier = Modifier) {
+fun TeamListScreen(modifier: Modifier = Modifier, viewModel: TeamSchematicViewModel = viewModel()) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-        Table(playersList = PlayersList(emptyList(),emptyList(),emptyList(),emptyList()),modifier = modifier)
+        Table(playersList = emptyList(), modifier = modifier, viewModel)
     }
 }
 
@@ -81,11 +82,15 @@ fun RowScope.PlayerDataCell(
 }
 
 @Composable
-fun Table(playersList: PlayersList,modifier: Modifier = Modifier) {
-    val gkData = playersList.GKPlayers
-    val defData = playersList.DEFPlayers
-    val midData = playersList.MIDPlayers
-    val attData = playersList.ATTPlayers
+fun Table(
+    playersList: List<Player>,
+    modifier: Modifier = Modifier,
+    viewModel: TeamSchematicViewModel = viewModel()
+) {
+    val gkData = viewModel.getGoalKeepers(playersList)
+    val defData = viewModel.getDefenders(playersList)
+    val midData = viewModel.getMidfielders(playersList)
+    val attData = viewModel.getAttackers(playersList)
     val column1Weight = .6f
     val column2Weight = .2f
     val column3Weight = .2f
@@ -112,7 +117,11 @@ fun Table(playersList: PlayersList,modifier: Modifier = Modifier) {
             val price = it.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(text = performance.toString(), weight = column2Weight, isCentered = true)
+                PlayerDataCell(
+                    text = performance.toString(),
+                    weight = column2Weight,
+                    isCentered = true
+                )
                 PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
             }
         }
@@ -127,7 +136,11 @@ fun Table(playersList: PlayersList,modifier: Modifier = Modifier) {
             val price = it.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(text = performance.toString(), weight = column2Weight, isCentered = true)
+                PlayerDataCell(
+                    text = performance.toString(),
+                    weight = column2Weight,
+                    isCentered = true
+                )
                 PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
             }
         }
@@ -142,7 +155,11 @@ fun Table(playersList: PlayersList,modifier: Modifier = Modifier) {
             val price = it.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(text = performance.toString(), weight = column2Weight, isCentered = true)
+                PlayerDataCell(
+                    text = performance.toString(),
+                    weight = column2Weight,
+                    isCentered = true
+                )
                 PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
             }
         }
@@ -157,7 +174,11 @@ fun Table(playersList: PlayersList,modifier: Modifier = Modifier) {
             val price = it.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(text = performance.toString(), weight = column2Weight, isCentered = true)
+                PlayerDataCell(
+                    text = performance.toString(),
+                    weight = column2Weight,
+                    isCentered = true
+                )
                 PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
             }
         }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHost
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,14 +30,14 @@ fun FantasyFootballApp(authenticationViewModel: AuthenticationViewModel = viewMo
     val isLoggedIn = authenticationViewModel.isLoggedIn.collectAsState()
 
 
-    Log.d("FantasyFootballApp", authenticationViewModel.uiState.value.toString())
+//    Log.d("FantasyFootballApp", authenticationViewModel.uiState.value.toString())
     if (isLoggedIn.value) {
         navController.navigate(FantasyFootballScreen.TeamCreation.name)
     }
 
     NavHost(
         navController = navController,
-        startDestination = FantasyFootballScreen.Signup.name,
+        startDestination = FantasyFootballScreen.TeamCreation.name,
         modifier = Modifier
     ) {
         composable(route = FantasyFootballScreen.Signin.name) {

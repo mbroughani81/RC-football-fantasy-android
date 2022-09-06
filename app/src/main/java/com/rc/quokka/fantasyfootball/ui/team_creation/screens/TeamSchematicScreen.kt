@@ -1,22 +1,17 @@
 package com.rc.quokka.fantasyfootball.ui.team_creation.screens
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -24,24 +19,22 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
-import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
-import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size6VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size7VazirFont
-import org.intellij.lang.annotations.JdkConstants
 
 @Composable
 fun TeamSchematicScreen(
     onPlayerClickHandler: () -> Unit,
+    onPlayerLongClickHandler: () -> Unit,
     modifier: Modifier = Modifier,
-    teamSchematicViewModel: TeamSchematicViewModel = viewModel(),
+    teamSchematicViewModel: TeamSchematicViewModel = viewModel()
 ) {
+    val uiState = teamSchematicViewModel.uiState.collectAsState()
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -70,22 +63,26 @@ fun TeamSchematicScreen(
                 .padding(start = 8.dp, end = 8.dp, top = 8.dp)
         ) {
             PlayerRow(
-                playersList = teamSchematicViewModel.GKPlayers,
+                playersList = teamSchematicViewModel.getGoalKeepers(players = teamSchematicViewModel.allPlayersList),
+                onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = teamSchematicViewModel.DEFPlayers,
+                playersList = teamSchematicViewModel.getDefenders(teamSchematicViewModel.allPlayersList),
+                onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = teamSchematicViewModel.MIDPlayers,
+                playersList = teamSchematicViewModel.getMidfielders(teamSchematicViewModel.allPlayersList),
+                onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = teamSchematicViewModel.ATTPlayers,
+                playersList = teamSchematicViewModel.getAttackers(players = teamSchematicViewModel.allPlayersList),
+                onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f),
             )
@@ -95,20 +92,32 @@ fun TeamSchematicScreen(
 
 @Composable
 fun PlayerRow(
+
     playersList: List<Player?>,
     onPlayerClick: () -> Unit,
+    onPlayerLongClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
         playersList.forEach { player ->
-            Shirt(player = player, onPlayerClick = onPlayerClick, modifier = Modifier.weight(1f))
+            Shirt(
+                player = player,
+                onPlayerLongClick = onPlayerLongClick,
+                modifier = Modifier.weight(1f),
+                onPlayerClick = onPlayerClick
+            )
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Shirt(player: Player?, onPlayerClick: () -> Unit, modifier: Modifier) {
+fun Shirt(
+    player: Player?,
+    onPlayerClick: () -> Unit,
+    onPlayerLongClick: () -> Unit,
+    modifier: Modifier
+) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(36.dp)) {
         Image(
             painter = painterResource(id = R.drawable.valencia_college_diactive),
@@ -121,8 +130,8 @@ fun Shirt(player: Player?, onPlayerClick: () -> Unit, modifier: Modifier) {
                     interactionSource = remember {
                         MutableInteractionSource()
                     },
-                    onClick = {},
-                    onLongClick = onPlayerClick
+                    onClick = onPlayerClick,
+                    onLongClick = onPlayerLongClick
                 )
 
         )
