@@ -3,15 +3,19 @@ package com.rc.quokka.fantasyfootball.data.repositories
 import com.rc.quokka.fantasyfootball.data.datasources.PlayersApiDataSource
 import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.domain.repositories.PlayersRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
-class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = PlayersApiDataSource()) : PlayersRepository {
+class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = PlayersApiDataSource()) :
+    PlayersRepository {
 
     private val fakeRepo = FakePlayersRepositories()
 
-    override suspend fun getPlayers(): List<Player> {
-        return playersApiDataSource.getPlayers()
+    override suspend fun getPlayers(): List<Player> = withContext(Dispatchers.IO) {
+        playersApiDataSource.getPlayers()
     }
+
 
     override suspend fun deletePlayer(player: Player) {
         fakeRepo.deletePlayer(player)

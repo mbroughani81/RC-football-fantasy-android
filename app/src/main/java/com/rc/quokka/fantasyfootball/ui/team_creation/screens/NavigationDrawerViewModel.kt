@@ -7,6 +7,7 @@ import com.rc.quokka.fantasyfootball.data.repositories.FakePlayersRepositories
 import com.rc.quokka.fantasyfootball.data.repositories.PlayersApiRepository
 import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.domain.repositories.PlayersRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -21,7 +22,6 @@ class NavigationDrawerViewModel(private val playersRepository: PlayersRepository
             val newState = NavigationDrawerUiState(playersList = playersRepository.getPlayers())
             _uiState.value = newState
             Log.d("NavigationDrawegg", uiState.value.playersList.toString())
-
         }
     }
 }
