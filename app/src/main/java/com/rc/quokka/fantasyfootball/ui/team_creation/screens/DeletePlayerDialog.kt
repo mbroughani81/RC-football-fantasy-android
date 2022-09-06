@@ -28,6 +28,7 @@ import androidx.compose.ui.window.Dialog
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.domain.model.NoGKPlayer
 import com.rc.quokka.fantasyfootball.domain.model.Player
+import com.rc.quokka.fantasyfootball.domain.model.Post
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size12VazirFont
@@ -35,8 +36,8 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size14VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size15VazirFont
 
 @Composable
-fun DeletePlayerDialog(player: Player, onDeleteClickHandler: () -> Unit, onDismissHandler: () -> Unit) {
-    CustomDialog(player = player, onDeleteClick = onDeleteClickHandler, onDismiss = onDismissHandler)
+fun DeletePlayerDialog(post: Post, onDeleteClickHandler: () -> Unit, onDismissHandler: () -> Unit) {
+    CustomDialog(post = post, onDeleteClick = onDeleteClickHandler, onDismiss = onDismissHandler)
 }
 
 @Composable
@@ -106,11 +107,11 @@ fun ButtonRow(onDismiss: () -> Unit, onDelete: () -> Unit,  modifier: Modifier =
 @Preview
 @Composable
 fun DeletePlayerDialogPreview() {
-    DeletePlayerDialog(NoGKPlayer, {}, {})
+    DeletePlayerDialog(Post(pos = 1, NoGKPlayer), {}, {})
 }
 
 @Composable
-fun CustomDialog(player: Player, onDeleteClick: () -> Unit, onDismiss: () -> Unit) {
+fun CustomDialog(post: Post, onDeleteClick: () -> Unit, onDismiss: () -> Unit) {
     Dialog(
         onDismissRequest = { /*TODO*/ },
         content = {
@@ -127,7 +128,7 @@ fun CustomDialog(player: Player, onDeleteClick: () -> Unit, onDismiss: () -> Uni
                             .weight(35f)
                     )
                     ConfirmText(
-                        player.name,
+                        post.player.name,
                         modifier = Modifier
                             .weight(7f)
                     )

@@ -24,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.domain.model.PlayerRole
+import com.rc.quokka.fantasyfootball.domain.model.Post
 import com.rc.quokka.fantasyfootball.ui.team_creation.TeamCreationUiState
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size6VazirFont
@@ -31,9 +32,9 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight700Size7VazirFont
 
 @Composable
 fun TeamSchematicScreen(
-    userPlayersList: List<Player>,
-    onPlayerClickHandler: (player: Player, pos: Int) -> Unit,
-    onPlayerLongClickHandler: (player: Player) -> Unit,
+    userPostsList: List<Post>,
+    onPlayerClickHandler: (post: Post) -> Unit,
+    onPlayerLongClickHandler: (post: Post) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -64,25 +65,29 @@ fun TeamSchematicScreen(
                 .padding(start = 8.dp, end = 8.dp, top = 8.dp)
         ) {
             PlayerRow(
-                playersList = userPlayersList.filter { it.role == PlayerRole.GoalKeeper },
+                playersList = userPostsList
+                    .filter { it.player.role == PlayerRole.GoalKeeper }.map { it.player },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = userPlayersList.filter { it.role == PlayerRole.Defender },
+                playersList = userPostsList
+                    .filter { it.player.role == PlayerRole.Defender }.map { it.player },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = userPlayersList.filter { it.role == PlayerRole.Midfielder },
+                playersList = userPostsList
+                    .filter { it.player.role == PlayerRole.Midfielder }.map { it.player },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f)
             )
             PlayerRow(
-                playersList = userPlayersList.filter { it.role == PlayerRole.Attacker },
+                playersList = userPostsList
+                    .filter { it.player.role == PlayerRole.Attacker }.map { it.player },
                 onPlayerLongClick = onPlayerLongClickHandler,
                 onPlayerClick = onPlayerClickHandler,
                 modifier = Modifier.weight(1f),
@@ -94,17 +99,17 @@ fun TeamSchematicScreen(
 @Composable
 fun PlayerRow(
     playersList: List<Player>,
-    onPlayerClick: (player: Player, pos: Int) -> Unit,
-    onPlayerLongClick: (player: Player) -> Unit,
+    onPlayerClick: (post: Post) -> Unit,
+    onPlayerLongClick: (post: Post) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
         playersList.forEachIndexed { index, player ->
             Shirt(
                 player = player,
-                onPlayerLongClick = onPlayerLongClick,
-                modifier = Modifier.weight(1f),
-                onPlayerClick = { onPlayerClick(player, index + 1) }
+                onPlayerClick = { onPlayerClick(Post(index + 1, player)) },
+                onPlayerLongClick = { onPlayerLongClick(Post(index + 1, player)) },
+                modifier = Modifier.weight(1f)
             )
         }
     }
@@ -115,7 +120,7 @@ fun PlayerRow(
 fun Shirt(
     player: Player,
     onPlayerClick: () -> Unit,
-    onPlayerLongClick: (player: Player) -> Unit,
+    onPlayerLongClick: () -> Unit,
     modifier: Modifier
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(36.dp)) {
@@ -131,9 +136,7 @@ fun Shirt(
                         MutableInteractionSource()
                     },
                     onClick = onPlayerClick,
-                    onLongClick = {
-                        onPlayerLongClick(player)
-                    }
+                    onLongClick = onPlayerLongClick
                 )
 
         )

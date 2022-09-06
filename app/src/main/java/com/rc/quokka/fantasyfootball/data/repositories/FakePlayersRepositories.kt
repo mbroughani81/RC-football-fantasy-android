@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.map
 
 class FakePlayersRepositories : PlayersRepository {
 
-    var userPlayers = MutableStateFlow(listOf<Player>())
+    var userPosts = MutableStateFlow(listOf<Post>())
 
     init {
-        userPlayers.value = fakeUsersPlayersList
+        userPosts.value = fakeUsersPostsList
     }
 
     override suspend fun getPlayers(): List<Player> {
@@ -23,52 +23,46 @@ class FakePlayersRepositories : PlayersRepository {
         return fakeAllPlayers
     }
 
-    override suspend fun deletePlayer(player: Player) {
-//        TODO("Not yet implemented")
+
+    override suspend fun clearPost(post: Post) {
         delay(3000)
-        val newPlayersList: List<Player> = userPlayers.value.map { it ->
-            var res: Player = it
-            if (it.id == player.id) {
-                if (player.role == PlayerRole.GoalKeeper) {
-                    res = NoGKPlayer
+        val newPostsList: List<Post> = userPosts.value.map { it ->
+            var res: Post = it
+            if (it.player.id == post.player.id) {
+                if (post.player.role == PlayerRole.GoalKeeper) {
+                    res = Post(it.pos, NoGKPlayer)
                 }
-                if (player.role == PlayerRole.Defender) {
-                    res = NoDEFPlayer
+                if (post.player.role == PlayerRole.Defender) {
+                    res = Post(it.pos, NoDEFPlayer)
                 }
-                if (player.role == PlayerRole.Midfielder) {
-                    res = NoMIDPlayer
+                if (post.player.role == PlayerRole.Midfielder) {
+                    res = Post(it.pos, NoMIDPlayer)
                 }
-                if (player.role == PlayerRole.Attacker) {
-                    res = NoATTPlayer
+                if (post.player.role == PlayerRole.Attacker) {
+                    res = Post(it.pos, NoATTPlayer)
                 }
             }
             res
         }
 
-        userPlayers.value = newPlayersList
+        userPosts.value = newPostsList
     }
 
-    override suspend fun addPlayer(newPlayer: Player, pos: Int) {
+    override suspend fun fillPost(post: Post, player: Player) {
         delay(3000)
 
-        var curPos = 0
-        val newPlayersList = userPlayers.value.map {
-            if (it.role == newPlayer.role) {
-                curPos++
-                if (curPos == pos) {
-                    newPlayer
-                } else {
-                    it
-                }
+        val newPostsList = userPosts.value.map {
+            if (it == post) {
+                Post(it.pos, player)
             } else {
                 it
             }
         }
 
-        userPlayers.value = newPlayersList
+        userPosts.value = newPostsList
     }
 
-    override fun observerUserPlayers(): Flow<List<Player>> = userPlayers
+    override fun observerUserPosts(): Flow<List<Post>> = userPosts
 }
 
 private val fakeAllPlayers: List<Player> =
@@ -95,20 +89,20 @@ private val fakeAllPlayers: List<Player> =
         Player("att4", "att4", PlayerRole.Attacker, 0, 0f),
     )
 
-private val fakeUsersPlayersList = mutableListOf(
-    Player("gk1", "gk1", PlayerRole.GoalKeeper, 0, 0f),
-    NoGKPlayer,
-    Player("def1", "def1", PlayerRole.Defender, 0, 0f),
-    NoDEFPlayer,
-    NoDEFPlayer,
-    Player("def4", "def4", PlayerRole.Defender, 0, 0f),
-    Player("def5", "def5", PlayerRole.Defender, 0, 0f),
-    Player("mid1", "mid1", PlayerRole.Midfielder, 0, 0f),
-    Player("mid2", "mid2", PlayerRole.Midfielder, 0, 0f),
-    Player("mid3", "mid3", PlayerRole.Midfielder, 0, 0f),
-    NoMIDPlayer,
-    NoMIDPlayer,
-    Player("att1", "att1", PlayerRole.Attacker, 0, 0f),
-    Player("att2", "att2", PlayerRole.Attacker, 0, 0f),
-    Player("att3", "att3", PlayerRole.Attacker, 0, 0f)
+private val fakeUsersPostsList = mutableListOf(
+    Post(pos = 1, player = Player("gk1", "gk1", PlayerRole.GoalKeeper, 0, 0f)),
+    Post(pos = 2, player = NoGKPlayer),
+    Post(pos = 1, player = Player("def1", "def1", PlayerRole.Defender, 0, 0f)),
+    Post(pos = 2, player = Player("def2", "def2", PlayerRole.Defender, 0, 0f)),
+    Post(pos = 3, player = NoDEFPlayer),
+    Post(pos = 4, player = Player("def3", "def3", PlayerRole.Defender, 0, 0f)),
+    Post(pos = 5, player = NoDEFPlayer),
+    Post(pos = 1, player = Player("mid1", "mid1", PlayerRole.Midfielder, 0, 0f)),
+    Post(pos = 2, player = Player("mid2", "mid2", PlayerRole.Midfielder, 0, 0f)),
+    Post(pos = 3, player = NoMIDPlayer),
+    Post(pos = 4, player = Player("mid3", "mid3", PlayerRole.Midfielder, 0, 0f)),
+    Post(pos = 5, player = NoMIDPlayer),
+    Post(pos = 1, player = Player("att1", "att1", PlayerRole.Attacker, 0, 0f)),
+    Post(pos = 2, player = NoATTPlayer),
+    Post(pos = 3, player = NoATTPlayer)
 )

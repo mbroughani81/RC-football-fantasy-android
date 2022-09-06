@@ -25,22 +25,21 @@ import kotlinx.coroutines.launch
 @Composable
 fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel()) {
     val isOnSoccerFieldView = remember { mutableStateOf(true) }
-    val deleteDialogCurrentPlayer = remember { mutableStateOf<Player?>(null) }
-    val drawerCurrentPlayer = remember { mutableStateOf<Player?>(null) }
-    val currentPlayerPos = remember { mutableStateOf<Int?>(null) }
+    val deleteDialogCurrentPlayer = remember { mutableStateOf<Post?>(null) }
+    val drawerCurrentPost = remember { mutableStateOf<Post?>(null) }
     val uiState = teamCreationViewModel.uiState.collectAsState()
 
     FantasyFootballTheme {
         if (deleteDialogCurrentPlayer.value != null &&
-            deleteDialogCurrentPlayer.value != NoGKPlayer &&
-            deleteDialogCurrentPlayer.value != NoDEFPlayer &&
-            deleteDialogCurrentPlayer.value != NoMIDPlayer &&
-            deleteDialogCurrentPlayer.value != NoATTPlayer
+            deleteDialogCurrentPlayer.value!!.player != NoGKPlayer &&
+            deleteDialogCurrentPlayer.value!!.player != NoDEFPlayer &&
+            deleteDialogCurrentPlayer.value!!.player != NoMIDPlayer &&
+            deleteDialogCurrentPlayer.value!!.player != NoATTPlayer
         ) {
             DeletePlayerDialog(
-                player = deleteDialogCurrentPlayer.value!!,
+                post = deleteDialogCurrentPlayer.value!!,
                 onDeleteClickHandler = {
-                    teamCreationViewModel.deletePlayer(deleteDialogCurrentPlayer.value!!)
+                    teamCreationViewModel.clearPost(deleteDialogCurrentPlayer.value!!)
                 },
                 onDismissHandler = { deleteDialogCurrentPlayer.value = null }
             )
@@ -54,9 +53,8 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                 drawerContent = {
                     NavigationDrawerView(
                         onRandomButtonClickHandler = {
-                            teamCreationViewModel.randomAddPlayer(
-                                drawerCurrentPlayer.value!!,
-                                currentPlayerPos.value!!
+                            teamCreationViewModel.randomFillPost(
+                                drawerCurrentPost.value!!,
                             )
                         },
                         scaffoldState.drawerState
@@ -91,15 +89,14 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                                 )
                                 if (isOnSoccerFieldView.value) {
                                     TeamSchematicScreen(
-                                        userPlayersList = uiState.value.usersPlayersList,
-                                        onPlayerLongClickHandler = {
-                                            deleteDialogCurrentPlayer.value = it
+                                        userPostsList = uiState.value.userPostsList,
+                                        onPlayerLongClickHandler = { post ->
+                                            deleteDialogCurrentPlayer.value = post
                                         }, modifier = Modifier
                                             .height(300.dp)
                                             .zIndex(2f),
-                                        onPlayerClickHandler = { player, pos ->
-                                            drawerCurrentPlayer.value = player
-                                            currentPlayerPos.value = pos
+                                        onPlayerClickHandler = { post ->
+                                            drawerCurrentPost.value = post
                                             coroutineScope.launch { scaffoldState.drawerState.open() }
                                         }
                                     )

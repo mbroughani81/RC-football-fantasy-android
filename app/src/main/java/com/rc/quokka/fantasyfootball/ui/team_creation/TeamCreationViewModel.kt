@@ -3,10 +3,10 @@ package com.rc.quokka.fantasyfootball.ui.team_creation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rc.quokka.fantasyfootball.data.datasources.PlayersApiDataSource
 import com.rc.quokka.fantasyfootball.data.repositories.FakePlayersRepositories
 import com.rc.quokka.fantasyfootball.data.repositories.PlayersApiRepository
 import com.rc.quokka.fantasyfootball.domain.model.Player
+import com.rc.quokka.fantasyfootball.domain.model.Post
 import com.rc.quokka.fantasyfootball.domain.repositories.PlayersRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,33 +23,35 @@ class TeamCreationViewModel(
         viewModelScope.launch {
             Log.d("TeamSchematicViewModel", "scope started")
 
-            playersRepository.observerUserPlayers().collect {
+            playersRepository.observerUserPosts().collect {
                 Log.d("TeamSchematicViewModel", "emitted")
-                _uiState.value = TeamCreationUiState(usersPlayersList = it)
+                _uiState.value = TeamCreationUiState(userPostsList = it)
             }
 
         }
     }
 
-    fun deletePlayer(player: Player) {
+    fun clearPost(post: Post) {
         viewModelScope.launch {
-            playersRepository.deletePlayer(player)
+            playersRepository.clearPost(post)
         }
     }
 
-    fun addPlayer(player: Player, pos: Int) {
+    fun fillPost(post: Post, player: Player) {
         viewModelScope.launch {
-            playersRepository.addPlayer(player, pos)
+            playersRepository.fillPost(post = post, player = player)
         }
     }
 
-    fun randomAddPlayer(player: Player, pos: Int) {
+    fun randomFillPost(post: Post) {
         viewModelScope.launch {
-            val newPlayer =
-                playersRepository.getPlayers().filter { it.role == player.role }.random()
-            addPlayer(newPlayer, pos)
+            if (playersRepository.getPlayers().filter { it.role == post.player.role }.size > 0) {
+                val newPlayer =
+                    playersRepository.getPlayers().filter { it.role == post.player.role }.random()
+                fillPost(post = post, player = newPlayer)
+            }
         }
     }
 }
 
-data class TeamCreationUiState(val usersPlayersList: List<Player>)
+data class TeamCreationUiState(val userPostsList: List<Post>)
