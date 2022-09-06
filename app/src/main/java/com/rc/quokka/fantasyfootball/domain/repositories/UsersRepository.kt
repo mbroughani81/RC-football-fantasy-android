@@ -1,7 +1,6 @@
 package com.rc.quokka.fantasyfootball.domain.repositories
 
 import com.rc.quokka.fantasyfootball.domain.model.*
-import kotlin.Result
 
 interface UsersRepository {
     suspend fun signupUser(data: SignupData): Result<SignupResponse>

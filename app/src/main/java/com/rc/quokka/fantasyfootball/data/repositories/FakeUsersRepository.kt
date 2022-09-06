@@ -1,39 +1,44 @@
 package com.rc.quokka.fantasyfootball.data.repositories
 
+import android.util.Log
 import com.rc.quokka.fantasyfootball.domain.model.*
 import com.rc.quokka.fantasyfootball.domain.repositories.UsersRepository
 import kotlinx.coroutines.delay
+
+val appUsers: List<Pair<String, String>> =
+    listOf(Pair("a1", "p1"), Pair("a2", "p2"), Pair("a3", "p3"))
 
 class FakeUsersRepository : UsersRepository {
     override suspend fun signupUser(data: SignupData): Result<SignupResponse> {
         delay(2000L)
         if (data.username == "mb") {
-            return Result.success(SignupResponse.SignupError("username is taken"))
+            return Result.Success(SignupResponse.SignupError("username is taken"))
         } else {
-            return Result.success(SignupResponse.SignupSuccessful)
+            return Result.Success(SignupResponse.SignupSuccessful)
         }
     }
 
     override suspend fun signinUser(data: SigninData): Result<SigninResponse> {
-        delay(2000L)
-        if (data.password != "1381") {
-            return Result.success(SigninResponse.SigninError("username is taken"))
-        } else {
-            return Result.success(SigninResponse.SigninSuccessful(User(username = "mb")))
+        appUsers.forEach {
+            delay(500)
+            if (it.first == data.username && it.second == data.password) {
+                return Result.Success(SigninResponse.SigninSuccessful(User(it.first)))
+            }
         }
+        return Result.Success(SigninResponse.SigninError("user not fount"))
     }
 
     override suspend fun confirmCode(data: ConfirmCodeData): Result<ConfirmResponse> {
         delay(2000L)
         if (data.code != "1234") {
-            return Result.success(ConfirmResponse.ConfirmError)
+            return Result.Success(ConfirmResponse.ConfirmError)
         } else {
-            return Result.success(ConfirmResponse.ConfirmSuccessful)
+            return Result.Success(ConfirmResponse.ConfirmSuccessful)
         }
     }
 
     override suspend fun getCurrentUser(): Result<User> {
         delay(2000L)
-        return Result.success(User(username = "mb"))
+        return Result.Success(User(username = "mb"))
     }
 }

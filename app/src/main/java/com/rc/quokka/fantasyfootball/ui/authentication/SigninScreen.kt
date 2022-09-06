@@ -7,6 +7,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -15,13 +17,18 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.rc.quokka.fantasyfootball.domain.model.SigninData
 import com.rc.quokka.fantasyfootball.ui.authentication.HeaderRow
 import com.rc.quokka.fantasyfootball.ui.authentication.components.FormInputField
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size20VazirFont
 
 @Composable
-fun SigninScreen(onSigninButtonClicked: () -> Unit) {
+fun SigninScreen(
+    onSigninButtonClicked: (data: SigninData) -> Unit
+) {
+    val usernameValue = remember { mutableStateOf("") }
+    val passwordValue = remember { mutableStateOf("") }
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Box(
             contentAlignment = Alignment.TopCenter,
@@ -39,15 +46,21 @@ fun SigninScreen(onSigninButtonClicked: () -> Unit) {
                 Spacer(modifier = Modifier.height(20.dp))
                 FormInputField(
                     text = "نام کاربری",
-                    modifier = Modifier.fillMaxWidth())
+                    textFieldValue = usernameValue.value,
+                    onValueChange =  { it -> usernameValue.value = it },
+                    modifier = Modifier.fillMaxWidth(),
+                )
                 Spacer(modifier = Modifier.height(10.dp))
                 FormInputField(
                     text = "رمز عبور",
-                    modifier = Modifier.fillMaxWidth())
+                    textFieldValue = passwordValue.value,
+                    onValueChange =  { it -> passwordValue.value = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-                    onClick = onSigninButtonClicked,
+                    onClick = { onSigninButtonClicked(SigninData(usernameValue.value, passwordValue.value)) },
                     contentPadding = PaddingValues(),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -76,7 +89,7 @@ fun SigninScreen(onSigninButtonClicked: () -> Unit) {
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-                    onClick = onSigninButtonClicked,
+                    onClick = {},
                     contentPadding = PaddingValues(),
                     modifier = Modifier
                         .fillMaxWidth()

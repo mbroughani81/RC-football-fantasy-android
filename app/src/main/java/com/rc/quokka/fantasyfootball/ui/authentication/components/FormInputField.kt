@@ -18,8 +18,10 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size16VazirFont
 @Composable
 fun FormInputField(
     text: String = "",
+    textFieldValue: String = "",
+    onValueChange: (String) -> Unit = {},
+    textModifier: Modifier = Modifier,
     modifier: Modifier = Modifier,
-    textModifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -34,8 +36,8 @@ fun FormInputField(
                 .padding(bottom = 15.dp)
         )
         TextField(
-            value = "",
-            onValueChange = {},
+            value = textFieldValue,
+            onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
         )
     }
