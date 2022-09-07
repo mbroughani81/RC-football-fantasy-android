@@ -57,7 +57,13 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                                 drawerCurrentPost.value!!,
                             )
                         },
-                        scaffoldState.drawerState
+                        onPlayerRowCLickHandler = { player ->
+                            teamCreationViewModel.fillPost(
+                                post = drawerCurrentPost.value!!,
+                                player = player
+                            )
+                        },
+                        drawState = scaffoldState.drawerState
                     )
                 },
                 drawerGesturesEnabled = scaffoldState.drawerState.isOpen
@@ -101,7 +107,7 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                                         }
                                     )
                                 } else {
-                                    TeamListScreen()
+                                    TeamListScreen(userPostsList = uiState.value.userPostsList)
                                 }
                             }
                         }

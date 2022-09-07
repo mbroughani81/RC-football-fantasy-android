@@ -25,12 +25,13 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size14VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size15VazirFont
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rc.quokka.fantasyfootball.domain.model.PlayerRole
+import com.rc.quokka.fantasyfootball.domain.model.Post
 import com.rc.quokka.fantasyfootball.ui.team_creation.TeamCreationViewModel
 
 @Composable
-fun TeamListScreen(modifier: Modifier = Modifier) {
+fun TeamListScreen(userPostsList : List<Post>, modifier: Modifier = Modifier) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-        Table(playersList = emptyList(), modifier = modifier)
+        Table(userPostsList = userPostsList, modifier = modifier)
     }
 }
 
@@ -41,7 +42,7 @@ fun RowScope.ColumnTypeCell(
 ) {
     CommonText(
         text = text,
-        style = weight400Size13VazirFont.copy(textAlign = TextAlign.Center),
+        style = weight400Size13VazirFont,
         color = Color.Gray,
         modifier = Modifier
             .weight(weight)
@@ -85,13 +86,13 @@ fun RowScope.PlayerDataCell(
 
 @Composable
 fun Table(
-    playersList: List<Player>,
+    userPostsList: List<Post>,
     modifier: Modifier = Modifier,
 ) {
-    val gkData = playersList.filter { it.role == PlayerRole.GoalKeeper }
-    val defData = playersList.filter { it.role == PlayerRole.Defender }
-    val midData = playersList.filter { it.role == PlayerRole.Midfielder }
-    val attData = playersList.filter { it.role == PlayerRole.Attacker }
+    val gkData = userPostsList.filter { it.player.role == PlayerRole.GoalKeeper }
+    val defData = userPostsList.filter { it.player.role == PlayerRole.Defender }
+    val midData = userPostsList.filter { it.player.role == PlayerRole.Midfielder }
+    val attData = userPostsList.filter { it.player.role == PlayerRole.Attacker }
     val column1Weight = .6f
     val column2Weight = .2f
     val column3Weight = .2f
@@ -101,10 +102,12 @@ fun Table(
             .padding(16.dp)
     ) {
         item {
-            Row {
-                ColumnTypeCell(text = "", weight = column1Weight)
-                ColumnTypeCell(text = "عملکرد", weight = column2Weight)
-                ColumnTypeCell(text = "قیمت", weight = column3Weight)
+            Column() {
+                Row {
+                    ColumnTypeCell(text = "", weight = column1Weight)
+                    ColumnTypeCell(text = "عملکرد", weight = column2Weight)
+                    ColumnTypeCell(text = "قیمت", weight = column3Weight)
+                }
             }
         }
         item {
@@ -112,10 +115,10 @@ fun Table(
                 PlayerTypeCell(text = "دروازه بانان")
             }
         }
-        items(gkData) {
-            val name = it.name
-            val performance = it.rating
-            val price = it.price
+        items(gkData) { it ->
+            val name = it.player.name
+            val performance = it.player.rating
+            val price = it.player.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
                 PlayerDataCell(
@@ -132,9 +135,9 @@ fun Table(
             }
         }
         items(defData) {
-            val name = it.name
-            val performance = it.rating
-            val price = it.price
+            val name = it.player.name
+            val performance = it.player.rating
+            val price = it.player.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
                 PlayerDataCell(
@@ -151,9 +154,9 @@ fun Table(
             }
         }
         items(midData) {
-            val name = it.name
-            val performance = it.rating
-            val price = it.price
+            val name = it.player.name
+            val performance = it.player.rating
+            val price = it.player.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
                 PlayerDataCell(
@@ -170,9 +173,9 @@ fun Table(
             }
         }
         items(attData) {
-            val name = it.name
-            val performance = it.rating
-            val price = it.price
+            val name = it.player.name
+            val performance = it.player.rating
+            val price = it.player.price
             Row(Modifier.fillMaxWidth()) {
                 PlayerDataCell(text = name, weight = column1Weight)
                 PlayerDataCell(
