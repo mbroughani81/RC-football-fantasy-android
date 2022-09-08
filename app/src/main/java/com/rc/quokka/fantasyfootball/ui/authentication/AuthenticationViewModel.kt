@@ -12,13 +12,11 @@ import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(val usersRepository: UsersRepository = FakeUsersRepository()) :
     ViewModel() {
-    private val _uiState = MutableStateFlow(AuthenticationUiState(currentUser = AnonymousUser))
+    private val _uiState =
+        MutableStateFlow(AuthenticationUiState(currentUser = AnonymousUser, isLoggedIn = false))
     val uiState = _uiState.asStateFlow()
-    private val _isLoggedIn = MutableStateFlow(false)
-    val isLoggedIn = _isLoggedIn.asStateFlow()
 
     fun signinUser(data: SigninData) {
-        Log.d("AuthenticationViewModel", isLoggedIn.value.toString())
         viewModelScope.launch {
             val result = usersRepository.signinUser(data)
             when (result) {
@@ -27,8 +25,9 @@ class AuthenticationViewModel(val usersRepository: UsersRepository = FakeUsersRe
                     when (data) {
                         is SigninResponse.SigninSuccessful -> {
                             _uiState.value =
-                                AuthenticationUiState(currentUser = User(data.user.username))
-                            _isLoggedIn.value = true
+                                AuthenticationUiState(
+                                    currentUser = User(data.user.username), isLoggedIn = true
+                                )
                         }
                         is SigninResponse.SigninError -> {
                             Log.d("AuthenticationViewModel", "login is unsuccessful")
@@ -52,5 +51,6 @@ class AuthenticationViewModel(val usersRepository: UsersRepository = FakeUsersRe
 }
 
 data class AuthenticationUiState(
-    val currentUser: User
+    val currentUser: User,
+    val isLoggedIn: Boolean
 )
