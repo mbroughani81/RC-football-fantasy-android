@@ -27,17 +27,16 @@ enum class FantasyFootballScreen() {
 @Composable
 fun FantasyFootballApp(authenticationViewModel: AuthenticationViewModel = viewModel()) {
     val navController = rememberNavController()
-    val isLoggedIn = authenticationViewModel.isLoggedIn.collectAsState()
+    val authenticationUiState = authenticationViewModel.uiState.collectAsState()
+    val isLoggedIn = authenticationUiState.value.isLoggedIn
 
-
-//    Log.d("FantasyFootballApp", authenticationViewModel.uiState.value.toString())
-    if (isLoggedIn.value) {
+    if (isLoggedIn) {
         navController.navigate(FantasyFootballScreen.TeamCreation.name)
     }
 
     NavHost(
         navController = navController,
-        startDestination = FantasyFootballScreen.TeamCreation.name,
+        startDestination = FantasyFootballScreen.Signup.name,
         modifier = Modifier
     ) {
         composable(route = FantasyFootballScreen.Signin.name) {
