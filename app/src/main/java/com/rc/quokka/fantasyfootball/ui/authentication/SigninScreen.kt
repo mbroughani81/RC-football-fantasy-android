@@ -25,7 +25,8 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight700Size20VazirFont
 
 @Composable
 fun SigninScreen(
-    onSigninButtonClicked: (data: SigninData) -> Unit
+    onSigninButtonClicked: (data: SigninData) -> Unit,
+    onSignupButtonClicked: () -> Unit
 ) {
     val usernameValue = remember { mutableStateOf("") }
     val passwordValue = remember { mutableStateOf("") }
@@ -89,7 +90,7 @@ fun SigninScreen(
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-                    onClick = {},
+                    onClick = onSignupButtonClicked,
                     contentPadding = PaddingValues(),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -123,5 +124,5 @@ fun SigninScreen(
 @Preview
 @Composable
 fun SigninScreenPreview() {
-    SigninScreen({})
+    SigninScreen({}, {})
 }
