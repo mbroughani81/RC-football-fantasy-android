@@ -42,7 +42,7 @@ interface PlayerApiService {
     suspend fun getUserPlayers(): List<UserPlayerDto>
 }
 
-object FantasyFootballApi {
+object FantasyFootballPlayersApi {
     val retrofitService: PlayerApiService by lazy {
         retrofit.create(PlayerApiService::class.java)
     }
@@ -77,7 +77,7 @@ class PlayersApiDataSource {
     suspend fun getPlayers(): List<Player> {
         val mapper = PlayerMapper()
         try {
-            return FantasyFootballApi.retrofitService.getPlayers().map { mapper.toDomain(it) }
+            return FantasyFootballPlayersApi.retrofitService.getPlayers().map { mapper.toDomain(it) }
         } catch (e: Exception) {
             Log.d("PlayersApiDataSource", e.toString())
             return emptyList()
@@ -87,7 +87,7 @@ class PlayersApiDataSource {
     suspend fun getUserPosts(): List<Post> {
         val mapper = UserPlayerMapper()
         try {
-            return FantasyFootballApi.retrofitService.getUserPlayers().map { mapper.toDomain(it) }
+            return FantasyFootballPlayersApi.retrofitService.getUserPlayers().map { mapper.toDomain(it) }
         } catch (e: Exception) {
             Log.d("PlayersApiDataSource", e.toString())
             return emptyList()
@@ -110,7 +110,7 @@ class PlayersApiDataSource {
                     post.pos + 12
                 }
             }
-            FantasyFootballApi.retrofitService.addPlayer(
+            FantasyFootballPlayersApi.retrofitService.addPlayer(
                 playerId = player.id.toInt(),
                 squadPlace = squadPlace
             )
@@ -135,7 +135,7 @@ class PlayersApiDataSource {
                     post.pos + 12
                 }
             }
-            FantasyFootballApi.retrofitService.removePlayer(squadPlace)
+            FantasyFootballPlayersApi.retrofitService.removePlayer(squadPlace)
         } catch (e: Exception) {
 
         }

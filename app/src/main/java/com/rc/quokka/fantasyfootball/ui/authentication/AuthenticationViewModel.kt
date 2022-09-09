@@ -4,13 +4,14 @@ import android.util.Log
 import androidx.compose.ui.input.key.Key.Companion.U
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rc.quokka.fantasyfootball.data.repositories.FakeUsersRepository
+import com.rc.quokka.fantasyfootball.data.datasources.SignupResponse
+import com.rc.quokka.fantasyfootball.data.repositories.UsersApiRepository
 import com.rc.quokka.fantasyfootball.domain.model.*
 import com.rc.quokka.fantasyfootball.domain.repositories.UsersRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class AuthenticationViewModel(val usersRepository: UsersRepository = FakeUsersRepository()) :
+class AuthenticationViewModel(val usersRepository: UsersRepository = UsersApiRepository()) :
     ViewModel() {
     private val _uiState =
         MutableStateFlow(AuthenticationUiState(currentUser = AnonymousUser, isLoggedIn = false))
@@ -21,15 +22,14 @@ class AuthenticationViewModel(val usersRepository: UsersRepository = FakeUsersRe
             val result = usersRepository.signinUser(data)
             when (result) {
                 is Result.Success -> {
-                    val data = result.data
-                    when (data) {
-                        is SigninResponse.SigninSuccessful -> {
+                    when (result.value) {
+                        is SigninVerdict.SigninSuccessful -> {
                             _uiState.value =
                                 AuthenticationUiState(
-                                    currentUser = User(data.user.username), isLoggedIn = true
+                                    currentUser = User("1234"), isLoggedIn = true
                                 )
                         }
-                        is SigninResponse.SigninError -> {
+                        is SigninVerdict.SigninFailed -> {
                             Log.d("AuthenticationViewModel", "login is unsuccessful")
                         }
                     }
@@ -41,8 +41,25 @@ class AuthenticationViewModel(val usersRepository: UsersRepository = FakeUsersRe
         }
     }
 
-    fun signupUser(data: SignupData) {
+    fun signupUser(data: SignupData, onSuccess: () -> Unit, onFail: () -> Unit) {
+        viewModelScope.launch {
+            val result = usersRepository.signupUser(data)
+            when (result) {
+                is Result.Success -> {
+                    when (result.value) {
+                        is SignupVerdict.SignupSuccessful -> {
+                            onSuccess()
+                        }
+                        is SignupVerdict.SignupFailed -> {
+                            onFail()
+                        }
+                    }
+                }
+                is Result.Error -> {
 
+                }
+            }
+        }
     }
 
     fun confirmCode(data: ConfirmCodeData) {
