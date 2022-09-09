@@ -1,16 +1,21 @@
 package com.rc.quokka.fantasyfootball.data.datasources
 
+import android.util.Log
 import com.rc.quokka.fantasyfootball.data.mappers.PlayerMapper
+import com.rc.quokka.fantasyfootball.data.mappers.UserPlayerMapper
 import com.rc.quokka.fantasyfootball.domain.model.Player
+import com.rc.quokka.fantasyfootball.domain.model.PlayerRole
+import com.rc.quokka.fantasyfootball.domain.model.Post
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 
 private const val BASE_URL =
-    "http://192.168.43.104:8080"
+    "http://192.168.1.103:3000"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -24,8 +29,17 @@ private val retrofit = Retrofit.Builder()
 
 
 interface PlayerApiService {
-    @GET("player/all")
+    @GET("/player/all")
     suspend fun getPlayers(): List<PlayerDto>
+
+    @GET("user/add_player")
+    suspend fun addPlayer(@Query("playerId") playerId: Int, @Query("squadPlace") squadPlace: Int)
+
+    @GET("user/remove_player")
+    suspend fun removePlayer(@Query("squadPlace") squadPlace: Int)
+
+    @GET("user/get_players")
+    suspend fun getUserPlayers(): List<UserPlayerDto>
 }
 
 object FantasyFootballApi {
@@ -46,9 +60,84 @@ data class PlayerDto(
     val score: Int
 )
 
+data class UserPlayerDto(
+    val playerId: String,
+    val firstName: String,
+    val lastName: String,
+    val webName: String,
+    val photo: String,
+    val positionId: Int,
+    val squadPlace: Int,
+    val teamId: Int,
+    val price: Float,
+    val score: Int
+)
+
 class PlayersApiDataSource {
     suspend fun getPlayers(): List<Player> {
         val mapper = PlayerMapper()
-        return FantasyFootballApi.retrofitService.getPlayers().map{ mapper.toDomain(it) }
+        try {
+            return FantasyFootballApi.retrofitService.getPlayers().map { mapper.toDomain(it) }
+        } catch (e: Exception) {
+            Log.d("PlayersApiDataSource", e.toString())
+            return emptyList()
+        }
+    }
+
+    suspend fun getUserPosts(): List<Post> {
+        val mapper = UserPlayerMapper()
+        try {
+            return FantasyFootballApi.retrofitService.getUserPlayers().map { mapper.toDomain(it) }
+        } catch (e: Exception) {
+            Log.d("PlayersApiDataSource", e.toString())
+            return emptyList()
+        }
+    }
+
+    suspend fun addPlayer(post: Post, player: Player) {
+        try {
+            val squadPlace = when (post.player.role) {
+                PlayerRole.GoalKeeper -> {
+                    post.pos
+                }
+                PlayerRole.Defender -> {
+                    post.pos + 2
+                }
+                PlayerRole.Midfielder -> {
+                    post.pos + 7
+                }
+                PlayerRole.Attacker -> {
+                    post.pos + 12
+                }
+            }
+            FantasyFootballApi.retrofitService.addPlayer(
+                playerId = player.id.toInt(),
+                squadPlace = squadPlace
+            )
+        } catch (e: Exception) {
+
+        }
+    }
+
+    suspend fun removePlayer(post: Post) {
+        try {
+            val squadPlace = when (post.player.role) {
+                PlayerRole.GoalKeeper -> {
+                    post.pos
+                }
+                PlayerRole.Defender -> {
+                    post.pos + 2
+                }
+                PlayerRole.Midfielder -> {
+                    post.pos + 7
+                }
+                PlayerRole.Attacker -> {
+                    post.pos + 12
+                }
+            }
+            FantasyFootballApi.retrofitService.removePlayer(squadPlace)
+        } catch (e: Exception) {
+
+        }
     }
 }

@@ -1,55 +1,69 @@
 package com.rc.quokka.fantasyfootball.data.repositories
 
 import com.rc.quokka.fantasyfootball.data.datasources.PlayersApiDataSource
-import com.rc.quokka.fantasyfootball.domain.model.Player
-import com.rc.quokka.fantasyfootball.domain.model.Post
+import com.rc.quokka.fantasyfootball.domain.model.*
 import com.rc.quokka.fantasyfootball.domain.repositories.PlayersRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
-
-//
-//class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = PlayersApiDataSource()) :
-//    PlayersRepository {
-//
-//    private val fakeRepo = FakePlayersRepositories()
-//
-//    override suspend fun getPlayers(): List<Player> = withContext(Dispatchers.IO) {
-//        playersApiDataSource.getPlayers()
-//    }
-//
-//
-//    override suspend fun deletePlayer(player: Player) {
-//        fakeRepo.deletePlayer(player)
-//    }
-//
-//    override suspend fun addPlayer(player: Player, pos: Int) {
-//        fakeRepo.addPlayer(player, pos)
-//    }
-//
-//    override fun observerUserPlayers(): Flow<List<Player>> {
-//        return fakeRepo.observerUserPlayers()
-//    }
-//}
 
 class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = PlayersApiDataSource()) :
     PlayersRepository {
 
-    private val fakeRepo = FakePlayersRepositories()
+    var userPosts = MutableStateFlow(
+        listOf(
+            Post(1, NoGKPlayer),
+            Post(2, NoGKPlayer),
+            Post(1, NoDEFPlayer),
+            Post(2, NoDEFPlayer),
+            Post(3, NoDEFPlayer),
+            Post(4, NoDEFPlayer),
+            Post(5, NoDEFPlayer),
+            Post(1, NoMIDPlayer),
+            Post(2, NoMIDPlayer),
+            Post(3, NoMIDPlayer),
+            Post(4, NoMIDPlayer),
+            Post(5, NoMIDPlayer),
+            Post(1, NoATTPlayer),
+            Post(2, NoATTPlayer),
+            Post(3, NoATTPlayer)
+        )
+    )
 
     override suspend fun getPlayers(): List<Player> = withContext(Dispatchers.IO) {
         playersApiDataSource.getPlayers()
     }
 
     override suspend fun clearPost(post: Post) {
-        fakeRepo.clearPost(post)
+        playersApiDataSource.removePlayer(post = post)
+        updateUserPost()
     }
 
     override suspend fun fillPost(post: Post, player: Player) {
-        fakeRepo.fillPost(post, player)
+        if (post.player.role != player.role) {
+            return
+        }
+        playersApiDataSource.addPlayer(post = post, player = player)
+        updateUserPost()
     }
 
-    override fun observerUserPosts(): Flow<List<Post>> {
-        return fakeRepo.observerUserPosts()
+    override suspend fun observerUserPosts(): Flow<List<Post>> {
+        updateUserPost()
+        return userPosts
+    }
+
+    private suspend fun updateUserPost() {
+        var updatedUserPosts = playersApiDataSource.getUserPosts().toMutableList()
+        userPosts.value.forEach { userPost ->
+            val sz = updatedUserPosts.filter { newUserPost ->
+                newUserPost.pos == userPost.pos && newUserPost.player.role == userPost.player.role
+            }.size
+
+            if (sz == 0) {
+                updatedUserPosts.add(Post(userPost.pos, userPost.player.toNoPlayer()))
+            }
+        }
+        userPosts.value = updatedUserPosts
     }
 }
