@@ -8,11 +8,20 @@ data class Player(
     val price: Float
 )
 
-
 val NoGKPlayer = Player("-1", "-1", PlayerRole.GoalKeeper, -1, 0f)
 val NoDEFPlayer = Player("-1", "-1", PlayerRole.Defender, -1, 0f)
 val NoMIDPlayer = Player("-1", "-1", PlayerRole.Midfielder, -1, 0f)
 val NoATTPlayer = Player("-1", "-1", PlayerRole.Attacker, -1, 0f)
+
+fun Player.toNoPlayer(): Player {
+     return when (this.role) {
+         PlayerRole.GoalKeeper -> NoGKPlayer
+         PlayerRole.Defender -> NoDEFPlayer
+         PlayerRole.Midfielder -> NoMIDPlayer
+         PlayerRole.Attacker -> NoATTPlayer
+     }
+}
+
 
 enum class PlayerRole {
     GoalKeeper,

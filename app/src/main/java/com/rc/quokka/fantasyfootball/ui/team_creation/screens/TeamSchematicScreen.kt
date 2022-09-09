@@ -104,14 +104,17 @@ fun PlayerRow(
     modifier: Modifier = Modifier
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
-        postsList.forEach { post ->
-            Shirt(
-                post = post,
-                onPlayerClick = onPlayerClick,
-                onPlayerLongClick = onPlayerLongClick,
-                modifier = Modifier.weight(1f)
-            )
-        }
+        postsList
+            .sortedBy {
+                it.pos
+            }.forEach { post ->
+                Shirt(
+                    post = post,
+                    onPlayerClick = onPlayerClick,
+                    onPlayerLongClick = onPlayerLongClick,
+                    modifier = Modifier.weight(1f)
+                )
+            }
     }
 }
 

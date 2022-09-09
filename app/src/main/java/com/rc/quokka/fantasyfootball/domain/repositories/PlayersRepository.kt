@@ -12,5 +12,5 @@ interface PlayersRepository {
 
     suspend fun fillPost(post: Post, player: Player)
 
-    fun observerUserPosts(): Flow<List<Post>>
+    suspend fun observerUserPosts(): Flow<List<Post>>
 }

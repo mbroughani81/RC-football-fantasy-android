@@ -62,7 +62,7 @@ class FakePlayersRepositories : PlayersRepository {
         userPosts.value = newPostsList
     }
 
-    override fun observerUserPosts(): Flow<List<Post>> = userPosts
+    override suspend fun observerUserPosts(): Flow<List<Post>> = userPosts
 }
 
 private val fakeAllPlayers: List<Player> =
