@@ -2,7 +2,7 @@ package com.rc.quokka.fantasyfootball.domain.model
 
 data class SignupData(
     val firstName: String,
-    val latName: String,
+    val lastName: String,
     val email: String,
     val country: String,
     val username: String,
@@ -18,17 +18,12 @@ data class ConfirmCodeData(
     val code: String
 )
 
-sealed class SignupResponse {
-    object SignupSuccessful : SignupResponse()
-    data class SignupError(val message: String) : SignupResponse()
+sealed class SigninVerdict {
+    data class SigninSuccessful(val token: Token) : SigninVerdict()
+    data class SigninFailed(val error: String) : SigninVerdict()
 }
 
-sealed class SigninResponse {
-    data class SigninSuccessful(val user: User) : SigninResponse()
-    data class SigninError(val message: String) : SigninResponse()
-}
-
-sealed class ConfirmResponse {
-    object ConfirmSuccessful : ConfirmResponse()
-    object ConfirmError : ConfirmResponse()
+sealed class SignupVerdict {
+    object SignupSuccessful : SignupVerdict()
+    data class SignupFailed(val error: String) : SignupVerdict()
 }
