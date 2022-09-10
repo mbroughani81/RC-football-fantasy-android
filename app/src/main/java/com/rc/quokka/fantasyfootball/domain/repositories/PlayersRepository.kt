@@ -12,6 +12,6 @@ interface PlayersRepository {
 
     suspend fun observerUserPosts(): Flow<List<Post>>
 
-    suspend fun observerUserMoney(): Flow<Int>
+    suspend fun observerUserMoney(): Flow<String>
 
 }

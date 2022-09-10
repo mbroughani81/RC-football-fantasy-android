@@ -1,5 +1,6 @@
 package com.rc.quokka.fantasyfootball.data.repositories
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.rc.quokka.fantasyfootball.data.datasources.PlayersApiDataSource
@@ -14,7 +15,7 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
     PlayersRepository {
 
     var userRemainingPlayersCount = MutableStateFlow(0)
-    var userMoney = MutableStateFlow(0)
+    var userMoney = MutableStateFlow("0")
     var userPosts = MutableStateFlow(
         listOf(
             Post(1, NoGKPlayer),
@@ -59,7 +60,7 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
         return userPosts
     }
 
-    override suspend fun observerUserMoney(): Flow<Int> {
+    override suspend fun observerUserMoney(): Flow<String> {
         updateUserMoney()
         return userMoney
     }

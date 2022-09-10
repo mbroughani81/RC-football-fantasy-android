@@ -25,7 +25,7 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight900Size9VazirFont
 
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier, userMoney: Int, userRemainingPlayers: Int) {
+fun TopBar(modifier: Modifier = Modifier, userMoney: String, userRemainingPlayers: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
