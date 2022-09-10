@@ -13,20 +13,17 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-
 private const val BASE_URL =
-    "http://192.168.10.198:3000"
+    "http://178.216.248.36:8000"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
-
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL)
     .build()
-
 
 interface PlayerApiService {
     @GET("/player/all")
@@ -40,6 +37,10 @@ interface PlayerApiService {
 
     @GET("user/get_players")
     suspend fun getUserPlayers(): List<UserPlayerDto>
+
+    @GET("user/get_remaining_money")
+    suspend fun getUserMoney(): Int
+
 }
 
 object FantasyFootballPlayersApi {
@@ -81,6 +82,14 @@ class PlayersApiDataSource {
         } catch (e: Exception) {
             Log.d("PlayersApiDataSource", e.toString())
             return emptyList()
+        }
+    }
+
+    suspend fun getUserMoney(): Int {
+        try {
+            return FantasyFootballPlayersApi.retrofitService.getUserMoney()
+        } catch (e: Exception) {
+            return 0
         }
     }
 

@@ -1,5 +1,7 @@
 package com.rc.quokka.fantasyfootball.data.repositories
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.rc.quokka.fantasyfootball.data.datasources.PlayersApiDataSource
 import com.rc.quokka.fantasyfootball.domain.model.*
 import com.rc.quokka.fantasyfootball.domain.repositories.PlayersRepository
@@ -11,6 +13,8 @@ import kotlinx.coroutines.withContext
 class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = PlayersApiDataSource()) :
     PlayersRepository {
 
+    var userRemainingPlayersCount = MutableStateFlow(0)
+    var userMoney = MutableStateFlow(0)
     var userPosts = MutableStateFlow(
         listOf(
             Post(1, NoGKPlayer),
@@ -38,6 +42,7 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
     override suspend fun clearPost(post: Post) {
         playersApiDataSource.removePlayer(post = post)
         updateUserPost()
+        updateUserMoney()
     }
 
     override suspend fun fillPost(post: Post, player: Player) {
@@ -46,12 +51,25 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
         }
         playersApiDataSource.addPlayer(post = post, player = player)
         updateUserPost()
+        updateUserMoney()
     }
 
     override suspend fun observerUserPosts(): Flow<List<Post>> {
         updateUserPost()
         return userPosts
     }
+
+    override suspend fun observerUserMoney(): Flow<Int> {
+        updateUserMoney()
+        return userMoney
+    }
+
+
+    private suspend fun updateUserMoney() {
+        val updatedUserMoney = playersApiDataSource.getUserMoney()
+        userMoney.value = updatedUserMoney
+    }
+
 
     private suspend fun updateUserPost() {
         var updatedUserPosts = playersApiDataSource.getUserPosts().toMutableList()
@@ -65,5 +83,6 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
             }
         }
         userPosts.value = updatedUserPosts
+        userRemainingPlayersCount.value = updatedUserPosts.size
     }
 }

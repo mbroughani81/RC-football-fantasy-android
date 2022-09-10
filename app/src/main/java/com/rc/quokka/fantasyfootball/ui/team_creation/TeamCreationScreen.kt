@@ -87,7 +87,9 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                                 TopBar(
                                     modifier = Modifier
                                         .height(75.dp)
-                                        .zIndex(1f)
+                                        .zIndex(1f),
+                                    uiState.value.userMoney,
+                                    uiState.value.userPostsList.size
                                 )
                                 if (isOnSoccerFieldView.value) {
                                     TeamSchematicScreen(

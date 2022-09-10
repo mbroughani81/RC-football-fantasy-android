@@ -59,6 +59,7 @@ sealed class SignupResponse {
     data class SignupResponseUnsuccessful(val error: String) : SignupResponse()
 }
 
+
 object FantasyFootballUsersApi {
     val retrofitService: UserApiService by lazy {
         retrofit.create(UserApiService::class.java)
