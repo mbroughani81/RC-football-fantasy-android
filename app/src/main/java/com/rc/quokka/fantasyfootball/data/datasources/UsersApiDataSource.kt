@@ -1,9 +1,7 @@
 package com.rc.quokka.fantasyfootball.data.datasources
 
 import android.util.Log
-import com.rc.quokka.fantasyfootball.domain.model.SigninData
-import com.rc.quokka.fantasyfootball.domain.model.SigninVerdict
-import com.rc.quokka.fantasyfootball.domain.model.SignupData
+import com.rc.quokka.fantasyfootball.domain.model.*
 import com.squareup.moshi.Json
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -37,6 +35,9 @@ interface UserApiService {
 
     @POST("user/signup")
     suspend fun signup(@Body data: SignupDataDto): Map<String, String>
+
+    @POST("user/verify")
+    suspend fun confirm(@Body data: ConfirmCodeDataDto): Map<String, String>
 }
 
 data class SigninDataDto(val username: String, val password: String)
@@ -49,6 +50,11 @@ data class SignupDataDto(
     val birthday: String
 )
 
+data class ConfirmCodeDataDto(
+    val email: String,
+    val code: String
+)
+
 sealed class SigninResponse {
     data class SigninResponseSuccessful(val token: String) : SigninResponse()
     data class SigninResponseUnsuccessful(val error: String) : SigninResponse()
@@ -59,6 +65,10 @@ sealed class SignupResponse {
     data class SignupResponseUnsuccessful(val error: String) : SignupResponse()
 }
 
+sealed class ConfirmCodeResponse {
+    object ConfirmCodeResponseSuccessful : ConfirmCodeResponse()
+    data class ConfirmCodeResponseUnsuccessful(val error: String) : ConfirmCodeResponse()
+}
 
 object FantasyFootballUsersApi {
     val retrofitService: UserApiService by lazy {
@@ -97,6 +107,22 @@ class UsersApiDataSource {
             return SigninResponse.SigninResponseSuccessful(mp.get("token")!!)
         } catch (e: Exception) {
             return SigninResponse.SigninResponseUnsuccessful("-1")
+        }
+    }
+
+    suspend fun confirm(data: ConfirmCodeData): ConfirmCodeResponse {
+        try {
+            val mp = FantasyFootballUsersApi.retrofitService.confirm(
+                ConfirmCodeDataDto(
+                    data.email,
+                    data.code
+                )
+            )
+            return ConfirmCodeResponse.ConfirmCodeResponseSuccessful
+        } catch (e: Exception) {
+            Log.d("confirm", data.toString() +  e.toString())
+
+            return ConfirmCodeResponse.ConfirmCodeResponseUnsuccessful("-1")
         }
     }
 }

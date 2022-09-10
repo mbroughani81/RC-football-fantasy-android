@@ -1,8 +1,9 @@
 package com.rc.quokka.fantasyfootball.ui.team_creation
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import android.widget.Space
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
@@ -22,6 +23,7 @@ import com.rc.quokka.fantasyfootball.ui.team_creation.screens.TeamSchematicScree
 import com.rc.quokka.fantasyfootball.ui.theme.FantasyFootballTheme
 import kotlinx.coroutines.launch
 
+@ExperimentalFoundationApi
 @Composable
 fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel()) {
     val isOnSoccerFieldView = remember { mutableStateOf(true) }
@@ -49,18 +51,23 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             Scaffold(
                 scaffoldState = scaffoldState,
-                drawerBackgroundColor = Color.Transparent,
+                drawerBackgroundColor = Color(0, 0, 0, 0),
+                drawerElevation = 0.dp,
                 drawerContent = {
-                    NavigationDrawerView(
-                        onPlayerRowCLickHandler = { player ->
-                            teamCreationViewModel.fillPost(
-                                post = drawerCurrentPost.value!!,
-                                player = player
-                            )
-                            coroutineScope.launch { scaffoldState.drawerState.close() }
-                        },
-                        drawState = scaffoldState.drawerState
-                    )
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxHeight().padding(vertical = 10.dp),
+                    ) {
+                        NavigationDrawerView(
+                            onPlayerRowCLickHandler = { player ->
+                                teamCreationViewModel.fillPost(
+                                    post = drawerCurrentPost.value!!,
+                                    player = player
+                                )
+                            },
+                            drawState = scaffoldState.drawerState
+                        )
+                    }
                 },
                 drawerGesturesEnabled = scaffoldState.drawerState.isOpen
             ) {

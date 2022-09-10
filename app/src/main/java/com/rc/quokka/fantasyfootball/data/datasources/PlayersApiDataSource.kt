@@ -3,6 +3,7 @@ package com.rc.quokka.fantasyfootball.data.datasources
 import android.util.Log
 import com.rc.quokka.fantasyfootball.data.mappers.PlayerMapper
 import com.rc.quokka.fantasyfootball.data.mappers.UserPlayerMapper
+import com.rc.quokka.fantasyfootball.domain.model.GetPlayerData
 import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.domain.model.PlayerRole
 import com.rc.quokka.fantasyfootball.domain.model.Post
@@ -27,7 +28,7 @@ private val retrofit = Retrofit.Builder()
 
 interface PlayerApiService {
     @GET("/player/all")
-    suspend fun getPlayers(): List<PlayerDto>
+    suspend fun getPlayers(@Query("limit") limit: Int, @Query("page") page: Int): List<PlayerDto>
 
     @GET("user/add_player")
     suspend fun addPlayer(@Query("playerId") playerId: Int, @Query("squadPlace") squadPlace: Int)
@@ -78,10 +79,11 @@ data class UserPlayerDto(
 )
 
 class PlayersApiDataSource {
-    suspend fun getPlayers(): List<Player> {
+    suspend fun getPlayers(getPlayerData: GetPlayerData): List<Player> {
         val mapper = PlayerMapper()
         try {
-            return FantasyFootballPlayersApi.retrofitService.getPlayers().map { mapper.toDomain(it) }
+            return FantasyFootballPlayersApi.retrofitService.getPlayers(page = getPlayerData.pageNumber, limit = getPlayerData.limit)
+                .map { mapper.toDomain(it) }
         } catch (e: Exception) {
             Log.d("PlayersApiDataSource", e.toString())
             return emptyList()
@@ -99,7 +101,8 @@ class PlayersApiDataSource {
     suspend fun getUserPosts(): List<Post> {
         val mapper = UserPlayerMapper()
         try {
-            return FantasyFootballPlayersApi.retrofitService.getUserPlayers().map { mapper.toDomain(it) }
+            return FantasyFootballPlayersApi.retrofitService.getUserPlayers()
+                .map { mapper.toDomain(it) }
         } catch (e: Exception) {
             Log.d("PlayersApiDataSource", e.toString())
             return emptyList()
