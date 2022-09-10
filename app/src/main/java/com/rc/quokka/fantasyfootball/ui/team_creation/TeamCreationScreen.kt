@@ -73,6 +73,7 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                         NavBar(modifier = Modifier.weight(1f))
                         WeekInfo(modifier = Modifier.weight(1f))
                         TeamViewTypeSwitch(
+                            isOnSoccerFieldView.value,
                             onClickListButtonHandler = { isOnSoccerFieldView.value = false },
                             onClickSchematicButtonHandle = { isOnSoccerFieldView.value = true },
                             modifier = Modifier.weight(3f)

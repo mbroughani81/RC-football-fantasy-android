@@ -14,7 +14,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 private const val BASE_URL =
-    "http://178.216.248.36:8000"
+    "http://192.168.43.41:3000"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -40,6 +40,9 @@ interface PlayerApiService {
 
     @GET("user/get_remaining_money")
     suspend fun getUserMoney(): Int
+
+    @GET()
+    suspend fun getWeekInfo()
 
 }
 
