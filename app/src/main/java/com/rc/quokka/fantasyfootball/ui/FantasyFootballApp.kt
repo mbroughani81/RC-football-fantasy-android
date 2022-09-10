@@ -51,11 +51,21 @@ fun FantasyFootballApp(authenticationViewModel: AuthenticationViewModel = viewMo
         }
         composable(route = FantasyFootballScreen.Signup.name) {
             SignupScreen(onSignupButtonClicked = { data ->
-                authenticationViewModel.signupUser(data, {navController.navigate(FantasyFootballScreen.ConfirmCode.name)}, onFail = {})
+                authenticationViewModel.signupUser(
+                    data,
+                    { navController.navigate(FantasyFootballScreen.ConfirmCode.name) },
+                    onFail = {})
             })
         }
         composable(route = FantasyFootballScreen.ConfirmCode.name) {
-            ConfirmCodeScreen(onConfirmButtonClick = { navController.navigate(FantasyFootballScreen.Signin.name) })
+            Log.d("currentEmail", authenticationUiState.value.currentEmail)
+            ConfirmCodeScreen(currentEmail = authenticationUiState.value.currentEmail,onConfirmButtonClick = { data ->
+                authenticationViewModel.confirmCode(
+                    data,
+                    { navController.navigate(FantasyFootballScreen.Signin.name) },
+                    onFail = {}
+                )
+            })
         }
         composable(route = FantasyFootballScreen.TeamCreation.name) {
             TeamCreationScreen()

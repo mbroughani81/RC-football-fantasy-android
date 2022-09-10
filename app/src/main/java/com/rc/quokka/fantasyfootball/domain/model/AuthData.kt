@@ -15,6 +15,7 @@ data class SigninData(
 )
 
 data class ConfirmCodeData(
+    val email: String,
     val code: String
 )
 
@@ -26,4 +27,9 @@ sealed class SigninVerdict {
 sealed class SignupVerdict {
     object SignupSuccessful : SignupVerdict()
     data class SignupFailed(val error: String) : SignupVerdict()
+}
+
+sealed class ConfirmCodeVerdict {
+    object ConfirmCodeSuccessful : ConfirmCodeVerdict()
+    data class ConfirmCodeFailed(val error: String) : ConfirmCodeVerdict()
 }
