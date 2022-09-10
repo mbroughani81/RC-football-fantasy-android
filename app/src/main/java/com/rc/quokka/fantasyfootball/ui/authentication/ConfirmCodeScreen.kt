@@ -7,6 +7,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -17,12 +19,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.rc.quokka.fantasyfootball.R
+import com.rc.quokka.fantasyfootball.domain.model.ConfirmCodeData
 import com.rc.quokka.fantasyfootball.ui.authentication.components.FormInputField
+import com.rc.quokka.fantasyfootball.ui.authentication.components.GradientFilledButton
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size20VazirFont
 
 @Composable
-fun ConfirmCodeScreen(onConfirmButtonClick: () -> Unit) {
+fun ConfirmCodeScreen(currentEmail: String, onConfirmButtonClick: (data: ConfirmCodeData) -> Unit) {
+    val confirmCodeValue = remember { mutableStateOf("") }
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -41,42 +46,22 @@ fun ConfirmCodeScreen(onConfirmButtonClick: () -> Unit) {
                 Spacer(modifier = Modifier.height(70.dp))
                 FormInputField(
                     text = "لطفا کدی که به ایمیلتان ارسال شده را در کادر زیر وارد کنید",
-                    modifier = Modifier.fillMaxWidth(), textModifier = Modifier.fillMaxWidth(0.7f))
+                    textFieldValue = confirmCodeValue.value,
+                    onValueChange = { confirmCodeValue.value = it },
+                    modifier = Modifier.fillMaxWidth(), textModifier = Modifier.fillMaxWidth(0.7f)
+                )
                 Spacer(modifier = Modifier.height(50.dp))
-                Button(
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-                    onClick = onConfirmButtonClick,
-                    contentPadding = PaddingValues(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = Brush.horizontalGradient(
-                                    colors = listOf(
-                                        Color(0xffCF31B9),
-                                        Color(0xff9B3AF9)
-                                    )
-                                )
-                            )
-                    ) {
-                        CommonText(
-                            "تایید ثبت نام",
-                            style = weight700Size20VazirFont,
-                            color = Color.White
-                        )
-                    }
-                }
+                GradientFilledButton(text = "تایید ثبت نام", onClick = {
+                    onConfirmButtonClick(
+                        ConfirmCodeData(code = confirmCodeValue.value, email = currentEmail)
+                    )
+                })
+                Image(
+                    painter = painterResource(id = R.drawable.authscreen_footer_img),
+                    contentDescription = "",
+                    contentScale = ContentScale.FillWidth
+                )
             }
-            Image(
-                painter = painterResource(id = R.drawable.authscreen_footer_img),
-                contentDescription = "",
-                contentScale = ContentScale.FillWidth
-            )
         }
     }
 }
