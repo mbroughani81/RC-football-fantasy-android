@@ -52,11 +52,6 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                 drawerBackgroundColor = Color.Transparent,
                 drawerContent = {
                     NavigationDrawerView(
-                        onRandomButtonClickHandler = {
-                            teamCreationViewModel.randomFillPost(
-                                drawerCurrentPost.value!!,
-                            )
-                        },
                         onPlayerRowCLickHandler = { player ->
                             teamCreationViewModel.fillPost(
                                 post = drawerCurrentPost.value!!,

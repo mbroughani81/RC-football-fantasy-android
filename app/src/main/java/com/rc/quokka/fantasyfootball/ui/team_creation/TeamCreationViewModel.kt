@@ -42,16 +42,6 @@ class TeamCreationViewModel(
             playersRepository.fillPost(post = post, player = player)
         }
     }
-
-    fun randomFillPost(post: Post) {
-        viewModelScope.launch {
-            if (playersRepository.getPlayers().filter { it.role == post.player.role }.size > 0) {
-                val newPlayer =
-                    playersRepository.getPlayers().filter { it.role == post.player.role }.random()
-                fillPost(post = post, player = newPlayer)
-            }
-        }
-    }
 }
 
 data class TeamCreationUiState(val userPostsList: List<Post>)

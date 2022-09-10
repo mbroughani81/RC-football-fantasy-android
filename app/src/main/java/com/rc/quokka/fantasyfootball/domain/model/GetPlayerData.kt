@@ -8,4 +8,4 @@ enum class PlayerFilter {
     Attacker
 }
 
-data class GetPlayerData(val filter: PlayerFilter, val pageNumber: Int)
+data class GetPlayerData(val limit: Int,val pageNumber: Int)

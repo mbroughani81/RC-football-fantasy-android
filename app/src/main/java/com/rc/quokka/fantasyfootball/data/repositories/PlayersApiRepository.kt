@@ -32,7 +32,7 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
     )
 
     override suspend fun getPlayers(getPlayerData: GetPlayerData): List<Player> = withContext(Dispatchers.IO) {
-        playersApiDataSource.getPlayers()
+        playersApiDataSource.getPlayers(getPlayerData)
     }
 
     override suspend fun clearPost(post: Post) {
