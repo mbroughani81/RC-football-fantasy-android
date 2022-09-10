@@ -35,7 +35,7 @@ fun TeamViewTypeSwitch(
             Box {
                 Image(
                     painter = painterResource(id = R.drawable.rahnema_college_logo),
-                    contentDescription = "premier league icon",
+                    contentDescription = "rahnema college icon",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .height(60.dp)

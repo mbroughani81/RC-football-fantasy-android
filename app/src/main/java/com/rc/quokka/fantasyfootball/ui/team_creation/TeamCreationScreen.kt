@@ -109,7 +109,8 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                                             drawerCurrentPost.value = post
                                             coroutineScope.launch { scaffoldState.drawerState.open() }
                                         },
-                                        onPlayerLongClickHandler = {}
+                                        onPlayerLongClickHandler = { post ->
+                                            deleteDialogCurrentPlayer.value = post}
                                     )
                                 }
                             }

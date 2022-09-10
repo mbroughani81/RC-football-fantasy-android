@@ -1,7 +1,10 @@
 package com.rc.quokka.fantasyfootball.ui.team_creation.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -95,6 +99,7 @@ fun RowScope.PlayerDataCell(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Table(
     userPostsList: List<Post>,
@@ -144,7 +149,15 @@ fun Table(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .clickable { onPlayerClickHandler(it) }) {
+                        .combinedClickable(
+                            indication = null,
+                            interactionSource = remember {
+                                MutableInteractionSource()
+                            },
+                            onClick = { onPlayerClickHandler(it) },
+                            onLongClick = { onPlayerLongClickHandler(it) }
+                        )
+                ) {
                     PlayerDataCell(text = name, weight = column1Weight)
                     PlayerDataCell(
                         text = performance.toString(),
@@ -180,7 +193,14 @@ fun Table(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .clickable { onPlayerClickHandler(it) }) {
+                        .combinedClickable(
+                            indication = null,
+                            interactionSource = remember {
+                                MutableInteractionSource()
+                            },
+                            onClick = { onPlayerClickHandler(it) },
+                            onLongClick = { onPlayerLongClickHandler(it) }
+                        )) {
                     PlayerDataCell(text = name, weight = column1Weight)
                     PlayerDataCell(
                         text = performance.toString(),
@@ -216,7 +236,14 @@ fun Table(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .clickable { onPlayerClickHandler(it) }) {
+                        .combinedClickable(
+                            indication = null,
+                            interactionSource = remember {
+                                MutableInteractionSource()
+                            },
+                            onClick = { onPlayerClickHandler(it) },
+                            onLongClick = { onPlayerLongClickHandler(it) }
+                        )) {
                     PlayerDataCell(text = name, weight = column1Weight)
                     PlayerDataCell(
                         text = performance.toString(),
@@ -252,7 +279,14 @@ fun Table(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .clickable { onPlayerClickHandler(it) }) {
+                        .combinedClickable(
+                            indication = null,
+                            interactionSource = remember {
+                                MutableInteractionSource()
+                            },
+                            onClick = { onPlayerClickHandler(it) },
+                            onLongClick = { onPlayerLongClickHandler(it) }
+                        )) {
                     PlayerDataCell(text = name, weight = column1Weight)
                     PlayerDataCell(
                         text = performance.toString(),
