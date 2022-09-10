@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rc.quokka.fantasyfootball.data.repositories.FakePlayersRepositories
 import com.rc.quokka.fantasyfootball.data.repositories.PlayersApiRepository
+import com.rc.quokka.fantasyfootball.domain.model.GetPlayerData
 import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.domain.repositories.PlayersRepository
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,9 @@ class NavigationDrawerViewModel(private val playersRepository: PlayersRepository
 
     fun updateTable() {
         viewModelScope.launch {
-            val newState = NavigationDrawerUiState(playersList = playersRepository.getPlayers())
+            val newState = NavigationDrawerUiState(playersList = playersRepository.getPlayers(
+                GetPlayerData(limit = 10, pageNumber = 1)
+            ))
             _uiState.value = newState
             Log.d("NavigationDrawegg", uiState.value.playersList.toString())
         }

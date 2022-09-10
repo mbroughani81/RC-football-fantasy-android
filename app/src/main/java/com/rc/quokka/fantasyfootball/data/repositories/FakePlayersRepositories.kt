@@ -17,7 +17,7 @@ class FakePlayersRepositories : PlayersRepository {
         userPosts.value = fakeUsersPostsList
     }
 
-    override suspend fun getPlayers(): List<Player> {
+    override suspend fun getPlayers(getPlayerData: GetPlayerData): List<Player> {
         delay(3000)
         Log.d("FakePlayersRepositories", "HERE")
         return fakeAllPlayers
@@ -47,6 +47,8 @@ class FakePlayersRepositories : PlayersRepository {
 
         userPosts.value = newPostsList
     }
+
+
 
     override suspend fun fillPost(post: Post, player: Player) {
         delay(3000)

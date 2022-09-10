@@ -51,7 +51,6 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size12VazirFont
 
 @Composable
 fun NavigationDrawerView(
-    onRandomButtonClickHandler: () -> Unit,
     onPlayerRowCLickHandler: (player: Player) -> Unit,
     drawState: DrawerState,
     navigationDrawerViewModel: NavigationDrawerViewModel = viewModel(),
