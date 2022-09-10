@@ -3,12 +3,11 @@ package com.rc.quokka.fantasyfootball.ui.team_creation.components
 import android.graphics.drawable.RippleDrawable
 import android.media.Image
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -49,6 +48,7 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size12VazirFont
 //    }
 //}
 
+@ExperimentalFoundationApi
 @Composable
 fun NavigationDrawerView(
     onPlayerRowCLickHandler: (player: Player) -> Unit,
@@ -57,29 +57,28 @@ fun NavigationDrawerView(
 ) {
     val uiState = navigationDrawerViewModel.uiState.collectAsState()
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 32.dp)
+            .fillMaxHeight(0.95f)
+            .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp))
             .background(Color.White)
-            .clip(RectangleShape)
+            .padding(bottom = 10.dp)
     ) {
         NavigationBarTopView()
         NavigationSearchBar()
-//        Button(onClick = onRandomButtonClickHandler) {
-//            Text(text = "یک بازیکن تصادفی انتخاب کن")
-//        }
         FilterTags()
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-            Log.d("", "opopo" + uiState.value.playersList.toString())
             AllPlayersList(
                 playersList = uiState.value.playersList,
-                Modifier.fillMaxWidth(),
                 onPlayerRowCLick = onPlayerRowCLickHandler
             )
-//            Table(playersList = uiState.value.playersList, modifier = Modifier.width(500.dp))
         }
-
-//        LazyColumn(content = {})
+        DrawerPageButtons(
+            pageNumber = uiState.value.pageNumber,
+            onClickNextButton = navigationDrawerViewModel::goNextPage,
+            onClickPrevButton = navigationDrawerViewModel::goPrevPage
+        )
     }
     if (drawState.isOpen) {
         navigationDrawerViewModel.updateTable()
@@ -243,8 +242,7 @@ fun FilterTags() {
 @Composable
 fun AllPlayersList(
     playersList: List<Player>,
-    modifier: Modifier,
-    onPlayerRowCLick: (player: Player) -> Unit
+    onPlayerRowCLick: (player: Player) -> Unit,
 ) {
     val column1Weight = .6f
     val column2Weight = .2f
@@ -252,15 +250,14 @@ fun AllPlayersList(
 
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
             .padding(horizontal = 8.dp)
     ) {
         item {
-            Column() {
+            Column {
                 Row {
                     ColumnTypeCell(text = "نام بازیکن", weight = column1Weight)
-                    ColumnTypeCell(text = "عملکرد", weight = column2Weight)
-                    ColumnTypeCell(text = "قیمت", weight = column3Weight)
+                    ColumnTypeCell(text = "عملکرد", weight = column2Weight, isCentered = true)
+                    ColumnTypeCell(text = "قیمت", weight = column3Weight, isCentered = true)
                 }
                 Row(
                     modifier = Modifier
@@ -304,20 +301,60 @@ fun AllPlayersList(
     }
 }
 
+@ExperimentalFoundationApi
 @Composable
-fun PlayerCountView(playersList: List<Player>) {
-    Row(
+fun DrawerPageButtons(
+    pageNumber: Int,
+    onClickNextButton: () -> Unit,
+    onClickPrevButton: () -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.Bottom,
         modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .background(
-                brush = Brush.horizontalGradient(
-                    colors = listOf(
-                        Color(0xff04f7da),
-                        Color(0xff02fda2)
-                    )
-                )
-            )
+            .fillMaxHeight()
     ) {
-        Text(text = "500 بازیکن نمایش داده شده است")
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(25.dp)) {
+                Row {
+                    Image(
+                        painter = painterResource(id = R.drawable.vector_right_gray),
+                        contentDescription = null,
+                        modifier = Modifier.combinedClickable(onClick = {})
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.vector_right_gray),
+                        contentDescription = null,
+                        modifier = Modifier.combinedClickable(onClick = {})
+                    )
+                }
+                Image(
+                    painter = painterResource(id = R.drawable.vector_right_purple),
+                    contentDescription = null,
+                    modifier = Modifier.combinedClickable(onClick = onClickPrevButton)
+                )
+                Text(text = "${pageNumber}")
+                Image(
+                    painter = painterResource(id = R.drawable.vector_left_purple),
+                    contentDescription = null,
+                    modifier = Modifier.combinedClickable(onClick = onClickNextButton)
+                )
+                Row {
+                    Image(
+                        painter = painterResource(id = R.drawable.vector_left_gray),
+                        contentDescription = null,
+                        modifier = Modifier.combinedClickable(onClick = {})
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.vector_left_gray),
+                        contentDescription = null,
+                        modifier = Modifier.combinedClickable(onClick = {})
+                    )
+                }
+            }
+        }
     }
 }
