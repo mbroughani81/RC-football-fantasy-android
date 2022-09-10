@@ -1,6 +1,7 @@
 package com.rc.quokka.fantasyfootball.ui.team_creation.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,9 +30,19 @@ import com.rc.quokka.fantasyfootball.domain.model.Post
 import com.rc.quokka.fantasyfootball.ui.team_creation.TeamCreationViewModel
 
 @Composable
-fun TeamListScreen(userPostsList : List<Post>, modifier: Modifier = Modifier) {
+fun TeamListScreen(
+    userPostsList: List<Post>,
+    modifier: Modifier = Modifier,
+    onPlayerClickHandler: (post: Post) -> Unit,
+    onPlayerLongClickHandler: (post: Post) -> Unit
+) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-        Table(userPostsList = userPostsList, modifier = modifier)
+        Table(
+            userPostsList = userPostsList,
+            modifier = modifier,
+            onPlayerClickHandler = onPlayerClickHandler,
+            onPlayerLongClickHandler = onPlayerLongClickHandler
+        )
     }
 }
 
@@ -88,6 +99,8 @@ fun RowScope.PlayerDataCell(
 fun Table(
     userPostsList: List<Post>,
     modifier: Modifier = Modifier,
+    onPlayerClickHandler: (post: Post) -> Unit,
+    onPlayerLongClickHandler: (post: Post) -> Unit
 ) {
     val gkData = userPostsList.filter { it.player.role == PlayerRole.GoalKeeper }
     val defData = userPostsList.filter { it.player.role == PlayerRole.Defender }
@@ -108,9 +121,17 @@ fun Table(
                     ColumnTypeCell(text = "عملکرد", weight = column2Weight)
                     ColumnTypeCell(text = "قیمت", weight = column3Weight)
                 }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.LightGray)
+                        .height(0.5.dp)
+                ) {
+                }
             }
         }
         item {
+            Spacer(modifier = Modifier.height(8.dp))
             Row {
                 PlayerTypeCell(text = "دروازه بانان")
             }
@@ -119,17 +140,34 @@ fun Table(
             val name = it.player.name
             val performance = it.player.rating
             val price = it.player.price
-            Row(Modifier.fillMaxWidth()) {
-                PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(
-                    text = performance.toString(),
-                    weight = column2Weight,
-                    isCentered = true
-                )
-                PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
+            Column() {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onPlayerClickHandler(it) }) {
+                    PlayerDataCell(text = name, weight = column1Weight)
+                    PlayerDataCell(
+                        text = performance.toString(),
+                        weight = column2Weight,
+                        isCentered = true
+                    )
+                    PlayerDataCell(
+                        text = price.toString(),
+                        weight = column3Weight,
+                        isCentered = true
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.LightGray)
+                        .height(0.5.dp)
+                ) {
+                }
             }
         }
         item {
+            Spacer(modifier = Modifier.height(8.dp))
             Row {
                 PlayerTypeCell(text = "مدافعان")
             }
@@ -138,17 +176,34 @@ fun Table(
             val name = it.player.name
             val performance = it.player.rating
             val price = it.player.price
-            Row(Modifier.fillMaxWidth()) {
-                PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(
-                    text = performance.toString(),
-                    weight = column2Weight,
-                    isCentered = true
-                )
-                PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
+            Column() {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onPlayerClickHandler(it) }) {
+                    PlayerDataCell(text = name, weight = column1Weight)
+                    PlayerDataCell(
+                        text = performance.toString(),
+                        weight = column2Weight,
+                        isCentered = true
+                    )
+                    PlayerDataCell(
+                        text = price.toString(),
+                        weight = column3Weight,
+                        isCentered = true
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.LightGray)
+                        .height(0.5.dp)
+                ) {
+                }
             }
         }
         item {
+            Spacer(modifier = Modifier.height(8.dp))
             Row {
                 PlayerTypeCell(text = "هافبک ها")
             }
@@ -157,18 +212,35 @@ fun Table(
             val name = it.player.name
             val performance = it.player.rating
             val price = it.player.price
-            Row(Modifier.fillMaxWidth()) {
-                PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(
-                    text = performance.toString(),
-                    weight = column2Weight,
-                    isCentered = true
-                )
-                PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
+            Column() {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onPlayerClickHandler(it) }) {
+                    PlayerDataCell(text = name, weight = column1Weight)
+                    PlayerDataCell(
+                        text = performance.toString(),
+                        weight = column2Weight,
+                        isCentered = true
+                    )
+                    PlayerDataCell(
+                        text = price.toString(),
+                        weight = column3Weight,
+                        isCentered = true
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.LightGray)
+                        .height(0.5.dp)
+                ) {
+                }
             }
         }
         item {
-            Row {
+            Spacer(modifier = Modifier.height(8.dp))
+            Row() {
                 PlayerTypeCell(text = "مهاجمین")
             }
         }
@@ -176,14 +248,30 @@ fun Table(
             val name = it.player.name
             val performance = it.player.rating
             val price = it.player.price
-            Row(Modifier.fillMaxWidth()) {
-                PlayerDataCell(text = name, weight = column1Weight)
-                PlayerDataCell(
-                    text = performance.toString(),
-                    weight = column2Weight,
-                    isCentered = true
-                )
-                PlayerDataCell(text = price.toString(), weight = column3Weight, isCentered = true)
+            Column() {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onPlayerClickHandler(it) }) {
+                    PlayerDataCell(text = name, weight = column1Weight)
+                    PlayerDataCell(
+                        text = performance.toString(),
+                        weight = column2Weight,
+                        isCentered = true
+                    )
+                    PlayerDataCell(
+                        text = price.toString(),
+                        weight = column3Weight,
+                        isCentered = true
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.LightGray)
+                        .height(0.5.dp)
+                ) {
+                }
             }
         }
     }

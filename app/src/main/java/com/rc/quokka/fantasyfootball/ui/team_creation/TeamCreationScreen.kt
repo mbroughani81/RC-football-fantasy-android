@@ -107,7 +107,14 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                                         }
                                     )
                                 } else {
-                                    TeamListScreen(userPostsList = uiState.value.userPostsList)
+                                    TeamListScreen(
+                                        userPostsList = uiState.value.userPostsList,
+                                        onPlayerClickHandler = { post ->
+                                            drawerCurrentPost.value = post
+                                            coroutineScope.launch { scaffoldState.drawerState.open() }
+                                        },
+                                        onPlayerLongClickHandler = {}
+                                    )
                                 }
                             }
                         }
