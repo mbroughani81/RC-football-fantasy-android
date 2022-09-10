@@ -1,5 +1,6 @@
 package com.rc.quokka.fantasyfootball.ui.authentication
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -10,9 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.rc.quokka.fantasyfootball.R
 import com.rc.quokka.fantasyfootball.ui.authentication.components.FormInputField
 import com.rc.quokka.fantasyfootball.ui.team_creation.components.CommonText
 import com.rc.quokka.fantasyfootball.ui.theme.weight700Size20VazirFont
@@ -20,8 +24,9 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight700Size20VazirFont
 @Composable
 fun ConfirmCodeScreen(onConfirmButtonClick: () -> Unit) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-        Box(
-            contentAlignment = Alignment.TopCenter,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
@@ -67,6 +72,11 @@ fun ConfirmCodeScreen(onConfirmButtonClick: () -> Unit) {
                     }
                 }
             }
+            Image(
+                painter = painterResource(id = R.drawable.authscreen_footer_img),
+                contentDescription = "",
+                contentScale = ContentScale.FillWidth
+            )
         }
     }
 }
