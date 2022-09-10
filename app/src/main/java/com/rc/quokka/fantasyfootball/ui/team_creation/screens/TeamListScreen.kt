@@ -38,11 +38,13 @@ fun TeamListScreen(userPostsList : List<Post>, modifier: Modifier = Modifier) {
 @Composable
 fun RowScope.ColumnTypeCell(
     text: String,
-    weight: Float
+    weight: Float,
+    isCentered: Boolean = false
 ) {
+    val textAlign = if (isCentered) TextAlign.Center else TextAlign.Start
     CommonText(
         text = text,
-        style = weight400Size13VazirFont,
+        style = weight400Size13VazirFont.copy(textAlign = textAlign),
         color = Color.Gray,
         modifier = Modifier
             .weight(weight)

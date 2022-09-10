@@ -15,18 +15,34 @@ import kotlinx.coroutines.launch
 
 class NavigationDrawerViewModel(private val playersRepository: PlayersRepository = PlayersApiRepository()) :
     ViewModel() {
-        private val _uiState = MutableStateFlow(NavigationDrawerUiState(emptyList()))
-        val uiState = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(NavigationDrawerUiState(emptyList(), 1))
+    val uiState = _uiState.asStateFlow()
 
     fun updateTable() {
         viewModelScope.launch {
-            val newState = NavigationDrawerUiState(playersList = playersRepository.getPlayers(
-                GetPlayerData(limit = 10, pageNumber = 1)
-            ))
+            val newState = NavigationDrawerUiState(
+                playersList = playersRepository.getPlayers(
+                    GetPlayerData(limit = 10, uiState.value.pageNumber)
+                ),
+                pageNumber = uiState.value.pageNumber
+            )
             _uiState.value = newState
             Log.d("NavigationDrawegg", uiState.value.playersList.toString())
         }
     }
+
+    fun goNextPage() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(pageNumber = _uiState.value.pageNumber + 1)
+            updateTable()
+        }
+    }
+    fun goPrevPage() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(pageNumber = _uiState.value.pageNumber - 1)
+            updateTable()
+        }
+    }
 }
 
-data class NavigationDrawerUiState(val playersList: List<Player>)
+data class NavigationDrawerUiState(val playersList: List<Player>, val pageNumber: Int)
