@@ -142,40 +142,76 @@ fun Table(
             }
         }
         items(gkData) { it ->
-            val name = it.player.name
-            val performance = it.player.rating
-            val price = it.player.price
-            Column() {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .combinedClickable(
-                            indication = null,
-                            interactionSource = remember {
-                                MutableInteractionSource()
-                            },
-                            onClick = { onPlayerClickHandler(it) },
-                            onLongClick = { onPlayerLongClickHandler(it) }
+            if (it.player.name != (-1).toString()){
+                val name = it.player.name
+                val performance = it.player.rating
+                val price = it.player.price
+                Column() {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .combinedClickable(
+                                indication = null,
+                                interactionSource = remember {
+                                    MutableInteractionSource()
+                                },
+                                onClick = { onPlayerClickHandler(it) },
+                                onLongClick = { onPlayerLongClickHandler(it) }
+                            )
+                    ) {
+                        PlayerDataCell(text = name, weight = column1Weight)
+                        PlayerDataCell(
+                            text = performance.toString(),
+                            weight = column2Weight,
+                            isCentered = true
                         )
-                ) {
-                    PlayerDataCell(text = name, weight = column1Weight)
-                    PlayerDataCell(
-                        text = performance.toString(),
-                        weight = column2Weight,
-                        isCentered = true
-                    )
-                    PlayerDataCell(
-                        text = price.toString(),
-                        weight = column3Weight,
-                        isCentered = true
-                    )
+                        PlayerDataCell(
+                            text = price.toString(),
+                            weight = column3Weight,
+                            isCentered = true
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                            .height(0.5.dp)
+                    ) {
+                    }
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.LightGray)
-                        .height(0.5.dp)
-                ) {
+            } else {
+                Column() {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .combinedClickable(
+                                indication = null,
+                                interactionSource = remember {
+                                    MutableInteractionSource()
+                                },
+                                onClick = { onPlayerClickHandler(it) },
+                                onLongClick = { onPlayerLongClickHandler(it) }
+                            )
+                    ) {
+                        PlayerDataCell(text = "none", weight = column1Weight)
+                        PlayerDataCell(
+                            text = "none",
+                            weight = column2Weight,
+                            isCentered = true
+                        )
+                        PlayerDataCell(
+                            text = "none",
+                            weight = column3Weight,
+                            isCentered = true
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                            .height(0.5.dp)
+                    ) {
+                    }
                 }
             }
         }
@@ -186,39 +222,75 @@ fun Table(
             }
         }
         items(defData) {
-            val name = it.player.name
-            val performance = it.player.rating
-            val price = it.player.price
-            Column() {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .combinedClickable(
-                            indication = null,
-                            interactionSource = remember {
-                                MutableInteractionSource()
-                            },
-                            onClick = { onPlayerClickHandler(it) },
-                            onLongClick = { onPlayerLongClickHandler(it) }
-                        )) {
-                    PlayerDataCell(text = name, weight = column1Weight)
-                    PlayerDataCell(
-                        text = performance.toString(),
-                        weight = column2Weight,
-                        isCentered = true
-                    )
-                    PlayerDataCell(
-                        text = price.toString(),
-                        weight = column3Weight,
-                        isCentered = true
-                    )
+            if (it.player.name != (-1).toString()){
+                val name = it.player.name
+                val performance = it.player.rating
+                val price = it.player.price
+                Column() {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .combinedClickable(
+                                indication = null,
+                                interactionSource = remember {
+                                    MutableInteractionSource()
+                                },
+                                onClick = { onPlayerClickHandler(it) },
+                                onLongClick = { onPlayerLongClickHandler(it) }
+                            )) {
+                        PlayerDataCell(text = name, weight = column1Weight)
+                        PlayerDataCell(
+                            text = performance.toString(),
+                            weight = column2Weight,
+                            isCentered = true
+                        )
+                        PlayerDataCell(
+                            text = price.toString(),
+                            weight = column3Weight,
+                            isCentered = true
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                            .height(0.5.dp)
+                    ) {
+                    }
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.LightGray)
-                        .height(0.5.dp)
-                ) {
+            } else {
+                Column() {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .combinedClickable(
+                                indication = null,
+                                interactionSource = remember {
+                                    MutableInteractionSource()
+                                },
+                                onClick = { onPlayerClickHandler(it) },
+                                onLongClick = { onPlayerLongClickHandler(it) }
+                            )
+                    ) {
+                        PlayerDataCell(text = "none", weight = column1Weight)
+                        PlayerDataCell(
+                            text = "none",
+                            weight = column2Weight,
+                            isCentered = true
+                        )
+                        PlayerDataCell(
+                            text = "none",
+                            weight = column3Weight,
+                            isCentered = true
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                            .height(0.5.dp)
+                    ) {
+                    }
                 }
             }
         }
@@ -229,39 +301,75 @@ fun Table(
             }
         }
         items(midData) {
-            val name = it.player.name
-            val performance = it.player.rating
-            val price = it.player.price
-            Column() {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .combinedClickable(
-                            indication = null,
-                            interactionSource = remember {
-                                MutableInteractionSource()
-                            },
-                            onClick = { onPlayerClickHandler(it) },
-                            onLongClick = { onPlayerLongClickHandler(it) }
-                        )) {
-                    PlayerDataCell(text = name, weight = column1Weight)
-                    PlayerDataCell(
-                        text = performance.toString(),
-                        weight = column2Weight,
-                        isCentered = true
-                    )
-                    PlayerDataCell(
-                        text = price.toString(),
-                        weight = column3Weight,
-                        isCentered = true
-                    )
+            if (it.player.name != (-1).toString()){
+                val name = it.player.name
+                val performance = it.player.rating
+                val price = it.player.price
+                Column() {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .combinedClickable(
+                                indication = null,
+                                interactionSource = remember {
+                                    MutableInteractionSource()
+                                },
+                                onClick = { onPlayerClickHandler(it) },
+                                onLongClick = { onPlayerLongClickHandler(it) }
+                            )) {
+                        PlayerDataCell(text = name, weight = column1Weight)
+                        PlayerDataCell(
+                            text = performance.toString(),
+                            weight = column2Weight,
+                            isCentered = true
+                        )
+                        PlayerDataCell(
+                            text = price.toString(),
+                            weight = column3Weight,
+                            isCentered = true
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                            .height(0.5.dp)
+                    ) {
+                    }
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.LightGray)
-                        .height(0.5.dp)
-                ) {
+            } else {
+                Column() {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .combinedClickable(
+                                indication = null,
+                                interactionSource = remember {
+                                    MutableInteractionSource()
+                                },
+                                onClick = { onPlayerClickHandler(it) },
+                                onLongClick = { onPlayerLongClickHandler(it) }
+                            )
+                    ) {
+                        PlayerDataCell(text = "none", weight = column1Weight)
+                        PlayerDataCell(
+                            text = "none",
+                            weight = column2Weight,
+                            isCentered = true
+                        )
+                        PlayerDataCell(
+                            text = "none",
+                            weight = column3Weight,
+                            isCentered = true
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                            .height(0.5.dp)
+                    ) {
+                    }
                 }
             }
         }
@@ -272,39 +380,75 @@ fun Table(
             }
         }
         items(attData) {
-            val name = it.player.name
-            val performance = it.player.rating
-            val price = it.player.price
-            Column() {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .combinedClickable(
-                            indication = null,
-                            interactionSource = remember {
-                                MutableInteractionSource()
-                            },
-                            onClick = { onPlayerClickHandler(it) },
-                            onLongClick = { onPlayerLongClickHandler(it) }
-                        )) {
-                    PlayerDataCell(text = name, weight = column1Weight)
-                    PlayerDataCell(
-                        text = performance.toString(),
-                        weight = column2Weight,
-                        isCentered = true
-                    )
-                    PlayerDataCell(
-                        text = price.toString(),
-                        weight = column3Weight,
-                        isCentered = true
-                    )
+            if (it.player.name != (-1).toString()){
+                val name = it.player.name
+                val performance = it.player.rating
+                val price = it.player.price
+                Column() {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .combinedClickable(
+                                indication = null,
+                                interactionSource = remember {
+                                    MutableInteractionSource()
+                                },
+                                onClick = { onPlayerClickHandler(it) },
+                                onLongClick = { onPlayerLongClickHandler(it) }
+                            )) {
+                        PlayerDataCell(text = name, weight = column1Weight)
+                        PlayerDataCell(
+                            text = performance.toString(),
+                            weight = column2Weight,
+                            isCentered = true
+                        )
+                        PlayerDataCell(
+                            text = price.toString(),
+                            weight = column3Weight,
+                            isCentered = true
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                            .height(0.5.dp)
+                    ) {
+                    }
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.LightGray)
-                        .height(0.5.dp)
-                ) {
+            } else {
+                Column() {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .combinedClickable(
+                                indication = null,
+                                interactionSource = remember {
+                                    MutableInteractionSource()
+                                },
+                                onClick = { onPlayerClickHandler(it) },
+                                onLongClick = { onPlayerLongClickHandler(it) }
+                            )
+                    ) {
+                        PlayerDataCell(text = "none", weight = column1Weight)
+                        PlayerDataCell(
+                            text = "none",
+                            weight = column2Weight,
+                            isCentered = true
+                        )
+                        PlayerDataCell(
+                            text = "none",
+                            weight = column3Weight,
+                            isCentered = true
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                            .height(0.5.dp)
+                    ) {
+                    }
                 }
             }
         }
