@@ -52,16 +52,12 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                 drawerBackgroundColor = Color.Transparent,
                 drawerContent = {
                     NavigationDrawerView(
-                        onRandomButtonClickHandler = {
-                            teamCreationViewModel.randomFillPost(
-                                drawerCurrentPost.value!!,
-                            )
-                        },
                         onPlayerRowCLickHandler = { player ->
                             teamCreationViewModel.fillPost(
                                 post = drawerCurrentPost.value!!,
                                 player = player
                             )
+                            coroutineScope.launch { scaffoldState.drawerState.close() }
                         },
                         drawState = scaffoldState.drawerState
                     )
