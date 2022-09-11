@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class TeamCreationViewModel(
     private val playersRepository: PlayersRepository = PlayersApiRepository())
     : ViewModel() {
-    private val _uiState = MutableStateFlow(TeamCreationUiState(emptyList(), "0"))
+    private val _uiState = MutableStateFlow(TeamCreationUiState(emptyList(), "0", "0"))
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -47,4 +47,4 @@ class TeamCreationViewModel(
     }
 }
 
-data class TeamCreationUiState(val userPostsList: List<Post>, val userMoney: String)
+data class TeamCreationUiState(val userPostsList: List<Post>, val userMoney: String, val userRemainingPlayersCount: String)
