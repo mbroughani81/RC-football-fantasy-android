@@ -4,9 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,16 +13,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import com.rc.quokka.fantasyfootball.R
-import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight900Size18VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight900Size9VazirFont
 
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier, userMoney: String, userRemainingPlayers: Int) {
+fun TopBar(modifier: Modifier = Modifier, userMoney: String, userRemainingPlayersCount: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -52,7 +46,7 @@ fun TopBar(modifier: Modifier = Modifier, userMoney: String, userRemainingPlayer
         )
         {
             CommonText(
-                "$userRemainingPlayers/15",
+                text = "$userRemainingPlayersCount/15",
                 style = weight900Size18VazirFont,
                 color = Color(0xff3D195B),
                 modifier = Modifier.padding(start = 8.dp)
@@ -95,7 +89,7 @@ fun TopBar(modifier: Modifier = Modifier, userMoney: String, userRemainingPlayer
                 .fillMaxHeight()
         ) { 
             CommonText(
-                userMoney.toString(),
+                userMoney,
                 style = weight900Size18VazirFont,
                 color = Color(0xff3D195B),
                 modifier = Modifier.padding(start = 8.dp)

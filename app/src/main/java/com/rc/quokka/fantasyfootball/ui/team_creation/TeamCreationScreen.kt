@@ -60,6 +60,7 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                     ) {
                         NavigationDrawerView(
                             onPlayerRowCLickHandler = { player ->
+                                coroutineScope.launch { scaffoldState.drawerState.close() }
                                 teamCreationViewModel.fillPost(
                                     post = drawerCurrentPost.value!!,
                                     player = player
@@ -72,7 +73,7 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                 drawerGesturesEnabled = scaffoldState.drawerState.isOpen
             ) {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                    Column() {
+                    Column {
                         Header(
                             modifier = Modifier
                                 .weight(3f)
@@ -97,7 +98,7 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                                         .height(75.dp)
                                         .zIndex(1f),
                                     uiState.value.userMoney,
-                                    uiState.value.userPostsList.size
+                                    uiState.value.userRemainingPlayersCount
                                 )
                                 if (isOnSoccerFieldView.value) {
                                     TeamSchematicScreen(

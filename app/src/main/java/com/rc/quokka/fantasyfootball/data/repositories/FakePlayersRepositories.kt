@@ -68,6 +68,10 @@ class FakePlayersRepositories : PlayersRepository {
     override suspend fun observerUserMoney(): Flow<String> {
         TODO("Not yet implemented")
     }
+
+    override suspend fun observerUserRemainingPlayersCount(): Flow<String> {
+        TODO("Not yet implemented")
+    }
 }
 
 private val fakeAllPlayers: List<Player> =
