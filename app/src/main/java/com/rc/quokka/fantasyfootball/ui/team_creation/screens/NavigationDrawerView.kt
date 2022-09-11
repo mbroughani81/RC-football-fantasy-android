@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.domain.model.Post
+import com.rc.quokka.fantasyfootball.domain.model.Token
 import com.rc.quokka.fantasyfootball.ui.team_creation.screens.ColumnTypeCell
 import com.rc.quokka.fantasyfootball.ui.team_creation.screens.NavigationDrawerViewModel
 import com.rc.quokka.fantasyfootball.ui.team_creation.screens.PlayerDataCell
@@ -51,10 +52,13 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size12VazirFont
 @ExperimentalFoundationApi
 @Composable
 fun NavigationDrawerView(
+    token: Token,
     onPlayerRowCLickHandler: (player: Player) -> Unit,
     drawState: DrawerState,
     navigationDrawerViewModel: NavigationDrawerViewModel = viewModel(),
 ) {
+    navigationDrawerViewModel.token = token
+
     val uiState = navigationDrawerViewModel.uiState.collectAsState()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -60,6 +60,7 @@ fun TeamCreationScreen(token: Token, teamCreationViewModel: TeamCreationViewMode
                         modifier = Modifier.fillMaxHeight().padding(vertical = 10.dp),
                     ) {
                         NavigationDrawerView(
+                            token = token,
                             onPlayerRowCLickHandler = { player ->
                                 coroutineScope.launch { scaffoldState.drawerState.close() }
                                 teamCreationViewModel.fillPost(

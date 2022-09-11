@@ -17,7 +17,7 @@ class FakePlayersRepositories : PlayersRepository {
         userPosts.value = fakeUsersPostsList
     }
 
-    override suspend fun getPlayers(getPlayerData: GetPlayerData): List<Player> {
+    override suspend fun getPlayers(token: Token,getPlayerData: GetPlayerData): List<Player> {
         delay(3000)
         Log.d("FakePlayersRepositories", "HERE")
         return fakeAllPlayers
