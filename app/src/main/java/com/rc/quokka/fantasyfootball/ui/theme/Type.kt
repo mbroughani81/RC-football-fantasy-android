@@ -93,3 +93,6 @@ val weight400Size13VazirFont =
 
 val weight400Size12VazirFont =
     TextStyle(fontFamily = VazirFont, fontWeight = FontWeight.W400, fontSize = 12.sp)
+
+val weight300Size14VazirFont =
+    TextStyle(fontFamily = VazirFont, fontWeight = FontWeight.W300, fontSize = 14.sp)
