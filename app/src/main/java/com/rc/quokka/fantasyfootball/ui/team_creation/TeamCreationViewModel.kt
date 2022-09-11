@@ -35,8 +35,8 @@ class TeamCreationViewModel(
             }
         }
         viewModelScope.launch {
-            playersRepository.observerUserRemainingPlayersCount().collect {
-                _uiState.value = _uiState.value.copy(userRemainingPlayersCount = it)
+            playersRepository.observerUserPlayersInfo().collect {
+                _uiState.value = _uiState.value.copy(userRemainingPlayersCount = it.selectedPlayerCount)
             }
         }
     }

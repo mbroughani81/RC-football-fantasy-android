@@ -52,8 +52,8 @@ interface PlayerApiService {
     @GET("user/get-wallet")
     suspend fun getUserMoney(@Header("Authorization") token: String): Map<String, String>
 
-    @GET("user/get-remaining-players")
-    suspend fun getUserRemainingPlayersCount(): Map<String, String>
+    @GET("user/players-info")
+    suspend fun getUserPlayersInfo(@Header("Authorization")token: String): UserPlayerCountDto
 
     @GET()
     suspend fun getWeekInfo()
@@ -65,6 +65,11 @@ object FantasyFootballPlayersApi {
         retrofit.create(PlayerApiService::class.java)
     }
 }
+
+data class UserPlayerCountDto (
+    @Json(name = "selected_players_count") val selectedPlayersCount: Int,
+    @Json(name = "max_players_count") val maxPlayersCount: Int
+    )
 
 data class AddPlayerDataDto(
     @Json(name = "playerId") val playerId: Int,
@@ -117,14 +122,16 @@ class PlayersApiDataSource {
         }
     }
 
-    suspend fun getUserRemainingPlayersCount(): String {
+    suspend fun getUserPlayersInfo(token: Token): UserPlayerCountDto {
         try {
-            val mp = FantasyFootballPlayersApi.retrofitService.getUserRemainingPlayersCount()
-            Log.d("try", "kir")
-            return mp.get("remaining_player")!!
+            val userPlayerCountDto = FantasyFootballPlayersApi.retrofitService.getUserPlayersInfo("Bearer ${token.token}")
+//            val mp = FantasyFootballPlayersApi.retrofitService.getUserPlayersInfo("Bearer ${token.token}")
+//            return mp.get("remaining_player")!!
+            return userPlayerCountDto
         } catch (e: Exception) {
-            Log.d("try", e.toString())
-            return "0"
+//            Log.d("try", e.toString())
+//            return "0"
+            return UserPlayerCountDto(0, 0)
         }
     }
 

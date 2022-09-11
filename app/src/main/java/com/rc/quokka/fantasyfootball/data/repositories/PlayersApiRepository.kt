@@ -14,7 +14,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = PlayersApiDataSource()) :
     PlayersRepository {
 
-    var userRemainingPlayersCount = MutableStateFlow("0")
+    var userPlayersInfo =
+        MutableStateFlow(UserPlayerInfo(maxPlayerCount = "0", selectedPlayerCount = "0"))
     var userMoney = MutableStateFlow("0")
     var userPosts = MutableStateFlow(
         listOf(
@@ -36,15 +37,16 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
         )
     )
 
-    override suspend fun getPlayers(getPlayerData: GetPlayerData): List<Player> = withContext(Dispatchers.IO) {
-        playersApiDataSource.getPlayers(FantasyToken.token ,getPlayerData)
-    }
+    override suspend fun getPlayers(getPlayerData: GetPlayerData): List<Player> =
+        withContext(Dispatchers.IO) {
+            playersApiDataSource.getPlayers(FantasyToken.token, getPlayerData)
+        }
 
     override suspend fun clearPost(post: Post) {
-        playersApiDataSource.removePlayer(FantasyToken.token ,post = post)
+        playersApiDataSource.removePlayer(FantasyToken.token, post = post)
         updateUserPost()
         updateUserMoney()
-        updateUserRemainingPlayersCount()
+        updateUserPlayersInfo()
     }
 
     override suspend fun fillPost(post: Post, player: Player) {
@@ -54,16 +56,22 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
         playersApiDataSource.addPlayer(token = FantasyToken.token, post = post, player = player)
         updateUserPost()
         updateUserMoney()
-        updateUserRemainingPlayersCount()
+        updateUserPlayersInfo()
     }
 
-    override suspend fun observerUserRemainingPlayersCount(): Flow<String> {
-        updateUserRemainingPlayersCount()
-        return userRemainingPlayersCount
+    override suspend fun observerUserPlayersInfo(): Flow<UserPlayerInfo> {
+        CoroutineScope(Dispatchers.IO).launch {
+            updateUserPlayersInfo()
+            delay(10000)
+        }
+        return userPlayersInfo
     }
 
     override suspend fun observerUserPosts(): Flow<List<Post>> {
-        updateUserPost()
+        CoroutineScope(Dispatchers.IO).launch {
+            updateUserPost()
+            delay(10000)
+        }
         return userPosts
     }
 
@@ -75,10 +83,12 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
         return userMoney
     }
 
-    private suspend fun updateUserRemainingPlayersCount() {
-        val updatedUserRemainingPlayersCount = playersApiDataSource.getUserRemainingPlayersCount()
-        userRemainingPlayersCount.value = updatedUserRemainingPlayersCount
-        Log.d("kerrrrr", updatedUserRemainingPlayersCount)
+    private suspend fun updateUserPlayersInfo() {
+        val updatedUserPlayerInfo = playersApiDataSource.getUserPlayersInfo(FantasyToken.token)
+        userPlayersInfo.value = UserPlayerInfo(
+            updatedUserPlayerInfo.maxPlayersCount.toString(),
+            updatedUserPlayerInfo.selectedPlayersCount.toString()
+        )
     }
 
     private suspend fun updateUserMoney() {

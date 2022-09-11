@@ -67,7 +67,7 @@ class FakePlayersRepositories : PlayersRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun observerUserRemainingPlayersCount(): Flow<String> {
+    override suspend fun observerUserPlayersInfo(): Flow<UserPlayerInfo> {
         TODO("Not yet implemented")
     }
 }
