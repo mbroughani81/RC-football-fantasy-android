@@ -80,6 +80,7 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                         NavBar(modifier = Modifier.weight(1f))
                         WeekInfo(modifier = Modifier.weight(1f))
                         TeamViewTypeSwitch(
+                            isOnSoccerFieldView.value,
                             onClickListButtonHandler = { isOnSoccerFieldView.value = false },
                             onClickSchematicButtonHandle = { isOnSoccerFieldView.value = true },
                             modifier = Modifier.weight(3f)
@@ -94,7 +95,9 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                                 TopBar(
                                     modifier = Modifier
                                         .height(75.dp)
-                                        .zIndex(1f)
+                                        .zIndex(1f),
+                                    uiState.value.userMoney,
+                                    uiState.value.userPostsList.size
                                 )
                                 if (isOnSoccerFieldView.value) {
                                     TeamSchematicScreen(
@@ -110,7 +113,15 @@ fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel(
                                         }
                                     )
                                 } else {
-                                    TeamListScreen(userPostsList = uiState.value.userPostsList)
+                                    TeamListScreen(
+                                        userPostsList = uiState.value.userPostsList,
+                                        onPlayerClickHandler = { post ->
+                                            drawerCurrentPost.value = post
+                                            coroutineScope.launch { scaffoldState.drawerState.open() }
+                                        },
+                                        onPlayerLongClickHandler = { post ->
+                                            deleteDialogCurrentPlayer.value = post}
+                                    )
                                 }
                             }
                         }

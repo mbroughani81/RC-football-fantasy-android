@@ -127,22 +127,40 @@ fun Shirt(
     modifier: Modifier
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(36.dp)) {
-        Image(
-            painter = painterResource(id = R.drawable.valencia_college_diactive),
-            contentDescription = "shirt",
-            modifier = Modifier
-                .width(32.dp)
-                .padding(top = 8.dp, bottom = 4.dp)
-                .combinedClickable(
-                    indication = null,
-                    interactionSource = remember {
-                        MutableInteractionSource()
-                    },
-                    onClick = { onPlayerClick(post) },
-                    onLongClick = { onPlayerLongClick(post) }
-                )
-        )
-        PlayerInfo(player = post.player)
+        if (post.player.name != (-1).toString()){
+            Image(
+                painter = painterResource(id = R.drawable.delete_player_kit_img),
+                contentDescription = "shirt",
+                modifier = Modifier
+                    .width(32.dp)
+                    .padding(top = 8.dp, bottom = 4.dp)
+                    .combinedClickable(
+                        indication = null,
+                        interactionSource = remember {
+                            MutableInteractionSource()
+                        },
+                        onClick = { onPlayerClick(post) },
+                        onLongClick = { onPlayerLongClick(post) }
+                    )
+            )
+            PlayerInfo(player = post.player)
+        } else {
+            Image(
+                painter = painterResource(id = R.drawable.valencia_college_diactive),
+                contentDescription = "shirt",
+                modifier = Modifier
+                    .width(32.dp)
+                    .padding(top = 8.dp, bottom = 4.dp)
+                    .combinedClickable(
+                        indication = null,
+                        interactionSource = remember {
+                            MutableInteractionSource()
+                        },
+                        onClick = { onPlayerClick(post) },
+                        onLongClick = { onPlayerLongClick(post) }
+                    )
+            )
+        }
     }
 }
 

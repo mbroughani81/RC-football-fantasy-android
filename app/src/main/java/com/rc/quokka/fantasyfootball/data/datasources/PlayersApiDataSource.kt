@@ -7,13 +7,13 @@ import com.rc.quokka.fantasyfootball.domain.model.GetPlayerData
 import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.domain.model.PlayerRole
 import com.rc.quokka.fantasyfootball.domain.model.Post
+import com.squareup.moshi.Json
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-
 
 private const val BASE_URL =
     "http://192.168.43.35:3000"
@@ -22,12 +22,10 @@ private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
-
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL)
     .build()
-
 
 interface PlayerApiService {
     @GET("/player/all")
@@ -41,6 +39,13 @@ interface PlayerApiService {
 
     @GET("user/get_players")
     suspend fun getUserPlayers(): List<UserPlayerDto>
+
+    @GET("user/get_remaining_money")
+    suspend fun getUserMoney(): Map<String,String>
+
+    @GET()
+    suspend fun getWeekInfo()
+
 }
 
 object FantasyFootballPlayersApi {
@@ -83,6 +88,16 @@ class PlayersApiDataSource {
         } catch (e: Exception) {
             Log.d("PlayersApiDataSource", e.toString())
             return emptyList()
+        }
+    }
+
+    suspend fun getUserMoney(): String {
+        try {
+            val mp = FantasyFootballPlayersApi.retrofitService.getUserMoney()
+            return mp.get("remaining_money")!!
+        } catch (e: Exception) {
+            Log.d("getUserMoney", e.toString())
+            return "0"
         }
     }
 

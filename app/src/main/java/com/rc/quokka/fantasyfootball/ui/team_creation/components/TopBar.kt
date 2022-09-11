@@ -25,7 +25,7 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight900Size9VazirFont
 
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier) {
+fun TopBar(modifier: Modifier = Modifier, userMoney: String, userRemainingPlayers: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -52,7 +52,7 @@ fun TopBar(modifier: Modifier = Modifier) {
         )
         {
             CommonText(
-                "۱۵/۱۲",
+                "$userRemainingPlayers/15",
                 style = weight900Size18VazirFont,
                 color = Color(0xff3D195B),
                 modifier = Modifier.padding(start = 8.dp)
@@ -95,7 +95,7 @@ fun TopBar(modifier: Modifier = Modifier) {
                 .fillMaxHeight()
         ) { 
             CommonText(
-                "۷۳",
+                userMoney.toString(),
                 style = weight900Size18VazirFont,
                 color = Color(0xff3D195B),
                 modifier = Modifier.padding(start = 8.dp)
