@@ -1,6 +1,7 @@
 package com.rc.quokka.fantasyfootball.ui
 
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,6 +25,7 @@ enum class FantasyFootballScreen() {
     TeamCreation
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FantasyFootballApp(authenticationViewModel: AuthenticationViewModel = viewModel()) {
     val navController = rememberNavController()

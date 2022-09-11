@@ -9,6 +9,7 @@ import com.rc.quokka.fantasyfootball.domain.model.Post
 import com.rc.quokka.fantasyfootball.domain.repositories.PlayersRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class TeamCreationViewModel(
@@ -25,11 +26,15 @@ class TeamCreationViewModel(
                 Log.d("TeamSchematicViewModel", "emitted")
                 _uiState.value = _uiState.value.copy(userPostsList = it)
             }
-//            _uiState.value = TeamCreationUiState(userPostsList = userPostsList)
         }
         viewModelScope.launch {
             playersRepository.observerUserMoney().collect {
                 _uiState.value = _uiState.value.copy(userMoney = it)
+            }
+        }
+        viewModelScope.launch {
+            playersRepository.observerUserRemainingPlayersCount().collect {
+                _uiState.value = _uiState.value.copy(userRemainingPlayersCount = it)
             }
         }
     }

@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = PlayersApiDataSource()) :
     PlayersRepository {
 
-    var userRemainingPlayersCount = MutableStateFlow(0)
+    var userRemainingPlayersCount = MutableStateFlow("0")
     var userMoney = MutableStateFlow("0")
     var userPosts = MutableStateFlow(
         listOf(
@@ -44,6 +44,7 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
         playersApiDataSource.removePlayer(post = post)
         updateUserPost()
         updateUserMoney()
+        updateUserRemainingPlayersCount()
     }
 
     override suspend fun fillPost(post: Post, player: Player) {
@@ -53,6 +54,12 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
         playersApiDataSource.addPlayer(post = post, player = player)
         updateUserPost()
         updateUserMoney()
+        updateUserRemainingPlayersCount()
+    }
+
+    override suspend fun observerUserRemainingPlayersCount(): Flow<String> {
+        updateUserRemainingPlayersCount()
+        return userRemainingPlayersCount
     }
 
     override suspend fun observerUserPosts(): Flow<List<Post>> {
@@ -65,6 +72,11 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
         return userMoney
     }
 
+    private suspend fun updateUserRemainingPlayersCount() {
+        val updatedUserRemainingPlayersCount = playersApiDataSource.getUserRemainingPlayersCount()
+        userRemainingPlayersCount.value = updatedUserRemainingPlayersCount
+        Log.d("kerrrrr", updatedUserRemainingPlayersCount)
+    }
 
     private suspend fun updateUserMoney() {
         val updatedUserMoney = playersApiDataSource.getUserMoney()
@@ -84,6 +96,5 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
             }
         }
         userPosts.value = updatedUserPosts
-        userRemainingPlayersCount.value = updatedUserPosts.size
     }
 }

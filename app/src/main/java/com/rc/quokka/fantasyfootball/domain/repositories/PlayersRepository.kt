@@ -14,4 +14,6 @@ interface PlayersRepository {
 
     suspend fun observerUserMoney(): Flow<String>
 
+    suspend fun observerUserRemainingPlayersCount(): Flow<String>
+
 }

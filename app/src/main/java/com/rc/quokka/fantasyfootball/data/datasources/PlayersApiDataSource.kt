@@ -43,6 +43,9 @@ interface PlayerApiService {
     @GET("user/get_remaining_money")
     suspend fun getUserMoney(): Map<String,String>
 
+    @GET("user/get_remaining_player")
+    suspend fun getUserRemainingPlayersCount(): Map<String, String>
+
     @GET()
     suspend fun getWeekInfo()
 
@@ -88,6 +91,17 @@ class PlayersApiDataSource {
         } catch (e: Exception) {
             Log.d("PlayersApiDataSource", e.toString())
             return emptyList()
+        }
+    }
+
+    suspend fun getUserRemainingPlayersCount(): String {
+        try {
+            val mp = FantasyFootballPlayersApi.retrofitService.getUserRemainingPlayersCount()
+            Log.d("try", "kir")
+            return mp.get("remaining_player")!!
+        } catch (e: Exception) {
+            Log.d("try", e.toString())
+            return "0"
         }
     }
 
