@@ -3,13 +3,13 @@ package com.rc.quokka.fantasyfootball.data.repositories
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.rc.quokka.fantasyfootball.data.auth.FantasyToken
 import com.rc.quokka.fantasyfootball.data.datasources.PlayersApiDataSource
 import com.rc.quokka.fantasyfootball.domain.model.*
 import com.rc.quokka.fantasyfootball.domain.repositories.PlayersRepository
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.withContext
 
 class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = PlayersApiDataSource()) :
     PlayersRepository {
@@ -36,22 +36,22 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
         )
     )
 
-    override suspend fun getPlayers(token: Token, getPlayerData: GetPlayerData): List<Player> = withContext(Dispatchers.IO) {
-        playersApiDataSource.getPlayers(token ,getPlayerData)
+    override suspend fun getPlayers(getPlayerData: GetPlayerData): List<Player> = withContext(Dispatchers.IO) {
+        playersApiDataSource.getPlayers(FantasyToken.token ,getPlayerData)
     }
 
     override suspend fun clearPost(post: Post) {
-        playersApiDataSource.removePlayer(post = post)
+        playersApiDataSource.removePlayer(FantasyToken.token ,post = post)
         updateUserPost()
         updateUserMoney()
         updateUserRemainingPlayersCount()
     }
 
-    override suspend fun fillPost(token: Token, post: Post, player: Player) {
+    override suspend fun fillPost(post: Post, player: Player) {
         if (post.player.role != player.role) {
             return
         }
-        playersApiDataSource.addPlayer(token = token, post = post, player = player)
+        playersApiDataSource.addPlayer(token = FantasyToken.token, post = post, player = player)
         updateUserPost()
         updateUserMoney()
         updateUserRemainingPlayersCount()
@@ -68,7 +68,10 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
     }
 
     override suspend fun observerUserMoney(): Flow<String> {
-        updateUserMoney()
+        CoroutineScope(Dispatchers.IO).launch {
+            updateUserMoney()
+            delay(10000)
+        }
         return userMoney
     }
 
@@ -85,7 +88,7 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
 
 
     private suspend fun updateUserPost() {
-        var updatedUserPosts = playersApiDataSource.getUserPosts().toMutableList()
+        var updatedUserPosts = playersApiDataSource.getUserPosts(FantasyToken.token).toMutableList()
         userPosts.value.forEach { userPost ->
             val sz = updatedUserPosts.filter { newUserPost ->
                 newUserPost.pos == userPost.pos && newUserPost.player.role == userPost.player.role

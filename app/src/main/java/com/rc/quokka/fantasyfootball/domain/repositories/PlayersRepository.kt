@@ -4,11 +4,11 @@ import com.rc.quokka.fantasyfootball.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface PlayersRepository {
-    suspend fun getPlayers(token: Token ,data: GetPlayerData): List<Player>
+    suspend fun getPlayers(data: GetPlayerData): List<Player>
 
     suspend fun clearPost(post: Post)
 
-    suspend fun fillPost(token: Token, post: Post, player: Player)
+    suspend fun fillPost(post: Post, player: Player)
 
     suspend fun observerUserPosts(): Flow<List<Post>>
 

@@ -1,6 +1,7 @@
 package com.rc.quokka.fantasyfootball.data.datasources
 
 import android.util.Log
+import com.rc.quokka.fantasyfootball.data.auth.FantasyToken
 import com.rc.quokka.fantasyfootball.data.mappers.PlayerMapper
 import com.rc.quokka.fantasyfootball.data.mappers.UserPlayerMapper
 import com.rc.quokka.fantasyfootball.domain.model.*
@@ -39,10 +40,13 @@ interface PlayerApiService {
         @Body data: AddPlayerDataDto
     )
 
-    @GET("user/remove_player")
-    suspend fun removePlayer(@Query("squadPlace") squadPlace: Int)
+    @POST("user/remove-player")
+    suspend fun removePlayer(
+        @Header("Authorization") token: String,
+        @Body data: DeletePlayerDataDto
+    )
 
-    @GET("user/get_players")
+    @GET("user/get-players")
     suspend fun getUserPlayers(@Header("Authorization") token: String): List<UserPlayerDto>
 
     @GET("user/get_remaining_money")
@@ -67,6 +71,11 @@ data class AddPlayerDataDto(
     @Json(name = "squadPlace") val squadPlace: String
 )
 
+data class DeletePlayerDataDto(
+    @Json(name = "playerId") val playerId: Int,
+    @Json(name = "squadPlace") val squadPlace: String
+)
+
 data class PlayerDto(
     @Json(name = "player_id") val playerId: String,
     @Json(name = "first_name") val firstName: String,
@@ -80,16 +89,16 @@ data class PlayerDto(
 )
 
 data class UserPlayerDto(
-    val playerId: String,
-    val firstName: String,
-    val lastName: String,
-    val webName: String,
-    val photo: String,
-    val positionId: Int,
-    val squadPlace: Int,
-    val teamId: Int,
-    val price: Float,
-    val score: Int
+    @Json(name = "player_id") val playerId: String,
+    @Json(name = "first_name") val firstName: String,
+    @Json(name = "last_name") val lastName: String,
+    @Json(name = "web_name") val webName: String,
+    @Json(name = "photo") val photo: String,
+    @Json(name = "position_id") val positionId: Int,
+    @Json(name = "squad_place") val squadPlace: Int,
+    @Json(name = "team_id") val teamId: Int,
+    @Json(name = "price") val price: Float,
+    @Json(name = "score") val score: Int
 )
 
 class PlayersApiDataSource {
@@ -129,10 +138,10 @@ class PlayersApiDataSource {
         }
     }
 
-    suspend fun getUserPosts(): List<Post> {
+    suspend fun getUserPosts(token: Token): List<Post> {
         val mapper = UserPlayerMapper()
         try {
-            return FantasyFootballPlayersApi.retrofitService.getUserPlayers("B")
+            return FantasyFootballPlayersApi.retrofitService.getUserPlayers("Bearer ${token.token}")
                 .map { mapper.toDomain(it) }
         } catch (e: Exception) {
             Log.d("PlayersApiDataSource", e.toString())
@@ -160,10 +169,11 @@ class PlayersApiDataSource {
                 "Bearer ${token.token}",
                 AddPlayerDataDto(player.id.toInt(), squadPlace.toString())
             )
-        } catch (e: Exception) { }
+        } catch (e: Exception) {
+        }
     }
 
-    suspend fun removePlayer(post: Post) {
+    suspend fun removePlayer(token: Token, post: Post) {
         try {
             val squadPlace = when (post.player.role) {
                 PlayerRole.GoalKeeper -> {
@@ -179,7 +189,11 @@ class PlayersApiDataSource {
                     post.pos + 12
                 }
             }
-            FantasyFootballPlayersApi.retrofitService.removePlayer(squadPlace)
-        } catch (e: Exception) { }
+            FantasyFootballPlayersApi.retrofitService.removePlayer(
+                token = "Bearer ${token.token}",
+                DeletePlayerDataDto(post.player.id.toInt(), squadPlace.toString())
+            )
+        } catch (e: Exception) {
+        }
     }
 }

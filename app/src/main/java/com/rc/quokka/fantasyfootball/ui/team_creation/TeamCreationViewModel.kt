@@ -18,7 +18,6 @@ class TeamCreationViewModel(
     private val playersRepository: PlayersRepository = PlayersApiRepository())
     : ViewModel() {
     private val _uiState = MutableStateFlow(TeamCreationUiState(emptyList(), "0", "0"))
-    var token: Token = NoToken
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -50,7 +49,7 @@ class TeamCreationViewModel(
 
     fun fillPost(post: Post, player: Player) {
         viewModelScope.launch {
-            playersRepository.fillPost(token = token, post = post, player = player)
+            playersRepository.fillPost(post = post, player = player)
         }
     }
 }

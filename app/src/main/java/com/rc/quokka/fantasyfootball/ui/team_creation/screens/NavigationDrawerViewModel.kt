@@ -24,7 +24,7 @@ class NavigationDrawerViewModel(private val playersRepository: PlayersRepository
     fun updateTable() {
         viewModelScope.launch {
             val newState = NavigationDrawerUiState(
-                playersList = playersRepository.getPlayers(token, GetPlayerData(limit = 10, uiState.value.pageNumber)),
+                playersList = playersRepository.getPlayers(GetPlayerData(limit = 10, uiState.value.pageNumber)),
                 pageNumber = uiState.value.pageNumber
             )
             _uiState.value = newState

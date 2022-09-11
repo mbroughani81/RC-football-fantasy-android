@@ -25,12 +25,11 @@ import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi
 @Composable
-fun TeamCreationScreen(token: Token, teamCreationViewModel: TeamCreationViewModel = viewModel()) {
+fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel()) {
     val isOnSoccerFieldView = remember { mutableStateOf(true) }
     val deleteDialogCurrentPlayer = remember { mutableStateOf<Post?>(null) }
     val drawerCurrentPost = remember { mutableStateOf<Post?>(null) }
     val uiState = teamCreationViewModel.uiState.collectAsState()
-    teamCreationViewModel.token = token
 
     FantasyFootballTheme {
         if (deleteDialogCurrentPlayer.value != null &&
@@ -60,7 +59,6 @@ fun TeamCreationScreen(token: Token, teamCreationViewModel: TeamCreationViewMode
                         modifier = Modifier.fillMaxHeight().padding(vertical = 10.dp),
                     ) {
                         NavigationDrawerView(
-                            token = token,
                             onPlayerRowCLickHandler = { player ->
                                 coroutineScope.launch { scaffoldState.drawerState.close() }
                                 teamCreationViewModel.fillPost(

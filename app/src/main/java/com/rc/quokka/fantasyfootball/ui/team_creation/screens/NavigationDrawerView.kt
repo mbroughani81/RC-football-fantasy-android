@@ -42,12 +42,10 @@ import com.rc.quokka.fantasyfootball.ui.theme.weight400Size16VazirFont
 @ExperimentalFoundationApi
 @Composable
 fun NavigationDrawerView(
-    token: Token,
     onPlayerRowCLickHandler: (player: Player) -> Unit,
     drawState: DrawerState,
     navigationDrawerViewModel: NavigationDrawerViewModel = viewModel(),
 ) {
-    navigationDrawerViewModel.token = token
 
     val uiState = navigationDrawerViewModel.uiState.collectAsState()
     Column(

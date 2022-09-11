@@ -70,7 +70,7 @@ fun FantasyFootballApp(authenticationViewModel: AuthenticationViewModel = viewMo
             })
         }
         composable(route = FantasyFootballScreen.TeamCreation.name) {
-            TeamCreationScreen(token = authenticationUiState.value.token)
+            TeamCreationScreen()
         }
     }
 }
