@@ -35,19 +35,9 @@ import com.rc.quokka.fantasyfootball.ui.team_creation.screens.NavigationDrawerVi
 import com.rc.quokka.fantasyfootball.ui.team_creation.screens.PlayerDataCell
 import com.rc.quokka.fantasyfootball.ui.team_creation.screens.Table
 import com.rc.quokka.fantasyfootball.ui.theme.VazirFont
+import com.rc.quokka.fantasyfootball.ui.theme.weight300Size14VazirFont
 import com.rc.quokka.fantasyfootball.ui.theme.weight400Size12VazirFont
-
-//@Composable
-//fun NavigationDrawer() {
-//    val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
-//    ModalDrawer(
-//        drawerContent = { NavigationDrawerView() },
-//        drawerState = DrawerState(DrawerValue.Open),
-//        gesturesEnabled = drawerState.isOpen,
-//        modifier = Modifier.padding(top = 16.dp)
-//    ) {
-//    }
-//}
+import com.rc.quokka.fantasyfootball.ui.theme.weight400Size16VazirFont
 
 @ExperimentalFoundationApi
 @Composable
@@ -104,40 +94,42 @@ fun NavigationBarTopView() {
 
 @Composable
 fun NavigationSearchBar() {
-    val searchText = remember { mutableStateOf("جستجو") }
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            TextField(value = searchText.value, colors = TextFieldDefaults.textFieldColors(
-                disabledIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                backgroundColor = Color.White
-            ),
-                onValueChange = {
-                    searchText.value = it
-                })
+    val searchText = remember { mutableStateOf("") }
+    Column(modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.search),
                 contentDescription = "search icon",
-                modifier = Modifier.padding(end = 16.dp),
             )
+            TextField(
+                value = searchText.value,
+                colors = TextFieldDefaults.textFieldColors(
+                    disabledIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    focusedLabelColor = Color.Transparent,
+                    backgroundColor = Color.White,
+                ),
+                onValueChange = {
+                    searchText.value = it
+                },
+                placeholder = {
+                    CommonText(
+                        text = "جستجو",
+                        style = weight300Size14VazirFont
+                    )
+                })
+
         }
         Row(
             modifier = Modifier
                 .height(1.dp)
                 .background(color = Color.Black)
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp)
         ) {}
     }
-//    Box(modifier = Modifier.background(Color.White)) {
-//        TextField(modifier = Modifier
-//            .background(Color.White)
-//            .fillMaxWidth()
-//            .padding(start = 4.dp, bottom = 4.dp), value = searchText.value, onValueChange = {
-//            searchText.value = it
-//        })
-//    }
 }
 
 @Composable
