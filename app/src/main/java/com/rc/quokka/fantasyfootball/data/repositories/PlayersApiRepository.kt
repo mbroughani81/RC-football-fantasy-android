@@ -82,7 +82,7 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
     }
 
     private suspend fun updateUserMoney() {
-        val updatedUserMoney = playersApiDataSource.getUserMoney()
+        val updatedUserMoney = playersApiDataSource.getUserMoney(FantasyToken.token)
         userMoney.value = updatedUserMoney
     }
 

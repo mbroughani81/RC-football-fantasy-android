@@ -49,10 +49,10 @@ interface PlayerApiService {
     @GET("user/get-players")
     suspend fun getUserPlayers(@Header("Authorization") token: String): List<UserPlayerDto>
 
-    @GET("user/get_remaining_money")
-    suspend fun getUserMoney(): Map<String, String>
+    @GET("user/get-wallet")
+    suspend fun getUserMoney(@Header("Authorization") token: String): Map<String, String>
 
-    @GET("user/get_remaining_player")
+    @GET("user/get-remaining-players")
     suspend fun getUserRemainingPlayersCount(): Map<String, String>
 
     @GET()
@@ -128,10 +128,10 @@ class PlayersApiDataSource {
         }
     }
 
-    suspend fun getUserMoney(): String {
+    suspend fun getUserMoney(token: Token): String {
         try {
-            val mp = FantasyFootballPlayersApi.retrofitService.getUserMoney()
-            return mp.get("remaining_money")!!
+            val mp = FantasyFootballPlayersApi.retrofitService.getUserMoney("Bearer ${token.token}")
+            return mp.get("wallet")!!
         } catch (e: Exception) {
             Log.d("getUserMoney", e.toString())
             return "0"
