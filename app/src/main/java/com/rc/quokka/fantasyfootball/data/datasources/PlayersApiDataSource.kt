@@ -1,22 +1,20 @@
 package com.rc.quokka.fantasyfootball.data.datasources
 
 import android.util.Log
+import com.rc.quokka.fantasyfootball.data.auth.FantasyToken
 import com.rc.quokka.fantasyfootball.data.mappers.PlayerMapper
 import com.rc.quokka.fantasyfootball.data.mappers.UserPlayerMapper
-import com.rc.quokka.fantasyfootball.domain.model.GetPlayerData
-import com.rc.quokka.fantasyfootball.domain.model.Player
-import com.rc.quokka.fantasyfootball.domain.model.PlayerRole
-import com.rc.quokka.fantasyfootball.domain.model.Post
+import com.rc.quokka.fantasyfootball.domain.model.*
 import com.squareup.moshi.Json
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 private const val BASE_URL =
-    "http://192.168.43.35:3000"
+    "http://178.216.248.36:8000"
+//    "http://192.168.203.35:3000"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -29,22 +27,33 @@ private val retrofit = Retrofit.Builder()
 
 interface PlayerApiService {
     @GET("/player/all")
-    suspend fun getPlayers(@Query("limit") limit: Int, @Query("page") page: Int): List<PlayerDto>
+    suspend fun getPlayers(
+        @Header("Authorization") token: String,
+        @Query("limit") limit: Int,
+        @Query("page") page: Int
+    ): List<PlayerDto>
 
-    @GET("user/add_player")
-    suspend fun addPlayer(@Query("playerId") playerId: Int, @Query("squadPlace") squadPlace: Int)
+    @POST("user/add-player")
+//    @POST("checkbody")
+    suspend fun addPlayer(
+        @Header("Authorization") token: String,
+        @Body data: AddPlayerDataDto
+    )
 
-    @GET("user/remove_player")
-    suspend fun removePlayer(@Query("squadPlace") squadPlace: Int)
+    @POST("user/remove-player")
+    suspend fun removePlayer(
+        @Header("Authorization") token: String,
+        @Body data: DeletePlayerDataDto
+    )
 
-    @GET("user/get_players")
-    suspend fun getUserPlayers(): List<UserPlayerDto>
+    @GET("user/get-players")
+    suspend fun getUserPlayers(@Header("Authorization") token: String): List<UserPlayerDto>
 
-    @GET("user/get_remaining_money")
-    suspend fun getUserMoney(): Map<String,String>
+    @GET("user/get-wallet")
+    suspend fun getUserMoney(@Header("Authorization") token: String): Map<String, String>
 
-    @GET("user/get_remaining_player")
-    suspend fun getUserRemainingPlayersCount(): Map<String, String>
+    @GET("user/players-info")
+    suspend fun getUserPlayersInfo(@Header("Authorization")token: String): UserPlayerCountDto
 
     @GET()
     suspend fun getWeekInfo()
@@ -57,36 +66,55 @@ object FantasyFootballPlayersApi {
     }
 }
 
+data class UserPlayerCountDto (
+    @Json(name = "selected_players_count") val selectedPlayersCount: Int,
+    @Json(name = "max_players_count") val maxPlayersCount: Int
+    )
+
+data class AddPlayerDataDto(
+    @Json(name = "playerId") val playerId: Int,
+    @Json(name = "squadPlace") val squadPlace: String
+)
+
+data class DeletePlayerDataDto(
+    @Json(name = "playerId") val playerId: Int,
+    @Json(name = "squadPlace") val squadPlace: String
+)
+
 data class PlayerDto(
-    val playerId: String,
-    val firstName: String,
-    val lastName: String,
-    val webName: String,
-    val photo: String,
-    val positionId: Int,
-    val teamId: Int,
-    val price: Float,
-    val score: Int
+    @Json(name = "player_id") val playerId: String,
+    @Json(name = "first_name") val firstName: String,
+    @Json(name = "last_name") val lastName: String,
+    @Json(name = "web_name") val webName: String,
+    @Json(name = "photo") val photo: String,
+    @Json(name = "position_id") val positionId: Int,
+    @Json(name = "team_id") val teamId: Int,
+    @Json(name = "price") val price: Float,
+    @Json(name = "score") val score: Int
 )
 
 data class UserPlayerDto(
-    val playerId: String,
-    val firstName: String,
-    val lastName: String,
-    val webName: String,
-    val photo: String,
-    val positionId: Int,
-    val squadPlace: Int,
-    val teamId: Int,
-    val price: Float,
-    val score: Int
+    @Json(name = "player_id") val playerId: String,
+    @Json(name = "first_name") val firstName: String,
+    @Json(name = "last_name") val lastName: String,
+    @Json(name = "web_name") val webName: String,
+    @Json(name = "photo") val photo: String,
+    @Json(name = "position_id") val positionId: Int,
+    @Json(name = "squad_place") val squadPlace: Int,
+    @Json(name = "team_id") val teamId: Int,
+    @Json(name = "price") val price: Float,
+    @Json(name = "score") val score: Int
 )
 
 class PlayersApiDataSource {
-    suspend fun getPlayers(getPlayerData: GetPlayerData): List<Player> {
+    suspend fun getPlayers(token: Token, getPlayerData: GetPlayerData): List<Player> {
         val mapper = PlayerMapper()
         try {
-            return FantasyFootballPlayersApi.retrofitService.getPlayers(page = getPlayerData.pageNumber, limit = getPlayerData.limit)
+            return FantasyFootballPlayersApi.retrofitService.getPlayers(
+                "Bearer ${token.token}",
+                page = getPlayerData.pageNumber,
+                limit = getPlayerData.limit
+            )
                 .map { mapper.toDomain(it) }
         } catch (e: Exception) {
             Log.d("PlayersApiDataSource", e.toString())
@@ -94,31 +122,33 @@ class PlayersApiDataSource {
         }
     }
 
-    suspend fun getUserRemainingPlayersCount(): String {
+    suspend fun getUserPlayersInfo(token: Token): UserPlayerCountDto {
         try {
-            val mp = FantasyFootballPlayersApi.retrofitService.getUserRemainingPlayersCount()
-            Log.d("try", "kir")
-            return mp.get("remaining_player")!!
+            val userPlayerCountDto = FantasyFootballPlayersApi.retrofitService.getUserPlayersInfo("Bearer ${token.token}")
+//            val mp = FantasyFootballPlayersApi.retrofitService.getUserPlayersInfo("Bearer ${token.token}")
+//            return mp.get("remaining_player")!!
+            return userPlayerCountDto
         } catch (e: Exception) {
-            Log.d("try", e.toString())
-            return "0"
+//            Log.d("try", e.toString())
+//            return "0"
+            return UserPlayerCountDto(0, 0)
         }
     }
 
-    suspend fun getUserMoney(): String {
+    suspend fun getUserMoney(token: Token): String {
         try {
-            val mp = FantasyFootballPlayersApi.retrofitService.getUserMoney()
-            return mp.get("remaining_money")!!
+            val mp = FantasyFootballPlayersApi.retrofitService.getUserMoney("Bearer ${token.token}")
+            return mp.get("wallet")!!
         } catch (e: Exception) {
             Log.d("getUserMoney", e.toString())
             return "0"
         }
     }
 
-    suspend fun getUserPosts(): List<Post> {
+    suspend fun getUserPosts(token: Token): List<Post> {
         val mapper = UserPlayerMapper()
         try {
-            return FantasyFootballPlayersApi.retrofitService.getUserPlayers()
+            return FantasyFootballPlayersApi.retrofitService.getUserPlayers("Bearer ${token.token}")
                 .map { mapper.toDomain(it) }
         } catch (e: Exception) {
             Log.d("PlayersApiDataSource", e.toString())
@@ -126,7 +156,7 @@ class PlayersApiDataSource {
         }
     }
 
-    suspend fun addPlayer(post: Post, player: Player) {
+    suspend fun addPlayer(token: Token, post: Post, player: Player) {
         try {
             val squadPlace = when (post.player.role) {
                 PlayerRole.GoalKeeper -> {
@@ -143,15 +173,14 @@ class PlayersApiDataSource {
                 }
             }
             FantasyFootballPlayersApi.retrofitService.addPlayer(
-                playerId = player.id.toInt(),
-                squadPlace = squadPlace
+                "Bearer ${token.token}",
+                AddPlayerDataDto(player.id.toInt(), squadPlace.toString())
             )
         } catch (e: Exception) {
-
         }
     }
 
-    suspend fun removePlayer(post: Post) {
+    suspend fun removePlayer(token: Token, post: Post) {
         try {
             val squadPlace = when (post.player.role) {
                 PlayerRole.GoalKeeper -> {
@@ -167,9 +196,11 @@ class PlayersApiDataSource {
                     post.pos + 12
                 }
             }
-            FantasyFootballPlayersApi.retrofitService.removePlayer(squadPlace)
+            FantasyFootballPlayersApi.retrofitService.removePlayer(
+                token = "Bearer ${token.token}",
+                DeletePlayerDataDto(post.player.id.toInt(), squadPlace.toString())
+            )
         } catch (e: Exception) {
-
         }
     }
 }

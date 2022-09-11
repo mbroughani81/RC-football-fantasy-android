@@ -48,8 +48,6 @@ class FakePlayersRepositories : PlayersRepository {
         userPosts.value = newPostsList
     }
 
-
-
     override suspend fun fillPost(post: Post, player: Player) {
         delay(3000)
 
@@ -69,7 +67,7 @@ class FakePlayersRepositories : PlayersRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun observerUserRemainingPlayersCount(): Flow<String> {
+    override suspend fun observerUserPlayersInfo(): Flow<UserPlayerInfo> {
         TODO("Not yet implemented")
     }
 }

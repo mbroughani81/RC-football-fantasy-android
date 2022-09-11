@@ -1,6 +1,7 @@
 package com.rc.quokka.fantasyfootball.data.repositories
 
 import android.util.Log
+import com.rc.quokka.fantasyfootball.data.auth.FantasyToken
 import com.rc.quokka.fantasyfootball.data.datasources.ConfirmCodeResponse
 import com.rc.quokka.fantasyfootball.data.datasources.SigninResponse
 import com.rc.quokka.fantasyfootball.data.datasources.SignupResponse
@@ -34,7 +35,9 @@ class UsersApiRepository(val usersApiDataSource: UsersApiDataSource = UsersApiDa
             val response = usersApiDataSource.login(data = data)
             when (response) {
                 is SigninResponse.SigninResponseSuccessful -> {
-                    Result.Success(SigninVerdict.SigninSuccessful(Token(response.token)))
+                    val token = Token(response.token)
+                    FantasyToken.token = token
+                    Result.Success(SigninVerdict.SigninSuccessful(token))
                 }
                 is SigninResponse.SigninResponseUnsuccessful -> {
                     Result.Success(SigninVerdict.SigninFailed(response.error))
