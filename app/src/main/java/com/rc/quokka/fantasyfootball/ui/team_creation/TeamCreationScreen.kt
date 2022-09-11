@@ -30,6 +30,7 @@ fun TeamCreationScreen(token: Token, teamCreationViewModel: TeamCreationViewMode
     val deleteDialogCurrentPlayer = remember { mutableStateOf<Post?>(null) }
     val drawerCurrentPost = remember { mutableStateOf<Post?>(null) }
     val uiState = teamCreationViewModel.uiState.collectAsState()
+    teamCreationViewModel.token = token
 
     FantasyFootballTheme {
         if (deleteDialogCurrentPlayer.value != null &&

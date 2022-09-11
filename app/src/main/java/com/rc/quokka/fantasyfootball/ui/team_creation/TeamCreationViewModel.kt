@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rc.quokka.fantasyfootball.data.repositories.PlayersApiRepository
+import com.rc.quokka.fantasyfootball.domain.model.NoToken
 import com.rc.quokka.fantasyfootball.domain.model.Player
 import com.rc.quokka.fantasyfootball.domain.model.Post
+import com.rc.quokka.fantasyfootball.domain.model.Token
 import com.rc.quokka.fantasyfootball.domain.repositories.PlayersRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,6 +18,7 @@ class TeamCreationViewModel(
     private val playersRepository: PlayersRepository = PlayersApiRepository())
     : ViewModel() {
     private val _uiState = MutableStateFlow(TeamCreationUiState(emptyList(), "0", "0"))
+    var token: Token = NoToken
     val uiState = _uiState.asStateFlow()
 
     init {
