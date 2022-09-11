@@ -47,11 +47,11 @@ class PlayersApiRepository(val playersApiDataSource: PlayersApiDataSource = Play
         updateUserRemainingPlayersCount()
     }
 
-    override suspend fun fillPost(post: Post, player: Player) {
+    override suspend fun fillPost(token: Token, post: Post, player: Player) {
         if (post.player.role != player.role) {
             return
         }
-        playersApiDataSource.addPlayer(post = post, player = player)
+        playersApiDataSource.addPlayer(token = token, post = post, player = player)
         updateUserPost()
         updateUserMoney()
         updateUserRemainingPlayersCount()

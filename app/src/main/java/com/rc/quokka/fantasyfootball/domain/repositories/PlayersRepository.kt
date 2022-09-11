@@ -8,7 +8,7 @@ interface PlayersRepository {
 
     suspend fun clearPost(post: Post)
 
-    suspend fun fillPost(post: Post, player: Player)
+    suspend fun fillPost(token: Token, post: Post, player: Player)
 
     suspend fun observerUserPosts(): Flow<List<Post>>
 

@@ -50,7 +50,7 @@ class TeamCreationViewModel(
 
     fun fillPost(post: Post, player: Player) {
         viewModelScope.launch {
-            playersRepository.fillPost(post = post, player = player)
+            playersRepository.fillPost(token = token, post = post, player = player)
         }
     }
 }

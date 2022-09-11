@@ -48,9 +48,7 @@ class FakePlayersRepositories : PlayersRepository {
         userPosts.value = newPostsList
     }
 
-
-
-    override suspend fun fillPost(post: Post, player: Player) {
+    override suspend fun fillPost(token: Token, post: Post, player: Player) {
         delay(3000)
 
         val newPostsList = userPosts.value.map {

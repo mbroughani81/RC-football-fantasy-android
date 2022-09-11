@@ -9,12 +9,11 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Query
+import retrofit2.http.*
 
 private const val BASE_URL =
     "http://178.216.248.36:8000"
+//    "http://192.168.203.35:3000"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -33,14 +32,18 @@ interface PlayerApiService {
         @Query("page") page: Int
     ): List<PlayerDto>
 
-    @GET("user/add_player")
-    suspend fun addPlayer(@Query("playerId") playerId: Int, @Query("squadPlace") squadPlace: Int)
+    @POST("user/add-player")
+//    @POST("checkbody")
+    suspend fun addPlayer(
+        @Header("Authorization") token: String,
+        @Body data: AddPlayerDataDto
+    )
 
     @GET("user/remove_player")
     suspend fun removePlayer(@Query("squadPlace") squadPlace: Int)
 
     @GET("user/get_players")
-    suspend fun getUserPlayers(): List<UserPlayerDto>
+    suspend fun getUserPlayers(@Header("Authorization") token: String): List<UserPlayerDto>
 
     @GET("user/get_remaining_money")
     suspend fun getUserMoney(): Map<String, String>
@@ -58,6 +61,11 @@ object FantasyFootballPlayersApi {
         retrofit.create(PlayerApiService::class.java)
     }
 }
+
+data class AddPlayerDataDto(
+    @Json(name = "playerId") val playerId: Int,
+    @Json(name = "squadPlace") val squadPlace: String
+)
 
 data class PlayerDto(
     @Json(name = "player_id") val playerId: String,
@@ -124,7 +132,7 @@ class PlayersApiDataSource {
     suspend fun getUserPosts(): List<Post> {
         val mapper = UserPlayerMapper()
         try {
-            return FantasyFootballPlayersApi.retrofitService.getUserPlayers()
+            return FantasyFootballPlayersApi.retrofitService.getUserPlayers("B")
                 .map { mapper.toDomain(it) }
         } catch (e: Exception) {
             Log.d("PlayersApiDataSource", e.toString())
@@ -132,7 +140,7 @@ class PlayersApiDataSource {
         }
     }
 
-    suspend fun addPlayer(post: Post, player: Player) {
+    suspend fun addPlayer(token: Token, post: Post, player: Player) {
         try {
             val squadPlace = when (post.player.role) {
                 PlayerRole.GoalKeeper -> {
@@ -149,12 +157,10 @@ class PlayersApiDataSource {
                 }
             }
             FantasyFootballPlayersApi.retrofitService.addPlayer(
-                playerId = player.id.toInt(),
-                squadPlace = squadPlace
+                "Bearer ${token.token}",
+                AddPlayerDataDto(player.id.toInt(), squadPlace.toString())
             )
-        } catch (e: Exception) {
-
-        }
+        } catch (e: Exception) { }
     }
 
     suspend fun removePlayer(post: Post) {
@@ -174,8 +180,6 @@ class PlayersApiDataSource {
                 }
             }
             FantasyFootballPlayersApi.retrofitService.removePlayer(squadPlace)
-        } catch (e: Exception) {
-
-        }
+        } catch (e: Exception) { }
     }
 }
