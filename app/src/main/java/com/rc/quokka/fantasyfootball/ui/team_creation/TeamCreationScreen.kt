@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi
 @Composable
-fun TeamCreationScreen(teamCreationViewModel: TeamCreationViewModel = viewModel()) {
+fun TeamCreationScreen(token: Token, teamCreationViewModel: TeamCreationViewModel = viewModel()) {
     val isOnSoccerFieldView = remember { mutableStateOf(true) }
     val deleteDialogCurrentPlayer = remember { mutableStateOf<Post?>(null) }
     val drawerCurrentPost = remember { mutableStateOf<Post?>(null) }
