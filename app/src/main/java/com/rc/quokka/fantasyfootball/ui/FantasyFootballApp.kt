@@ -38,7 +38,7 @@ fun FantasyFootballApp(authenticationViewModel: AuthenticationViewModel = viewMo
 
     NavHost(
         navController = navController,
-        startDestination = FantasyFootballScreen.TeamCreation.name,
+        startDestination = FantasyFootballScreen.Signin.name,
         modifier = Modifier
     ) {
         composable(route = FantasyFootballScreen.Signin.name) {
