@@ -6,6 +6,3 @@
 
 ## Steps to reproduce
 <!-- List the steps required to produce the error. These should be as few as possible !-->
-1. 
-## Screenshots
-<!-- Any relevant screenshots which show the issue !-->
